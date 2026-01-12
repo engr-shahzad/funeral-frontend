@@ -1,6 +1,6 @@
 /**
  *
- * ProductList - Fixed Add to Cart behavior
+ * ProductList - Memorial Style Product Cards with Variants
  *
  */
 
@@ -8,37 +8,108 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import AddToWishList from '../AddToWishList';
 
-const ProductList = props => {
-  const { products, updateWishlist, authenticated, handleAddToCart } = props;
+class ProductList extends React.Component {
+  constructor(props) {
+    super(props);
+    
+    // Initialize selected variants for each product
+    const initialVariants = {};
+    props.products.forEach((product, index) => {
+      // Find default variant or use first variant
+      const defaultVariant = product.variants?.find(v => v.isDefault) || product.variants?.[0];
+      initialVariants[index] = defaultVariant;
+    });
+    
+    this.state = {
+      selectedVariants: initialVariants
+    };
+  }
 
-  const onAddToCart = (e, product) => {
-    // Stop all event propagation
+  componentDidUpdate(prevProps) {
+    // Update variants if products change
+    if (prevProps.products !== this.props.products) {
+      const initialVariants = {};
+      this.props.products.forEach((product, index) => {
+        const defaultVariant = product.variants?.find(v => v.isDefault) || product.variants?.[0];
+        initialVariants[index] = defaultVariant;
+      });
+      this.setState({ selectedVariants: initialVariants });
+    }
+  }
+
+  handleVariantChange = (productIndex, variantIndex) => {
+    const { products } = this.props;
+    const selectedVariant = products[productIndex].variants[variantIndex];
+    
+    this.setState(prevState => ({
+      selectedVariants: {
+        ...prevState.selectedVariants,
+        [productIndex]: selectedVariant
+      }
+    }));
+  }
+
+  getProductPrice = (product, productIndex) => {
+    const { selectedVariants } = this.state;
+    
+    // Check if product has variants
+    if (product.variants && product.variants.length > 0) {
+      const selectedVariant = selectedVariants[productIndex];
+      return selectedVariant?.price || product.variants[0].price;
+    }
+    
+    // Fallback to direct price
+    return product.price;
+  }
+
+  onAddToCart = (e, product, productIndex) => {
     e.preventDefault();
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
 
+    const { handleAddToCart } = this.props;
+    const { selectedVariants } = this.state;
+
     console.log('🛒 ProductList - Adding to cart:', product);
 
     if (handleAddToCart) {
-      // Add default quantity of 1 to the product
-      const productWithQuantity = {
+      const selectedVariant = selectedVariants[productIndex];
+      
+      // Add selected variant and quantity to product
+      const productWithVariant = {
         ...product,
+        selectedVariant: selectedVariant,
+        price: selectedVariant?.price || product.price,
+        variant: selectedVariant?.name,
         quantity: 1
       };
 
-      handleAddToCart(productWithQuantity);
+      handleAddToCart(productWithVariant);
     } else {
       console.warn('⚠️ handleAddToCart prop not provided to ProductList');
     }
-  };
+  }
 
-  return (
-    <div className='product-list'>
-      {products.map((product, index) => (
-        <div key={index} className='mb-3 mb-md-0'>
-          <div className='product-container'>
-            <div className='item-box'>
-              <div className='add-wishlist-box'>
+  render() {
+    const { products, updateWishlist, authenticated } = this.props;
+    const { selectedVariants } = this.state;
+
+    // Reverse the products array to show newest first (last in DB becomes first)
+    const reversedProducts = [...products].reverse();
+
+    return (
+      <div className='products-grid'>
+        {reversedProducts.map((product, productIndex) => {
+          // Use original index for variant selection
+          const originalIndex = products.length - 1 - productIndex;
+          const displayPrice = this.getProductPrice(product, originalIndex);
+          const hasVariants = product.variants && product.variants.length > 0;
+          const selectedVariant = selectedVariants[originalIndex];
+
+          return (
+            <div key={product._id || productIndex} className='product-card'>
+              {/* Wishlist Heart - Top Right */}
+              <div className='wishlist-badge'>
                 <AddToWishList
                   id={product._id}
                   liked={product?.isLiked ?? false}
@@ -48,94 +119,90 @@ const ProductList = props => {
                 />
               </div>
 
-              <div className='item-link'>
-                {/* Product Image and Details - Clickable Link */}
+              {/* Product Image - Clickable */}
+              <Link
+                to={`/product/${product.slug || product._id}`}
+                className='product-image-link'
+              >
+                <div className='product-image-wrapper'>
+                  <img
+                    className='product-image'
+                    src={
+                      product.imageUrl ||
+                      product.images?.[0]?.url ||
+                      '/images/placeholder-image.png'
+                    }
+                    alt={product.name}
+                  />
+                </div>
+              </Link>
+
+              {/* Product Info */}
+              <div className='product-info'>
                 <Link
                   to={`/product/${product.slug || product._id}`}
-                  className='d-flex flex-column'
-                  style={{ textDecoration: 'none', color: 'inherit' }}
+                  className='product-name-link'
                 >
-                  <div className='item-image-container'>
-                    <div className='item-image-box'>
-                      <img
-                        className='item-image'
-                        src={
-                          product.imageUrl ||
-                          product.images?.[0]?.url ||
-                          '/images/placeholder-image.png'
-                        }
-                        alt={product.name}
-                      />
-                    </div>
-                  </div>
-                  <div className='item-body'>
-                    <div className='item-details p-3'>
-                      <h1 className='item-name'>{product.name}</h1>
-                      {product.brand && Object.keys(product.brand).length > 0 && (
-                        <p className='by'>
-                          By <span>{product.brand.name}</span>
-                        </p>
-                      )}
-                      <p className='item-desc mb-0'>{product.description}</p>
-                    </div>
-                  </div>
-                  <div className='d-flex flex-row justify-content-between align-items-center px-4 mb-2 item-footer'>
-                    <p className='price mb-0'>${product.price}</p>
-                    {product.totalReviews > 0 && (
-                      <p className='mb-0'>
-                        <span className='fs-16 fw-normal mr-1'>
-                          {parseFloat(product?.averageRating).toFixed(1)}
-                        </span>
-                        <span
-                          className={`fa fa-star ${product.totalReviews !== 0 ? 'checked' : ''
-                            }`}
-                          style={{ color: '#ffb302' }}
-                        ></span>
-                      </p>
-                    )}
-                  </div>
+                  <h3 className='product-name'>{product.name}</h3>
                 </Link>
 
-                {/* Add to Cart Button - OUTSIDE Link */}
-                <div className='px-3 pb-3'>
-                  <button
-                    onClick={(e) => onAddToCart(e, product)}
-                    className='btn btn-block add-to-cart-btn'
-                    type='button'
-                    style={{
-                      width: '100%',
-                      padding: '12px',
-                      backgroundColor: '#2563eb',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '6px',
-                      fontSize: '15px',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                      transition: 'background-color 0.2s',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#1d4ed8';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#2563eb';
-                    }}
-                  >
-                    <span>🛒</span>
-                    Add to Cart
-                  </button>
+                {/* Brand (if exists) */}
+                {product.brand && Object.keys(product.brand).length > 0 && (
+                  <p className='product-brand'>By {product.brand.name}</p>
+                )}
+
+                {/* Variant Selector (if variants exist) */}
+                {hasVariants && product.variants.length > 1 && (
+                  <div className='variant-selector'>
+                    <select
+                      className='variant-select'
+                      value={selectedVariant?.name || ''}
+                      onChange={(e) => this.handleVariantChange(originalIndex, e.target.selectedIndex)}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {product.variants.map((variant, variantIndex) => (
+                        <option key={variantIndex} value={variant.name}>
+                          {variant.name} - ${variant.price.toFixed(2)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                {/* Price */}
+                <div className='product-price-wrapper'>
+                  <span className='price-label'>From</span>
+                  <span className='product-price'>
+                    ${displayPrice ? displayPrice.toFixed(2) : '0.00'}
+                  </span>
                 </div>
+
+                {/* Rating (if exists) */}
+                {product.totalReviews > 0 && (
+                  <div className='product-rating'>
+                    <span className='rating-value'>
+                      {parseFloat(product?.averageRating).toFixed(1)}
+                    </span>
+                    <span className='rating-star'>★</span>
+                    <span className='rating-count'>({product.totalReviews})</span>
+                  </div>
+                )}
+
+                {/* Add to Cart Button */}
+                <button
+                  onClick={(e) => this.onAddToCart(e, product, originalIndex)}
+                  className='add-to-cart-btn'
+                  type='button'
+                >
+                  Add to Cart
+                </button>
               </div>
             </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
+          );
+        })}
+      </div>
+    );
+  }
+}
 
 export default ProductList;

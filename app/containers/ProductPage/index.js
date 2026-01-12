@@ -1,29 +1,26 @@
 /**
  *
- * ProductPage - With variant support and modern design
+ * ProductPage - Memorial Tree Style (Screenshot Match)
  *
  */
 
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import "./Product.css"
+import './Product.css';
 
 import actions from '../../actions';
-
 import Button from '../../components/Common/Button';
 import LoadingIndicator from '../../components/Common/LoadingIndicator';
 import NotFound from '../../components/Common/NotFound';
-import { BagIcon } from '../../components/Common/Icon';
-import ProductReviews from '../../components/Store/ProductReviews';
-import SocialShare from '../../components/Store/SocialShare';
 
 class ProductPage extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       selectedVariant: null,
-      quantity: 1
+      quantity: 1,
+      openFaqIndex: null
     };
   }
 
@@ -40,9 +37,16 @@ class ProductPage extends React.PureComponent {
     }
 
     // Set default variant when product loads
-    if (prevProps.product !== this.props.product && this.props.product.variants && this.props.product.variants.length > 0) {
+    if (
+      prevProps.product !== this.props.product &&
+      this.props.product.variants &&
+      this.props.product.variants.length > 0
+    ) {
       if (!this.state.selectedVariant) {
-        this.setState({ selectedVariant: this.props.product.variants[0] });
+        const defaultVariant =
+          this.props.product.variants.find(v => v.isDefault) ||
+          this.props.product.variants[0];
+        this.setState({ selectedVariant: defaultVariant });
       }
     }
   }
@@ -52,29 +56,18 @@ class ProductPage extends React.PureComponent {
   }
 
   loadProduct(identifier) {
-    console.log('📦 Loading product with identifier:', identifier);
-
-    // Check if identifier is a MongoDB ObjectId (24 hex characters)
     const isMongoId = /^[a-f\d]{24}$/i.test(identifier);
 
     if (isMongoId) {
-      console.log('🔑 Detected MongoDB ID, fetching by ID');
       this.props.fetchStoreProduct(identifier, true);
     } else {
-      console.log('🏷️ Detected slug, fetching by slug');
       this.props.fetchStoreProduct(identifier, false);
       this.props.fetchProductReviews(identifier);
     }
   }
 
-  handleVariantSelect = (variant) => {
+  handleVariantSelect = variant => {
     this.setState({ selectedVariant: variant });
-  };
-
-  handleQuantityChange = (change) => {
-    this.setState(prevState => ({
-      quantity: Math.max(1, prevState.quantity + change)
-    }));
   };
 
   handleAddToCartWithVariant = () => {
@@ -86,148 +79,142 @@ class ProductPage extends React.PureComponent {
       return;
     }
 
-    // Create product with variant price
     const productWithPrice = {
       ...product,
       price: selectedVariant.price,
       selectedVariant: selectedVariant,
       variantId: selectedVariant._id,
-      variantName: selectedVariant.name
+      variantName: selectedVariant.name,
+      quantity: quantity
     };
 
-    // Update quantity in Redux state before adding to cart
-    this.props.productShopChange('quantity', quantity);
-
-    // Add to cart
     handleAddToCart(productWithPrice);
   };
 
+  toggleFaq = index => {
+    this.setState(prevState => ({
+      openFaqIndex: prevState.openFaqIndex === index ? null : index
+    }));
+  };
+
   render() {
-    const {
-      isLoading,
-      product,
-      shopFormErrors,
-      itemInCart,
-      handleRemoveFromCart,
-      addProductReview,
-      reviewsSummary,
-      reviews,
-      reviewFormData,
-      reviewChange,
-      reviewFormErrors
-    } = this.props;
+    const { isLoading, product } = this.props;
+    const { selectedVariant, openFaqIndex } = this.state;
 
-    const { selectedVariant, quantity } = this.state;
-
-    // Check if product has variants
     const hasVariants = product.variants && product.variants.length > 0;
-    const displayPrice = hasVariants && selectedVariant ? selectedVariant.price : product.price;
+    const displayPrice =
+      hasVariants && selectedVariant ? selectedVariant.price : product.price;
     const originalPrice = displayPrice ? (displayPrice / 0.8).toFixed(2) : 0;
 
+    // FAQ Data
+    const faqs = [
+      {
+        question: 'How does the memorial tree planting process work?',
+        answer:
+          'After you purchase a memorial tree, we partner with certified forestry organizations to plant your tree in a designated reforestation area. You will receive a certificate with the location and details of your planted tree.'
+      },
+      {
+        question: 'What species of trees are planted?',
+        answer:
+          'We plant native species appropriate to the reforestation area, including oak, maple, pine, and other indigenous trees that support local ecosystems.'
+      },
+      {
+        question: 'Why plant a memorial tree?',
+        answer:
+          'Memorial trees create a living legacy that honors your loved one while contributing to environmental restoration. Each tree helps combat climate change and supports wildlife habitats.'
+      },
+      {
+        question: 'What impact does a memorial tree have on the environment?',
+        answer:
+          'Each memorial tree absorbs CO2, produces oxygen, prevents soil erosion, and provides habitat for wildlife. Over its lifetime, a single tree can offset tons of carbon emissions.'
+      },
+      {
+        question: 'How does planting a memorial tree honor a loved one?',
+        answer:
+          'A memorial tree creates a lasting tribute that grows stronger over time, symbolizing the enduring impact of your loved one\'s life. Your name will be added to their Tribute Wall, and you\'ll receive a certificate of dedication.'
+      }
+    ];
+
     return (
-      <div className='product-shop'>
+      <div className='memorial-product-page'>
         {isLoading ? (
           <LoadingIndicator />
         ) : Object.keys(product).length > 0 ? (
           <>
-            {/* Main Product Section */}
-            <div className='modern-product-container'>
-              <div className='product-grid'>
-                {/* Left Column - Image */}
-                <div className='product-image-section'>
-                  <div className='product-image-wrapper'>
-                    <img
-                      className='product-main-image'
-                      src={
-                        product.imageUrl
-                          ? product.imageUrl
-                          : product.images && product.images[0]
-                            ? product.images[0].url
-                            : '/images/placeholder-image.png'
-                      }
-                      alt={product.name}
-                    />
-                    {product.inventory <= 0 && !shopFormErrors['quantity'] ? (
-                      <p className='stock-badge out-of-stock'>Out of stock</p>
-                    ) : (
-                      <p className='stock-badge in-stock'>In stock</p>
-                    )}
-                  </div>
+            {/* Hero Section with Forest Background */}
 
-                  {/* Partnership Section */}
-                  <div className='partnership-section'>
+            {/* Product Content Section */}
+            <div className='memorial-content-wrapper'>
+              <div className='memorial-product-grid'>
+                {/* Left - Product Image */}
+                <div className='memorial-image-section'>
+                  <img
+                    className='memorial-tree-image'
+                    src={
+                      product.imageUrl ||
+                      product.images?.[0]?.url ||
+                      '/images/placeholder-image.png'
+                    }
+                    alt={product.name}
+                  />
+
+                  {/* Partnership Logo */}
+                  <div className='partnership-badge'>
                     <p className='partnership-label'>In Partnership With:</p>
-                    <div className='partnership-logo'>
-                      <div className='logo-circle'>
-                        <svg className='logo-icon' fill='currentColor' viewBox='0 0 24 24'>
+                    <div className='partnership-logo-wrapper'>
+                      <div className='partnership-logo-circle'>
+                        <svg
+                          className='tree-logo-icon'
+                          fill='currentColor'
+                          viewBox='0 0 24 24'
+                        >
                           <path d='M12 2L4 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-8-5z' />
                         </svg>
                       </div>
                     </div>
                     <p className='partnership-name'>
-                      A TREE <span className='italic'>to</span> REMEMBER™
+                      A TREE <span className='to-word'>to</span> REMEMBER™
                     </p>
                   </div>
                 </div>
 
-                {/* Right Column - Product Details */}
-                <div className='product-details-section'>
-                  <div className='product-header'>
-                    <h1 className='product-title'>{product.name}</h1>
-                    <div className='product-pricing'>
-                      {hasVariants && displayPrice && (
-                        <>
-                          <span className='price-original'>${originalPrice}</span>
-                          <span className='price-current'>${displayPrice.toFixed(2)}</span>
-                        </>
-                      )}
-                      {!hasVariants && product.price && (
-                        <span className='price-current'>${product.price.toFixed(2)}</span>
-                      )}
+                {/* Right - Product Details */}
+                <div className='memorial-details-section'>
+                  <div className='memorial-product-header'>
+                    <h3 className='memorial-product-title'>{product.name}</h3>
+                    <div className='memorial-pricing'>
+                      <span className='price-strikethrough'>${originalPrice}</span>
+                      <span className='price-current'>
+                        ${displayPrice ? displayPrice.toFixed(2) : '0.00'}
+                      </span>
                     </div>
                   </div>
 
-                  {/* Product Info */}
-                  <div className='product-info'>
-                    <p className='product-sku'>SKU: {product.sku}</p>
-                    {product.brand && (
-                      <p className='product-brand'>
-                        See more from{' '}
-                        <Link to={`/shop/brand/${product.brand.slug}`} className='brand-link'>
-                          {product.brand.name}
-                        </Link>
-                      </p>
-                    )}
-                  </div>
+                  {/* Product Highlights */}
+                  {product.highlights && product.highlights.length > 0 && (
+                    <ul className='memorial-highlights-list'>
+                      {product.highlights.map((highlight, index) => (
+                        <li key={index} className='memorial-highlight-item'>
+                          • {highlight}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
 
-                  {/* Description with highlights */}
-                  <div className='product-description'>
-                    {product.highlights && product.highlights.length > 0 ? (
-                      <ul className='highlight-list'>
-                        {product.highlights.map((highlight, index) => (
-                          <li key={index} className='highlight-item'>
-                            <span className='bullet'></span>
-                            <span>{highlight}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p>{product.description}</p>
-                    )}
-                  </div>
-
-                  {/* Variant Selection */}
+                  {/* Variant Selection Buttons */}
                   {hasVariants && (
-                    <div className='variant-selection'>
-                      <div className='variant-grid'>
-                        {product.variants.map((variant) => (
+                    <div className='memorial-variants-section'>
+                      <div className='memorial-variants-grid'>
+                        {product.variants.map(variant => (
                           <button
                             key={variant._id}
                             onClick={() => this.handleVariantSelect(variant)}
-                            className={`variant-button ${selectedVariant && selectedVariant._id === variant._id
-                              ? 'variant-button-selected'
-                              : ''
-                              }`}
+                            className={`memorial-variant-btn ${
+                              selectedVariant &&
+                              selectedVariant._id === variant._id
+                                ? 'active'
+                                : ''
+                            }`}
                           >
                             {variant.name}
                           </button>
@@ -236,115 +223,55 @@ class ProductPage extends React.PureComponent {
                     </div>
                   )}
 
-                  {/* Quantity Selector */}
-                  <div className='quantity-section'>
-                    <label className='quantity-label'>Quantity</label>
-                    <div className='quantity-controls'>
-                      <button
-                        onClick={() => this.handleQuantityChange(-1)}
-                        className='quantity-btn'
-                      >
-                        <span>−</span>
-                      </button>
-                      <input
-                        type='number'
-                        value={quantity}
-                        onChange={(e) => this.setState({ quantity: Math.max(1, parseInt(e.target.value) || 1) })}
-                        className='quantity-input'
-                        min='1'
-                      />
-                      <button
-                        onClick={() => this.handleQuantityChange(1)}
-                        className='quantity-btn'
-                      >
-                        <span>+</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Social Share */}
-                  <div className='social-share-section'>
-                    <SocialShare product={product} />
-                  </div>
-
-                  {/* Add to Cart Button */}
-                  <div className='cart-actions'>
-                    {itemInCart ? (
-                      <Button
-                        variant='primary'
-                        disabled={product.inventory <= 0 && !shopFormErrors['quantity']}
-                        text='Remove From Bag'
-                        className='cart-button'
-                        icon={<BagIcon />}
-                        onClick={() => handleRemoveFromCart(product)}
-                      />
-                    ) : (
-                      <button
-                        disabled={product.inventory <= 0 && !shopFormErrors['quantity']}
-                        className='checkout-button'
-                        onClick={this.handleAddToCartWithVariant}
-                      >
-                        CONTINUE TO CHECKOUT
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Additional Product Info */}
-                  <div className='product-meta'>
-                    <div className='meta-grid'>
-                      <div className='meta-item'>
-                        <span className='meta-label'>Type:</span>
-                        <span className='meta-value'>{product.type}</span>
-                      </div>
-                      <div className='meta-item'>
-                        <span className='meta-label'>Status:</span>
-                        <span className='meta-value status-active'>
-                          {product.inventory > 0 ? 'In Stock' : 'Out of Stock'}
-                        </span>
-                      </div>
-                      <div className='meta-item'>
-                        <span className='meta-label'>Taxable:</span>
-                        <span className='meta-value'>{product.taxable ? 'Yes' : 'No'}</span>
-                      </div>
-                    </div>
-                  </div>
+                  {/* Continue to Checkout Button */}
+                  <button
+                    className='memorial-checkout-btn'
+                    onClick={this.handleAddToCartWithVariant}
+                    disabled={!selectedVariant}
+                  >
+                    CONTINUE TO CHECKOUT
+                  </button>
                 </div>
               </div>
             </div>
 
-            {/* Product Details Section */}
-            {hasVariants && (
-              <div className='variant-details-section'>
-                <h2 className='section-title'>Available Options</h2>
-                <div className='variant-cards-grid'>
-                  {product.variants.map((variant) => (
-                    <div key={variant._id} className='variant-card'>
-                      <h4 className='variant-card-name'>{variant.name}</h4>
-                      <p className='variant-card-price'>${variant.price.toFixed(2)}</p>
-                      {variant.quantity && (
-                        <p className='variant-card-quantity'>
-                          {variant.quantity} tree{variant.quantity > 1 ? 's' : ''}
-                        </p>
-                      )}
-                    </div>
-                  ))}
-                </div>
+            {/* FAQ Section */}
+            <div className='memorial-faq-section'>
+              <h2 className='faq-title'>Frequently asked questions</h2>
+              <div className='faq-list'>
+                {faqs.map((faq, index) => (
+                  <div key={index} className='faq-item'>
+                    <button
+                      className='faq-question-btn'
+                      onClick={() => this.toggleFaq(index)}
+                    >
+                      <span className='faq-question-text'>{faq.question}</span>
+                      <span className='faq-icon'>
+                        {openFaqIndex === index ? '−' : '+'}
+                      </span>
+                    </button>
+                    {openFaqIndex === index && (
+                      <div className='faq-answer'>
+                        <p>{faq.answer}</p>
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
 
-            {/* Reviews Section */}
-            {reviews && reviews.length > 0 && (
-              <ProductReviews
-                reviewFormData={reviewFormData}
-                reviewFormErrors={reviewFormErrors}
-                reviews={reviews}
-                reviewsSummary={reviewsSummary}
-                reviewChange={reviewChange}
-                addReview={addProductReview}
-              />
-            )}
-
-
+            {/* Shop All Sympathy Gifts Section */}
+            <div className='sympathy-cta-section'>
+              <h3 className='sympathy-cta-title'>
+                Not seeing quite what you're looking for yet?
+              </h3>
+              <p className='sympathy-cta-subtitle'>
+                Explore our full collection to find the perfect sympathy gift.
+              </p>
+              <Link to='/shop/sympathy' className='sympathy-cta-btn'>
+                Shop all sympathy gifts
+              </Link>
+            </div>
           </>
         ) : (
           <NotFound message='No product found.' />
@@ -355,22 +282,9 @@ class ProductPage extends React.PureComponent {
 }
 
 const mapStateToProps = state => {
-  const itemInCart = state.cart.cartItems.find(
-    item => item._id === state.product.storeProduct._id
-  )
-    ? true
-    : false;
-
   return {
     product: state.product.storeProduct,
-    productShopData: state.product.productShopData,
-    shopFormErrors: state.product.shopFormErrors,
-    isLoading: state.product.isLoading,
-    reviews: state.review.productReviews,
-    reviewsSummary: state.review.reviewsSummary,
-    reviewFormData: state.review.reviewFormData,
-    reviewFormErrors: state.review.reviewFormErrors,
-    itemInCart
+    isLoading: state.product.isLoading
   };
 };
 

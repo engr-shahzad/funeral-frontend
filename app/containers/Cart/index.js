@@ -30,7 +30,7 @@ class Cart extends React.PureComponent {
             onClick={toggleCart}
           />
         </div>
-        <div className='cart-body'>
+        {/* <div className='cart-body'>
           {cartItems.length > 0 ? (
             <>
               <CartList
@@ -45,10 +45,10 @@ class Cart extends React.PureComponent {
               <p>Your shopping cart is empty</p>
             </div>
           )}
-        </div>
+        </div> */}
         {cartItems.length > 0 && (
           <div className='cart-footer'>
-            <CartSummary cartTotal={cartTotal} />
+            {/* <CartSummary cartTotal={cartTotal} /> */}
             <Checkout
               authenticated={authenticated}
               handleShopping={this.props.handleShopping}

@@ -1,13 +1,14 @@
 /**
  *
- * ProductsShop - Updated with Memorial Products Support
+ * ProductsShop - Updated with Memorial Products Support & Category Sidebar
  *
  */
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { TreePine, Flower, Gift, Heart } from 'lucide-react';
+import { TreePine, Flower, Gift, Heart, ChevronRight } from 'lucide-react';
 import actions from '../../actions';
+import "./ProductShop.css"
 
 import ProductList from '../../components/Store/ProductList';
 import NotFound from '../../components/Common/NotFound';
@@ -18,7 +19,8 @@ class ProductsShop extends React.PureComponent {
     super(props);
     this.state = {
       obituaryId: null,
-      filterType: null
+      filterType: null,
+      selectedCategory: 'best-sellers'
     };
   }
 
@@ -66,128 +68,154 @@ class ProductsShop extends React.PureComponent {
     }
   }
 
+  handleCategorySelect = (category) => {
+    this.setState({ selectedCategory: category });
+    // You can add logic here to filter products by category if needed
+  }
+
   render() {
     const { products, isLoading, authenticated, updateWishlist } = this.props;
-    const { obituaryId, filterType } = this.state;
+    const { obituaryId, filterType, selectedCategory } = this.state;
 
     const displayProducts = products && products.length > 0;
     const isMemorialShop = !!obituaryId;
 
+    // Categories matching the screenshot
+    const categories = [
+      { id: 'best-sellers', label: 'Best Sellers', icon: '★' },
+      { id: 'memorial-trees', label: 'Memorial Trees', icon: '🌳' },
+      { id: 'designers-choice', label: "Designer's Choice", icon: '🌺' },
+      { id: 'sympathy-plants', label: 'Sympathy Plants', icon: '🪴' },
+      { id: 'vase-arrangements', label: 'Vase Arrangements', icon: '💐' },
+      { id: 'flower-baskets', label: 'Flower Baskets', icon: '🧺' },
+      { id: 'funeral-arrangements', label: 'Funeral Arrangements', icon: '⚘' },
+      { id: 'wreaths-sprays', label: 'Wreaths and Specialty Sprays', icon: '🌿' },
+      { id: 'casket-sprays', label: 'Casket Sprays', icon: '💮' },
+      { id: 'urn-wreaths', label: 'Urn Wreaths', icon: '🏺' },
+      { id: 'tribute-blankets', label: 'Tribute Blankets', icon: '🧸' }
+    ];
+
     return (
-      <div className='products-shop'>
-        {/* Memorial Banner */}
-        {isMemorialShop && (
-          <div className='memorial-banner mb-4'>
-            <div className='bg-gradient-to-r from-green-800 to-green-700 rounded-lg p-6 text-white'>
-              <div className='flex items-center gap-3 mb-3'>
-                <TreePine size={32} />
-                <div>
-                  <h2 className='text-2xl font-semibold mb-1'>
-                    Plant a Memorial Tree
-                  </h2>
-                  <p className='text-green-100'>
-                    Honor their memory with a living tribute
-                  </p>
+      <div className='products-shop-container'>
+        {/* Sidebar Categories */}
+        <aside className='categories-sidebar'>
+          {categories.map(category => (
+            <button
+              key={category.id}
+              onClick={() => this.handleCategorySelect(category.id)}
+              className={`category-item ${selectedCategory === category.id ? 'active' : ''}`}
+            >
+              <span className='category-icon'>{category.icon}</span>
+              <span className='category-label'>{category.label}</span>
+              <ChevronRight className='category-arrow' size={16} />
+            </button>
+          ))}
+        </aside>
+
+        {/* Main Content */}
+        <main className='products-main-content'>
+          {/* Memorial Banner */}
+          {isMemorialShop && (
+            <div className='memorial-banner'>
+              <div className='memorial-banner-content'>
+                <div className='memorial-banner-header'>
+                  <TreePine size={32} />
+                  <div>
+                    <h2 className='memorial-banner-title'>
+                      Plant a Memorial Tree
+                    </h2>
+                    <p className='memorial-banner-subtitle'>
+                      Honor their memory with a living tribute
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <p className='text-green-50 text-sm'>
-                Each tree planted helps create a lasting legacy and supports reforestation efforts.
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Memorial Product Type Filters */}
-        {isMemorialShop && (
-          <div className='memorial-filters mb-4'>
-            <div className='bg-white rounded-lg shadow-sm p-4'>
-              <h3 className='text-sm font-semibold text-gray-700 mb-3'>Memorial Tributes</h3>
-              <div className='flex flex-wrap gap-2'>
-                <button
-                  onClick={() => this.handleFilterChange(null)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${!filterType
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                >
-                  <Heart size={16} />
-                  All Tributes
-                </button>
-
-                <button
-                  onClick={() => this.handleFilterChange('tree')}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${filterType === 'tree'
-                    ? 'bg-green-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                >
-                  <TreePine size={16} />
-                  Trees
-                </button>
-
-                <button
-                  onClick={() => this.handleFilterChange('flower')}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${filterType === 'flower'
-                    ? 'bg-pink-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                >
-                  <Flower size={16} />
-                  Flowers
-                </button>
-
-                <button
-                  onClick={() => this.handleFilterChange('gift')}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${filterType === 'gift'
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                >
-                  <Gift size={16} />
-                  Memorial Gifts
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Loading State */}
-        {isLoading && <LoadingIndicator />}
-
-        {/* Products List */}
-        {displayProducts && !isLoading && (
-          <ProductList
-            products={products}
-            authenticated={authenticated}
-            updateWishlist={updateWishlist}
-          />
-        )}
-
-        {/* No Products Found */}
-        {!isLoading && !displayProducts && (
-          <div className='text-center py-12 bg-white rounded-lg shadow-sm'>
-            {isMemorialShop ? (
-              <div>
-                <TreePine className='mx-auto text-gray-400 mb-3' size={48} />
-                <h3 className='text-lg font-semibold text-gray-700 mb-2'>
-                  No memorial products available
-                </h3>
-                <p className='text-gray-500'>
-                  Please check back later or contact us for custom memorial options.
+                <p className='memorial-banner-description'>
+                  Each tree planted helps create a lasting legacy and supports reforestation efforts.
                 </p>
               </div>
-            ) : (
-              <NotFound message='No products found.' />
-            )}
-          </div>
-        )}
+            </div>
+          )}
 
-        {/* Product Count */}
-        {displayProducts && isMemorialShop && (
-          <div className='mt-4 text-center text-sm text-gray-600'>
-            Showing {products.length} memorial {filterType || 'tribute'}{products.length !== 1 ? 's' : ''}
-          </div>
-        )}
+          {/* Memorial Product Type Filters */}
+          {isMemorialShop && (
+            <div className='memorial-filters'>
+              <div className='memorial-filters-content'>
+                <h3 className='memorial-filters-title'>Memorial Tributes</h3>
+                <div className='memorial-filters-buttons'>
+                  <button
+                    onClick={() => this.handleFilterChange(null)}
+                    className={`filter-btn ${!filterType ? 'active' : ''}`}
+                  >
+                    <Heart size={16} />
+                    All Tributes
+                  </button>
+
+                  <button
+                    onClick={() => this.handleFilterChange('tree')}
+                    className={`filter-btn filter-btn-tree ${filterType === 'tree' ? 'active' : ''}`}
+                  >
+                    <TreePine size={16} />
+                    Trees
+                  </button>
+
+                  <button
+                    onClick={() => this.handleFilterChange('flower')}
+                    className={`filter-btn filter-btn-flower ${filterType === 'flower' ? 'active' : ''}`}
+                  >
+                    <Flower size={16} />
+                    Flowers
+                  </button>
+
+                  <button
+                    onClick={() => this.handleFilterChange('gift')}
+                    className={`filter-btn filter-btn-gift ${filterType === 'gift' ? 'active' : ''}`}
+                  >
+                    <Gift size={16} />
+                    Memorial Gifts
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Loading State */}
+          {isLoading && <LoadingIndicator />}
+
+          {/* Products List */}
+          {displayProducts && !isLoading && (
+            <ProductList
+              products={products}
+              authenticated={authenticated}
+              updateWishlist={updateWishlist}
+            />
+          )}
+
+          {/* No Products Found */}
+          {!isLoading && !displayProducts && (
+            <div className='products-empty-state'>
+              {isMemorialShop ? (
+                <div>
+                  <TreePine className='empty-icon' size={48} />
+                  <h3 className='empty-title'>
+                    No memorial products available
+                  </h3>
+                  <p className='empty-description'>
+                    Please check back later or contact us for custom memorial options.
+                  </p>
+                </div>
+              ) : (
+                <NotFound message='No products found.' />
+              )}
+            </div>
+          )}
+
+          {/* Product Count */}
+          {displayProducts && isMemorialShop && (
+            <div className='products-count'>
+              Showing {products.length} memorial {filterType || 'tribute'}{products.length !== 1 ? 's' : ''}
+            </div>
+          )}
+        </main>
       </div>
     );
   }
