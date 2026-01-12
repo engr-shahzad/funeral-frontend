@@ -7,7 +7,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import AddToWishList from '../AddToWishList';
-
+import "./Productlist.css"
 class ProductList extends React.Component {
   constructor(props) {
     super(props);
