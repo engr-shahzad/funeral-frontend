@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Container, Row, Col, Input } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
-import './AllObituaries.css';
+import './Allobituaries.css';
 
 class AllObituaries extends Component {
   constructor(props) {
