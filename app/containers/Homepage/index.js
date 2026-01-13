@@ -101,7 +101,7 @@ class Homepage extends Component {
     try {
       this.setState({ loading: true });
 
-      const response = await fetch(`/api/obituaries/search?q=${encodeURIComponent(searchQuery)}`, {
+      const response = await fetch(`https://funeralbackend.onrender.com/api/obituaries/search?q=${encodeURIComponent(searchQuery)}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

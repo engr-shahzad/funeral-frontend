@@ -14,7 +14,8 @@ import actions from '../../actions';
 
 // routes
 import ObituaryPage from '../../components/Common/obituary/Obituary';
-import AddObituary from '../AddObituaryForm'; // ADD THIS LINE
+import AddObituary from '../AddObituaryForm';
+import AllObituaries from '../AllObituaries';
 import Login from '../Login';
 import Signup from '../Signup';
 import MerchantSignup from '../MerchantSignup';
@@ -86,8 +87,8 @@ class Application extends React.PureComponent {
             <div className='wrapper'>
               <Switch>
                 <Route exact path='/' component={HomePage} />
+                <Route path='/obituaries' component={AllObituaries} />
                 <Route path='/obituary/:slug' component={ObituaryPage} />
-                {/* ADD THIS LINE - Protected route for adding obituary */}
                 <Route path='/add-obituary' component={Authentication(AddObituary)} />
                 <Route path='/add-product' component={Authentication(AddProduct)} />
 
