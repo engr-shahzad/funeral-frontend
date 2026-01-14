@@ -490,8 +490,8 @@ class Homepage extends Component {
                     <div className="location-detail-item">
                       <Phone size={20} />
                       <div>
-                        <p className="mb-0">Tel: 1-605-787-3080</p>
-                        <p className="mb-0">Fax:  605 854-5202</p>
+                        <p className="mb-0">Tel: 1-605-787-3940</p>
+                        <p className="mb-0">Fax: 1-605-854-5202</p>
                       </div>
                     </div>
                   </div>
