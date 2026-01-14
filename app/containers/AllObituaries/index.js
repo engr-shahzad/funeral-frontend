@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Input } from 'reactstrap';
+import { Container, Row, Col, Input, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { Search } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import './Allobituaries.css';
 
 class AllObituaries extends Component {
@@ -12,7 +12,9 @@ class AllObituaries extends Component {
       filteredObituaries: [],
       loading: true,
       error: null,
-      searchQuery: ''
+      searchQuery: '',
+      currentPage: 1,
+      itemsPerPage: 20
     };
   }
 
@@ -38,13 +40,13 @@ class AllObituaries extends Component {
       const data = await response.json();
       
       // The API returns { "obituaries": [...] }
-      // Extract the obituaries array from the response
       const obituariesArray = data.obituaries || data || [];
 
       this.setState({
         obituaries: obituariesArray,
         filteredObituaries: obituariesArray,
-        loading: false
+        loading: false,
+        currentPage: 1 // Reset to first page when data loads
       });
 
     } catch (error) {
@@ -75,7 +77,7 @@ class AllObituaries extends Component {
 
   handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase();
-    this.setState({ searchQuery: query });
+    this.setState({ searchQuery: query, currentPage: 1 }); // Reset to page 1 when searching
 
     const filtered = this.state.obituaries.filter(obituary => {
       const firstName = (obituary.firstName || '').toLowerCase();
@@ -89,8 +91,70 @@ class AllObituaries extends Component {
     this.setState({ filteredObituaries: filtered });
   };
 
+  handlePageChange = (pageNumber) => {
+    this.setState({ currentPage: pageNumber });
+    // Scroll to top of page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   render() {
-    const { filteredObituaries, loading, error, searchQuery } = this.state;
+    const { filteredObituaries, loading, error, searchQuery, currentPage, itemsPerPage } = this.state;
+
+    // Calculate pagination
+    const totalPages = Math.ceil(filteredObituaries.length / itemsPerPage);
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredObituaries.slice(indexOfFirstItem, indexOfLastItem);
+
+    // Generate page numbers for pagination
+    const getPageNumbers = () => {
+      const pages = [];
+      const maxPagesToShow = 5;
+
+      if (totalPages <= maxPagesToShow) {
+        // Show all pages if total pages are less than max
+        for (let i = 1; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        // Show current page with 2 pages before and after
+        let startPage = Math.max(1, currentPage - 2);
+        let endPage = Math.min(totalPages, currentPage + 2);
+
+        // Adjust if we're near the start
+        if (currentPage <= 3) {
+          endPage = maxPagesToShow;
+        }
+
+        // Adjust if we're near the end
+        if (currentPage >= totalPages - 2) {
+          startPage = totalPages - maxPagesToShow + 1;
+        }
+
+        // Add first page and ellipsis
+        if (startPage > 1) {
+          pages.push(1);
+          if (startPage > 2) {
+            pages.push('...');
+          }
+        }
+
+        // Add page numbers
+        for (let i = startPage; i <= endPage; i++) {
+          pages.push(i);
+        }
+
+        // Add last page and ellipsis
+        if (endPage < totalPages) {
+          if (endPage < totalPages - 1) {
+            pages.push('...');
+          }
+          pages.push(totalPages);
+        }
+      }
+
+      return pages;
+    };
 
     return (
       <div className="all-obituaries-page">
@@ -153,13 +217,13 @@ class AllObituaries extends Component {
               <Row className="mb-3">
                 <Col>
                   <p className="results-count">
-                    Showing {filteredObituaries.length} {filteredObituaries.length === 1 ? 'obituary' : 'obituaries'}
+                    Showing {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filteredObituaries.length)} of {filteredObituaries.length} {filteredObituaries.length === 1 ? 'obituary' : 'obituaries'}
                   </p>
                 </Col>
               </Row>
 
               <Row className="obituaries-grid">
-                {filteredObituaries.map((obituary) => (
+                {currentItems.map((obituary) => (
                   <Col
                     key={obituary._id}
                     xs={12}
@@ -202,6 +266,63 @@ class AllObituaries extends Component {
                   </Col>
                 ))}
               </Row>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <Row className="mt-5">
+                  <Col>
+                    <div className="pagination-wrapper d-flex justify-content-center">
+                      <Pagination size="lg">
+                        {/* Previous Button */}
+                        <PaginationItem disabled={currentPage === 1}>
+                          <PaginationLink
+                            previous
+                            onClick={() => this.handlePageChange(currentPage - 1)}
+                          >
+                            <ChevronLeft size={20} />
+                          </PaginationLink>
+                        </PaginationItem>
+
+                        {/* Page Numbers */}
+                        {getPageNumbers().map((page, index) => (
+                          <PaginationItem
+                            key={index}
+                            active={page === currentPage}
+                            disabled={page === '...'}
+                          >
+                            <PaginationLink
+                              onClick={() => {
+                                if (page !== '...') {
+                                  this.handlePageChange(page);
+                                }
+                              }}
+                            >
+                              {page}
+                            </PaginationLink>
+                          </PaginationItem>
+                        ))}
+
+                        {/* Next Button */}
+                        <PaginationItem disabled={currentPage === totalPages}>
+                          <PaginationLink
+                            next
+                            onClick={() => this.handlePageChange(currentPage + 1)}
+                          >
+                            <ChevronRight size={20} />
+                          </PaginationLink>
+                        </PaginationItem>
+                      </Pagination>
+                    </div>
+                    
+                    {/* Page Info */}
+                    <div className="text-center mt-3">
+                      <p className="page-info-text">
+                        Page {currentPage} of {totalPages}
+                      </p>
+                    </div>
+                  </Col>
+                </Row>
+              )}
             </>
           )}
 
@@ -230,7 +351,8 @@ class AllObituaries extends Component {
                   onClick={() => {
                     this.setState({ 
                       searchQuery: '', 
-                      filteredObituaries: this.state.obituaries 
+                      filteredObituaries: this.state.obituaries,
+                      currentPage: 1
                     });
                   }}
                 >

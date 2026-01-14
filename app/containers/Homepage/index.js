@@ -483,7 +483,7 @@ class Homepage extends Component {
                       <MapPin size={20} />
                       <div>
                         <p className="mb-0"><strong>West River Funeral Directors LLC</strong></p>
-                        <p className="mb-0">602 East Saint Patrick St. Ste 101</p>
+                        <p className="mb-0">420 East Saint Patrick St. Ste 106</p>
                         <p className="mb-0">Rapid City, SD 57701</p>
                       </div>
                     </div>
@@ -491,7 +491,7 @@ class Homepage extends Component {
                       <Phone size={20} />
                       <div>
                         <p className="mb-0">Tel: 1-605-787-3080</p>
-                        <p className="mb-0">Fax: 1-605-484-4023</p>
+                        <p className="mb-0">Fax:  605 854-5202</p>
                       </div>
                     </div>
                   </div>
