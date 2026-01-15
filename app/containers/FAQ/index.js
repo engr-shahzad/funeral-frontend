@@ -123,7 +123,7 @@ export default function FAQ() {
                       <Link to="/when-death-occurs">When Death Occurs</Link> |{' '}
                       <Link to="/grief-support">Grief Support</Link> |{' '}
                       <Link to="/funeral-etiquette">Funeral Etiquette</Link> |{' '}
-                      <Link to="/social-security-benefits">Social Security Benefits</Link> |{' '}
+                      <Link to="/social-security">Social Security Benefits</Link> |{' '}
                       <span className="active">F.A.Q.</span>
                     </div>
                   </div>
@@ -132,7 +132,7 @@ export default function FAQ() {
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-3 gap-10">
         {/* FAQ Accordion */}
         <div className="lg:col-span-2 space-y-4">
-          <p className="font-oswald text-gray-700 mb-4">
+          <p  style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300' }}>
             Click on the questions below to reveal each respective answer.
           </p>
 

@@ -24,7 +24,7 @@ export default function SocialSecurityBenefits() {
                      <Link to="/grief-support">Grief Support</Link> |{' '}
                      <Link to="/funeral-etiquette">Funeral Etiquette</Link> |{' '}
                      <span className="active">Social Security Benefits</span> |{' '}
-                     <Link to="/faq">F.A.Q.</Link>
+                     <Link to="/faqs">F.A.Q.</Link>
                    </div>
                  </div>
  

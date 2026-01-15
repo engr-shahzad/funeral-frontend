@@ -25,8 +25,8 @@ export default function FuneralEtiquette() {
                     <Link to="/when-death-occurs">When Death Occurs</Link> |{' '}
                     <Link to="/grief-support">Grief Support</Link> |{' '}
                     <span className="active">Funeral Etiquette</span> |{' '}
-                    <Link to="/social-security-benefits">Social Security Benefits</Link> |{' '}
-                    <Link to="/faq">F.A.Q.</Link>
+                    <Link to="/social-security">Social Security Benefits</Link> |{' '}
+                    <Link to="/faqs">F.A.Q.</Link>
                   </div>
                 </div>
 

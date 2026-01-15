@@ -22,8 +22,8 @@ export default function WhenDeathOccurs() {
                     <span className="active">When Death Occurs</span> |{' '}
                     <Link to="/grief-support">Grief Support</Link> |{' '}
                     <Link to="/funeral-etiquette">Funeral Etiquette</Link> |{' '}
-                    <Link to="/social-security-benefits">Social Security Benefits</Link> |{' '}
-                    <Link to="/faq">F.A.Q.</Link>
+                    <Link to="/social-security">Social Security Benefits</Link> |{' '}
+                    <Link to="/faqs">F.A.Q.</Link>
                   </div>
                 </div>
 

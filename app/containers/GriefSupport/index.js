@@ -23,8 +23,8 @@ export default function GriefSupport() {
                     <Link to="/when-death-occurs">When Death Occurs</Link> |{' '}
                     <span className="active">Grief Support</span> |{' '}
                     <Link to="/funeral-etiquette">Funeral Etiquette</Link> |{' '}
-                    <Link to="/social-security-benefits">Social Security Benefits</Link> |{' '}
-                    <Link to="/faq">F.A.Q.</Link>
+                    <Link to="/social-security">Social Security Benefits</Link> |{' '}
+                    <Link to="/faqs">F.A.Q.</Link>
                   </div>
                 </div>
 
