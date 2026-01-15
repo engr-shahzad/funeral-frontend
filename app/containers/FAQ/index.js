@@ -136,10 +136,11 @@ export default function FAQ() {
             Click on the questions below to reveal each respective answer.
           </p>
 
-          {faqs.map((item, index) => (
-            <div key={index} className="border rounded">
+         {faqs.map((item, index) => (
+          <div key={index} className="border rounded overflow-hidden">
+            <div style={{ background: '#379078' }}>
               <button
-                className="w-full text-left px-4 py-3 bg-teal-600 text-white font-oswald font-semibold flex justify-between items-center"
+                className="w-full text-left px-4 py-3 text-white font-oswald font-semibold flex justify-between items-center"
                 onClick={() =>
                   setOpenIndex(openIndex === index ? null : index)
                 }
@@ -147,14 +148,16 @@ export default function FAQ() {
                 {item.question}
                 <span>{openIndex === index ? '-' : '+'}</span>
               </button>
-
-              {openIndex === index && (
-                <div className="px-4 py-4 bg-white text-gray-700 font-oswald leading-relaxed">
-                  {item.answer}
-                </div>
-              )}
             </div>
-          ))}
+
+            {openIndex === index && (
+              <div className="px-4 py-4 bg-white text-gray-700 font-oswald leading-relaxed">
+                {item.answer}
+              </div>
+            )}
+          </div>
+        ))}
+
         </div>
 
         {/* Side Image */}
