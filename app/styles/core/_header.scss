@@ -6,7 +6,7 @@
   .fa,
   span {
     color: $white;
-    font-size: $font-size-medium !important;
+    font-size: $font-size-medium  ;
     font-weight: $font-weight-normal;
     margin: 0px 5px;
   }
@@ -17,7 +17,7 @@
   border-bottom: $border-primary;
 
   .logo {
-    font-size: $font-size-heading-large !important;
+    font-size: $font-size-heading-large  ;
     font-weight: $font-weight-normal;
   }
 }
@@ -61,8 +61,8 @@
 
   .fa {
     cursor: pointer;
-    color: $theme-dark-gray;
-    font-size: $font-size-x-huge !important;
+   // color: $theme-dark-gray;
+    font-size: $font-size-x-huge  ;
   }
 
   .col-no-padding {
@@ -73,7 +73,7 @@
   }
 
   .navbar {
-    background-color: $white !important;
+   // background-color: $white  ;
     justify-content: flex-end;
     padding: 0;
 
@@ -101,14 +101,14 @@
       padding-bottom: 0;
 
       &.active {
-        color: $font-hover-color !important;
+        color: $font-hover-color  ;
       }
     }
 
     a,
     span {
       &:hover {
-        color: $font-hover-color !important;
+        color: $font-hover-color  ;
       }
     }
 
@@ -145,7 +145,7 @@
 
     .logo {
       margin: 0px;
-      color: $font-custom-color !important;
+      color: $font-custom-color  ;
       @include media-breakpoint-up(md) {
         margin-left: 15px;
       }
@@ -211,7 +211,7 @@
 
       .brand-link {
         position: relative;
-        color: $font-custom-color !important;
+        color: $font-custom-color  ;
         font-size: $font-size-large;
         font-weight: $font-weight-normal;
 

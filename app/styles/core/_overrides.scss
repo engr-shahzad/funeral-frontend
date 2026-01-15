@@ -10,7 +10,7 @@
 }
 
 .dropdown-item {
-  font-weight: $font-weight-normal !important;
+  font-weight: $font-weight-normal  ;
   padding: 12px;
   border-radius: $border-radius-default;
 
@@ -24,7 +24,7 @@
 
   &.active {
     background-color: $secondary-bg;
-    font-weight: $font-weight-normal !important;
+    font-weight: $font-weight-normal  ;
   }
 
   a {
@@ -34,7 +34,7 @@
 }
 
 .dropdown-menu {
-  position: absolute !important;
+  position: absolute  ;
   z-index: 1001;
   border: none;
   box-shadow: $box-shadow;
@@ -56,7 +56,7 @@
 
   .nav-link {
     .dropdown-caret {
-      font-size: $font-size-x-small !important;
+      font-size: $font-size-x-small  ;
       color: $theme-dark-gray;
       margin-left: 5px;
       -webkit-transition: $layout-transition-speed;
@@ -67,7 +67,7 @@
 
 .btn {
   &:hover {
-    color: $white !important;
+    color: $white  ;
   }
   &:focus {
     box-shadow: none;
@@ -86,7 +86,7 @@ hr {
 // start react-notification-system-redux overrides
 .notification {
   .notification-title {
-    font-weight: $font-weight-normal !important;
+    font-weight: $font-weight-normal  ;
   }
 }
 // end react-notification-system-redux overrides
@@ -125,7 +125,7 @@ hr {
 }
 
 .popover-header {
-  font-size: $font-size-medium !important;
+  font-size: $font-size-medium  ;
   background-color: $secondary-bg;
 }
 // end popover styles

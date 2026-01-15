@@ -214,8 +214,8 @@
     .footer-left-section,
     .footer-center-section,
     .footer-right-section {
-        border-left: none !important;
-        border-right: none !important;
+        border-left: none  ;
+        border-right: none  ;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 

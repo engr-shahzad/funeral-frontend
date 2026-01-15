@@ -29,7 +29,7 @@
 
     &:hover {
       background-color: $secondary-bg;
-      color: $font-custom-color !important;
+      color: $font-custom-color  ;
 
       .btn-text {
         -webkit-transition: $layout-transition-speed;
@@ -72,7 +72,7 @@
   .page-item {
     &.active {
       .page-link {
-        color: $white !important;
+        color: $white  ;
         background-color: $primary-bg;
       }
     }

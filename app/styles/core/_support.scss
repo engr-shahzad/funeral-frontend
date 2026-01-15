@@ -31,7 +31,7 @@
 
         &:disabled {
           background-color: $disabled-bg;
-          border: none !important;
+          border: none  ;
           cursor: not-allowed;
         }
       }

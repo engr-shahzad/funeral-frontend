@@ -49,7 +49,7 @@
     }
 
     .btn-text {
-      font-size: $font-size-heading-xsmall !important;
+      font-size: $font-size-heading-xsmall  ;
       font-weight: $font-weight-normal;
     }
   }
@@ -66,7 +66,7 @@
 
       &:hover {
         a {
-          color: $font-custom-color !important;
+          color: $font-custom-color  ;
         }
       }
 
@@ -78,7 +78,7 @@
         display: block;
         padding: 10px 0px;
         text-transform: capitalize;
-        color: $font-custom-color !important;
+        color: $font-custom-color  ;
         font-weight: $font-weight-normal;
 
         &.active-link {

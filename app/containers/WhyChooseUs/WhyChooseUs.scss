@@ -1,0 +1,180 @@
+// ===============================
+// Variables
+// ===============================
+$primary-teal: #00a097;
+$dark-text: #333;
+$muted-teal: #4f7f7a;
+$overlay-teal: rgba(74, 107, 107, 0.55);
+
+// Fonts
+$heading-font: 'Oswald', sans-serif;
+$body-font: Georgia, 'Times New Roman', serif;
+
+// ===============================
+// Root Wrapper
+// ===============================
+.why-choose-us {
+  background-color: #fff;
+  color: $dark-text;
+  font-family: $body-font;
+}
+
+// ===============================
+// Hero Section
+// ===============================
+.why-hero {
+  position: relative;
+  height: 20rem;
+  background-size: 110%;
+  background-position: center 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: $overlay-teal;
+  }
+
+  h1 {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    margin-top: 100px;
+
+    @media (max-width: 768px) {
+      font-size: 2.25rem;
+    }
+  }
+}
+
+// ===============================
+// Sub Navigation
+// ===============================
+.why-subnav {
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 1.2em;
+
+  .subnav-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 1rem;
+    text-align: center;
+    font-family: $heading-font;
+    //font-size: 1.2em;
+    color: $primary-teal;
+
+    a {
+      color: $primary-teal;
+      text-decoration: none;
+      font-size: 21.6px;
+      font-weight: 300;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .active {
+      font-weight: 700;
+      color: $primary-teal;
+      font-size: 21.6px;
+    }
+  }
+}
+
+// ===============================
+// Main Layout
+// ===============================
+.why-content {
+ font-weight: 200;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  color: #333;
+  font-size: 18px;
+  font-family: $heading-font;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+// ===============================
+// Left Column
+// ===============================
+.why-main {
+    font-weight: 200;
+  p {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .intro {
+    margin: 0px 0px 10px;
+  }
+  span{
+    color: $primary-teal;
+  }
+  .contact{
+    margin-bottom: 20px;
+  }
+  .service {
+    margin-bottom: 2.5rem;
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      font-family: 'Playfair Display', serif;
+    }
+    p{
+        font-family: $heading-font;
+    }
+  }
+}
+
+// ===============================
+// Sidebar
+// ===============================
+.why-sidebar {
+  img {
+    width: 100%;
+    height: 14rem;
+    object-fit: cover;
+    margin-bottom: 2.5rem;
+    margin-top: 4em;
+  }
+
+  h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    font-family: 'Playfair Display', serif;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      margin-bottom: 0.5rem;
+
+      a {
+        font-size: 1rem;
+        color: $muted-teal;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
