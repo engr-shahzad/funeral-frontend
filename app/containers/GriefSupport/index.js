@@ -7,75 +7,52 @@ export default function GriefSupport() {
     <div className="grief-support-page">
 
       {/* HERO */}
-      <div
-        style={{
-          backgroundImage:
-            "url('https://images.pexels.com/photos/931162/pexels-photo-931162.jpeg?auto=compress&cs=tinysrgb&w=1600')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          height: '300px',
-          position: 'relative'
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundColor: 'rgba(0,0,0,0.45)'
-          }}
-        />
-        <div
-          style={{
-            position: 'relative',
-            zIndex: 2,
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-         <h1 className="text-5xl font-playfair font-bold text-white mb-4">
-            Grief Support
-          </h1>
-        </div>
-      </div>
+             <div
+              className="why-hero"
+              style={{
+                backgroundImage:
+                  "url('https://s3.amazonaws.com/CFSV2/stockimages/981952-floral-03.jpg')",
+                backgroundSize: '110%',
+                backgroundPosition: 'center',
+              }}
+            >
+              <h1>When Death Occurs</h1>
+            </div>
+          <div className="why-subnav">
+                  <div className="subnav-inner">
+                    <Link to="/when-death-occurs">When Death Occurs</Link> |{' '}
+                    <span className="active">Grief Support</span> |{' '}
+                    <Link to="/funeral-etiquette">Funeral Etiquette</Link> |{' '}
+                    <Link to="/social-security-benefits">Social Security Benefits</Link> |{' '}
+                    <Link to="/faq">F.A.Q.</Link>
+                  </div>
+                </div>
 
-      {/* SUB NAV */}
-      <Container className="py-4 text-center">
-        <p style={{ fontFamily: 'Oswald', fontSize: '0.95rem' }}>
-          <Link to="/when-death-occurs">When Death Occurs</Link> |{' '}
-          <strong>Grief Support</strong> |{' '}
-          <Link to="/funeral-etiquette">Funeral Etiquette</Link> |{' '}
-          <Link to="/social-security-benefits">Social Security Benefits</Link> |{' '}
-          <Link to="/faq">F.A.Q.</Link>
-        </p>
-      </Container>
-
-      <hr />
+    
+  
 
       {/* CONTENT */}
       <Container className="pb-5">
         <Row>
           {/* LEFT COLUMN */}
           <Col md="7">
-            <p style={{ fontFamily: 'Oswald', lineHeight: 1.8 }}>
-              In addition to the bereavement services for the families we serve,
-              we have provided some helpful grief support links below:
+            <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300' }}>
+              In addition to the bereavement services for the families we serve,  we have provided some helpful grief support links below: 
             </p>
 
-            <div style={{ marginTop: '2rem' }}>
+             <div style={{ marginTop: '2rem' }}>
               <h5
                 style={{
                   fontFamily: "'Playfair Display', serif",
                   fontWeight: 700,
-                  color: '#2f7f73'
+                  color: '#379078',
+                  fontSize: '18px'
                 }}
               >
-                Grief and Loss
+                Crisis, Grief and Healing 
               </h5>
-              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8 }}>
-                The American Association of Retired Persons (AARP) website contains
-                a Grief &amp; Loss section with grief-related articles and information.
+              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300' }}>
+              Webhealing.com, the first interactive grief website on the internet, offers discussion boards, articles, book suggestions, and advice for men and women working through every aspect of grief. The site’s founder, Tom Golden LCSW, has provided book excerpts and contact information to help those healing from loss.
               </p>
             </div>
 
@@ -84,15 +61,30 @@ export default function GriefSupport() {
                 style={{
                   fontFamily: "'Playfair Display', serif",
                   fontWeight: 700,
-                  color: '#2f7f73'
+                  color: '#379078',
+                  fontSize: '18px'
+                }}
+              >
+                Grief and Loss
+              </h5>
+              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8 , fontSize: '18px', fontWeight: '300'  }}>
+             The American Association of Retired Persons (AARP) website contains a Grief & Loss section with grief-related articles and information.
+              </p>
+            </div>
+
+            <div style={{ marginTop: '2rem' }}>
+              <h5
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontWeight: 700,
+                  color: '#379078',
+                  fontSize: '18px'
                 }}
               >
                 National Hospice and Palliative Care Organization
               </h5>
-              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8 }}>
-                The National Hospice and Palliative Care Organization’s website
-                provides a host of information and resources for people facing a
-                life-limiting illness or injury and their caregivers.
+              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300'  }}>
+                The National Hospice and Palliative Care Organization’s website provides a host of information and resources for people facing a life-limiting illness or injury and their caregivers.
               </p>
             </div>
           </Col>
@@ -100,7 +92,7 @@ export default function GriefSupport() {
           {/* RIGHT COLUMN */}
           <Col md="5">
             <img
-              src="https://images.pexels.com/photos/3768146/pexels-photo-3768146.jpeg?auto=compress&cs=tinysrgb&w=600"
+              src="	https://s3.amazonaws.com/CFSV2/stockimages/394057-Funeral-FS-600x450-27.jpg"
               alt="Grief Support"
               className="img-fluid rounded mb-4"
             />
