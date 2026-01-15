@@ -2,9 +2,9 @@
 
 /* Top Bar Styling */
 .header-top-bar {
-    background-color: #3d5c5c;
+    background-color: #2e4a47;
     color: #ffffff;
-    padding: 8px 0;
+    padding: 10px 0;
     font-size: 14px;
 }
 
@@ -14,6 +14,7 @@
 }
 
 .top-bar-icons {
+    color: white;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -46,34 +47,37 @@
 .main-nav-left,
 .main-nav-right {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
     height: 100%;
 }
 
 .main-nav-left {
-    justify-content: flex-start;
+    /* justify-content: flex-start; */
 }
 
 .main-nav-right {
-    justify-content: flex-end;
+    /* justify-content: flex-end; */
 }
 
 .nav-link-custom {
-    color: #ffffff !important;
+    color: #ffffff  ;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 40px;
     letter-spacing: 0.5px;
-    padding: 1rem 0.8rem !important;
+    padding: 1rem 0.8rem  ;
     text-transform: uppercase;
     transition: background-color 0.3s ease;
     border: none;
+    white-space: nowrap;
 }
 
+/* Hover Tint - Slight Green */
 .nav-link-custom:hover,
 .nav-link-custom.active {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #ffffff !important;
+    
+    background-color: rgba(74, 107, 107, 0.25); /* Darker Teal Tint */
+    color: #ffffff  ;
 }
 
 .dropdown-toggle.nav-link-custom::after {
@@ -98,8 +102,8 @@
 }
 
 .center-logo-img {
-    max-height: 80px;
-    width: auto;
+    width: 150px;
+    height: auto;
 }
 
 /* Cart Icon in Navigation */
@@ -116,18 +120,20 @@
     border-radius: 4px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     margin-top: 0;
+    padding: 0.5rem 0;
 }
 
 .dropdown-item {
     color: #333;
     padding: 10px 20px;
     font-size: 14px;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+/* Dropdown Hover - Light Green Tint */
 .dropdown-item:hover {
-    background-color: #f0f0f0;
-    color: #4a6b6b;
+    background-color: #eef7f6; /* Very light green */
+    color: #4a6b6b; /* Teal text */
 }
 
 .dropdown-item.active,
@@ -136,7 +142,49 @@
     color: #ffffff;
 }
 
-/* Header Info Bar (original features) */
+/* =========================================
+   NESTED DROPDOWN STYLES (Sub-Categories)
+   ========================================= */
+.dropdown-submenu {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    border-radius: 0.25rem;
+    display: none; /* Default hidden */
+}
+.dropdown-submenu.submenu-left > .dropdown-menu {
+    left: auto;
+    right: 100%; /* Positions the menu to the left of the parent */
+    margin-left: 0;
+    margin-right: -1px;
+}
+
+/* Rotate caret to point left for left-aligned submenu */
+.dropdown-submenu.submenu-left > .dropdown-toggle::after {
+    transform: rotate(90deg); /* Points Left */
+}
+/* Rotate caret for submenu to point right */
+.dropdown-submenu > .dropdown-toggle::after {
+    transform: rotate(-90deg);
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    margin-top: -2px;
+}
+
+/* Show submenu on hover */
+.dropdown-submenu:hover > .dropdown-menu,
+.dropdown-submenu:focus-within > .dropdown-menu {
+    display: block;
+}
+
+/* Header Info Bar */
 .header-info {
     background-color: #f8f9fa;
     padding: 12px 0;
@@ -300,7 +348,7 @@
 @media (min-width: 768px) and (max-width: 991px) {
     .nav-link-custom {
         font-size: 12px;
-        padding: 0.8rem 0.6rem !important;
+        padding: 0.8rem 0.6rem  ;
     }
 
     .center-logo {
@@ -326,3 +374,31 @@
 .border-teal {
     border-color: #4a6b6b;
 }
+/* ===============================
+   HEADER SIZE + SCROLL BEHAVIOR
+   =============================== */
+
+/* Default (Tall Header) */
+.header {
+    height: 150px;
+    transition: height 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* Main nav spacing */
+.header-main-nav {
+    padding: 30px 0;
+    transition: padding 0.35s ease;
+}
+
+/* Logo size */
+.center-logo-img {
+    max-height: 95px;
+    transition: max-height 0.35s ease;
+}
+
+/* ===============================
+   SCROLLED STATE
+   =============================== */
+
+
+

@@ -59,7 +59,7 @@
     .menu-list {
       .menu-item {
         a {
-          color: $font-custom-color !important;
+          color: $font-custom-color  ;
           font-weight: $font-weight-normal;
           text-transform: capitalize;
           display: block;
@@ -70,7 +70,7 @@
           &:hover {
             background-color: $white;
             border-left: 3px solid $primary-color;
-            color: $primary-color !important;
+            color: $primary-color  ;
             @include transition();
           }
 
@@ -84,7 +84,7 @@
           &.active-line {
             font-weight: $font-weight-medium;
             background-color: $white;
-            color: $primary-color !important;
+            color: $primary-color  ;
             border-color: $primary-color;
             @include transition();
           }

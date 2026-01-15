@@ -122,10 +122,10 @@
 }
 
 .text-muted {
-    color: #999 !important;
+    color: #999  ;
 }
 
 .text-success {
-    color: #28a745 !important;
+    color: #28a745  ;
     font-weight: 600;
 }

@@ -119,7 +119,7 @@
 
           .by {
             margin-bottom: 5px;
-            color: $font-subtext-color !important;
+            color: $font-subtext-color  ;
 
             span {
               font-weight: $font-weight-normal;
@@ -171,12 +171,12 @@
 
   .item-box {
     .item-name {
-      font-size: $font-size-huge !important;
+      font-size: $font-size-huge  ;
     }
 
     .item-details {
       .item-desc {
-        color: $font-custom-color !important;
+        color: $font-custom-color  ;
         word-break: break-all;
       }
 
@@ -199,14 +199,14 @@
 
     .item-name {
       &:hover {
-        color: $font-custom-hover-color !important;
+        color: $font-custom-hover-color  ;
       }
     }
   }
 
   .item-name {
-    color: $primary-color !important;
-    font-size: $font-size-heading-small !important;
+    color: $primary-color  ;
+    font-size: $font-size-heading-small  ;
     font-weight: $font-weight-medium;
     margin: 0px;
   }

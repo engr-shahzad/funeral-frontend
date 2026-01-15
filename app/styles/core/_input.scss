@@ -18,7 +18,7 @@ textarea {
   &:focus {
     outline: none;
     color: $font-focus-color;
-    border-color: $border-focus-color !important;
+    border-color: $border-focus-color  ;
     box-shadow: none;
     -webkit-transition: $layout-transition-speed;
     transition: $layout-transition-speed;
@@ -26,13 +26,13 @@ textarea {
 
   &:disabled {
     background-color: $disabled-bg;
-    border: none !important;
+    border: none  ;
     cursor: not-allowed;
   }
 }
 
 body.user-is-tabbing textarea {
-  box-shadow: none !important;
+  box-shadow: none  ;
 }
 // end input text styles
 
@@ -56,7 +56,7 @@ body.user-is-tabbing textarea {
       transition: $layout-transition-speed;
 
       &:focus {
-        border-color: $validation-color !important;
+        border-color: $validation-color  ;
       }
     }
 
@@ -100,9 +100,9 @@ body.user-is-tabbing textarea {
   }
 
   .input-btn {
-    border-left: none !important;
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
+    border-left: none  ;
+    border-top-left-radius: 0  ;
+    border-bottom-left-radius: 0  ;
   }
 }
 

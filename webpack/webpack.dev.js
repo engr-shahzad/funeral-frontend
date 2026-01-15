@@ -26,7 +26,9 @@ const config = {
           {
             loader: 'postcss-loader',
             options: {
-              plugins: () => [require('autoprefixer')]
+              plugins: () => [ // Add this line
+                require('autoprefixer')
+              ]
             }
           },
           {
@@ -78,5 +80,6 @@ const config = {
   },
   devtool: 'eval-source-map'
 };
+
 
 module.exports = webpackMerge(common, config);

@@ -224,7 +224,7 @@ button.btns:hover {
 
 /* Send Sympathy Gifts Button - BRIGHT RED */
 .btns-sympathy {
-    background-color: #d9534f !important;
+    background-color: #d9534f  ;
     color: var(--bg-white);
     border-radius: 25px;
 }

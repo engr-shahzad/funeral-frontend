@@ -1,14 +1,20 @@
-/* MERN Theme */
+// 1. Import Bootstrap first
 
-// Import utilities
+@import 'core/variables';
+@import 'node_modules/bootstrap/scss/bootstrap';
+
+// 2. Import your Reset and Utilities after
 @import 'core/utils/fonts';
 @import 'core/utils/reset';
 
-// Import Bootstrap source files
-@import 'node_modules/bootstrap/scss/bootstrap';
-
-// Import core styles
+// 3. Import Core and Custom
 @import 'core/core';
-
-// Import custom styles
 @import 'custom';
+body {
+  font-family: $font-family-base  ;
+}
+
+h1, h2, h3, h4, h5, h6, .heading {
+  font-family: $headings-font-family  ;
+  font-weight: 700; 
+}
