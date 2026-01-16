@@ -41,6 +41,24 @@ import Page404 from '../../components/Common/Page404';
 import { CART_ITEMS } from '../../constants';
 import DashboardNew from '../DashboardNew';
 import ProductDashboard from '../ProductDashboard';
+import About from '../About';
+import OurStaff from '../OurStaff';
+import ContactUs from '../ContactUs';
+import WhyChooseUs from '../WhyChooseUs';
+import Testimonials from '../Testimonials';
+import OurServices from '../OurServices';
+import PrePlan from '../PrePlan';
+import PreArrangementsForm from '../PreArrangementsForm';
+import HaveTheTalk from '../HaveTheTalk';
+import WhenDeathOccurs from '../WhenDeathOccurs';
+import GriefSupport from '../GriefSupport';
+import FuneralEtiquette from '../FuneralEtiquette';
+import SocialSecurityBenefits from '../SocialSecurityBenefits';
+import VeteransOverview from '../VeteransOverview';
+import VeteransHeadstones from '../VeteransHeadstones';
+import VeteransBurialFlags from '../VeteransBurialFlags';
+import FAQ from '../FAQ';
+import Location from '../Location';
 
 class Application extends React.PureComponent {
   constructor(props) {
@@ -88,6 +106,24 @@ class Application extends React.PureComponent {
             <div className='wrapper'>
               <Switch>
                 <Route exact path='/' component={HomePage} />
+                <Route path='/about-us' component={About} />
+                <Route path='/our-staff' component={OurStaff} />
+                <Route path='/contact-us' component={ContactUs} />
+                <Route path='/why-choose-us' component={WhyChooseUs} />
+                <Route path='/testimonials' component={Testimonials} />
+                <Route path='/our-services' component={OurServices} />
+                <Route path='/pre-arrangements' component={PrePlan} />
+                <Route path='/prearrangements-form' component={PreArrangementsForm} />
+                <Route path='/have-the-talk-of-a-lifetime' component={HaveTheTalk} />
+                <Route path='/when-death-occurs' component={WhenDeathOccurs} />
+                <Route path='/grief-support' component={GriefSupport} />
+                <Route path='/funeral-etiquette' component={FuneralEtiquette} />
+                <Route path='/social-security' component={SocialSecurityBenefits} />
+                <Route path='/veterans' component={VeteransOverview} />
+                <Route path='/veterans-headstones' component={VeteransHeadstones} />
+                <Route path='/veterans-burial-flags' component={VeteransBurialFlags} />
+                <Route path='/faqs' component={FAQ} />
+                <Route path='/location' component={Location} />
                 <Route path='/obituaries' component={AllObituaries} />
                 <Route path='/obituary/:slug' component={ObituaryPage} />
                 <Route path='/add-obituary' component={Authentication(AddObituary)} />

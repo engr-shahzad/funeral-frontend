@@ -13,8 +13,8 @@
 // size
 .input-btn {
   &.icon-only {
-    padding: 0 !important;
-    min-width: auto !important;
+    padding: 0  ;
+    min-width: auto  ;
 
     &.sm {
       width: 22px;
@@ -65,7 +65,7 @@
       background-color: $primary-bg;
 
       .btn-text {
-        color: $white !important;
+        color: $white  ;
         -webkit-transition: $layout-transition-speed;
         transition: $layout-transition-speed;
       }
@@ -89,7 +89,7 @@
 
     &:hover {
       background-color: $secondary-bg;
-      color: $font-custom-color !important;
+      color: $font-custom-color  ;
 
       .btn-text {
         -webkit-transition: $layout-transition-speed;
@@ -114,7 +114,7 @@ body.user-is-tabbing button:focus {
     transition: $layout-transition-speed;
 
     .btn-text {
-      color: $white !important;
+      color: $white  ;
       -webkit-transition: $layout-transition-speed;
       transition: $layout-transition-speed;
     }
@@ -125,7 +125,7 @@ body.user-is-tabbing button:focus {
       .btn-text {
         -webkit-transition: $layout-transition-speed;
         transition: $layout-transition-speed;
-        color: $white !important;
+        color: $white  ;
       }
     }
   }
@@ -139,7 +139,7 @@ body.user-is-tabbing button:focus {
     border: $border-default;
 
     &:hover {
-      color: $font-custom-color !important;
+      color: $font-custom-color  ;
     }
   }
 }
@@ -177,7 +177,7 @@ body.user-is-tabbing button:focus {
     transition: $layout-transition-speed;
 
     .btn-text {
-      color: $white !important;
+      color: $white  ;
       -webkit-transition: $layout-transition-speed;
       transition: $layout-transition-speed;
     }
@@ -188,7 +188,7 @@ body.user-is-tabbing button:focus {
       .btn-text {
         -webkit-transition: $layout-transition-speed;
         transition: $layout-transition-speed;
-        color: $white !important;
+        color: $white  ;
       }
     }
   }
@@ -201,13 +201,13 @@ body.user-is-tabbing button:focus {
   display: inline-block;
   min-width: 150px;
   font-weight: $font-weight-normal;
-  color: $font-custom-color !important;
+  color: $font-custom-color  ;
   background-color: $btn-bg;
   -webkit-transition: $layout-transition-speed;
   transition: $layout-transition-speed;
 
   &:hover {
-    color: $white !important;
+    color: $white  ;
     background-color: $btn-bg-hover;
     -webkit-transition: $layout-transition-speed;
     transition: $layout-transition-speed;
@@ -238,7 +238,7 @@ body.user-is-tabbing button:focus {
 
         svg {
           fill: $white;
-          stroke: $white !important;
+          stroke: $white  ;
           -webkit-transition: $layout-transition-speed;
           transition: $layout-transition-speed;
         }
@@ -255,7 +255,7 @@ body.user-is-tabbing button:focus {
 
         svg {
           fill: $white;
-          stroke: $white !important;
+          stroke: $white  ;
           -webkit-transition: $layout-transition-speed;
           transition: $layout-transition-speed;
         }
@@ -294,7 +294,7 @@ body.user-is-tabbing button:focus {
     min-width: 185px;
 
     @include media-breakpoint-down(sm) {
-      width: 100% !important;
+      width: 100%  ;
     }
 
     &:focus {
@@ -312,7 +312,7 @@ body.user-is-tabbing button:focus {
 
         svg {
           fill: $white;
-          stroke: $white !important;
+          stroke: $white  ;
           -webkit-transition: $layout-transition-speed;
           transition: $layout-transition-speed;
         }

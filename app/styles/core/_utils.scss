@@ -81,15 +81,15 @@
 }
 
 .text-primary {
-  color: $primary-color !important;
+  color: $primary-color  ;
 }
 
 .text-secondary {
-  color: $secondary-color !important;
+  color: $secondary-color  ;
 }
 
 .bg-secondary {
-  background-color: $secondary-bg !important;
+  background-color: $secondary-bg  ;
 }
 
 .text-uppercase {
@@ -130,7 +130,7 @@
 
 .w-lg-auto {
   @include media-breakpoint-up(lg) {
-    width: auto !important;
+    width: auto  ;
   }
 }
 
@@ -143,8 +143,8 @@
 
   &:hover,
   &:focus {
-    box-shadow: none !important;
-    color: $font-custom-color !important;
+    box-shadow: none  ;
+    color: $font-custom-color  ;
     background-color: $secondary-bg;
     @include transition();
   }
@@ -152,16 +152,16 @@
 
 // default link
 .default-link {
-  color: $font-custom-color !important;
+  color: $font-custom-color  ;
   font-weight: $font-weight-normal;
 
   &:hover {
-    text-decoration: underline !important;
+    text-decoration: underline  ;
   }
 }
 
 .redirect-link {
-  color: $primary-color !important;
+  color: $primary-color  ;
   font-weight: $font-weight-normal;
   text-transform: capitalize;
 }

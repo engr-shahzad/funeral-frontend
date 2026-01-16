@@ -103,19 +103,19 @@ const Footer = () => {
                   <Link to='/obituaries'>Obituaries</Link>
                 </li>
                 <li className='footer-nav-item'>
-                  <Link to='/about'>About Us</Link>
+                  <Link to='/about-us'>About Us</Link>
                 </li>
                 <li className='footer-nav-item'>
-                  <Link to='/services'>Services</Link>
+                  <Link to='/our-services'>Services</Link>
                 </li>
                 <li className='footer-nav-item'>
-                  <Link to='/pre-plan'>Pre-Plan</Link>
+                  <Link to='/pre-arrangements'>Pre-Plan</Link>
                 </li>
                 <li className='footer-nav-item'>
                   <Link to='/location'>Location</Link>
                 </li>
                 <li className='footer-nav-item'>
-                  <Link to='/resources'>Resources</Link>
+                  <Link to='/when-death-occurs'>Resources</Link>
                 </li>
                 <li className='footer-nav-item'>
                   <Link to='/veterans'>Veterans</Link>

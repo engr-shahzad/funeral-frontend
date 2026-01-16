@@ -53,8 +53,8 @@
 }
 
 body.user-is-tabbing input[type='checkbox']:focus + label {
-  // outline: 2px solid $outline-color !important;
-  // outline: 2px auto -webkit-focus-ring-color !important;
+  // outline: 2px solid $outline-color  ;
+  // outline: 2px auto -webkit-focus-ring-color  ;
 
   box-shadow: none;
   outline: 1px dotted;
