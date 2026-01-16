@@ -362,7 +362,7 @@ const CheckoutForm = (props) => {
             // ✅ SEND COMPREHENSIVE DATA
             const requestData = {
                 cartId: storedCartId || null,
-                amount: cartTotal,
+                amount: Number(cartTotal),
                 currency: 'usd',
                 products: cartItems.map(item => ({
                     product: item._id || item.id || item.product,
