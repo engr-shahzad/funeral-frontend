@@ -103,10 +103,10 @@ class Navigation extends React.PureComponent {
                   </Col>
                   <Col md='6' className='text-right d-none d-md-block'>
                     <div className='top-bar-icons'>
-                      <a href='#' className='top-bar-icon' aria-label='Google'><i className='fa fa-google' /></a>
-                      <a href='#' className='top-bar-icon' aria-label='Email'><i className='fa fa-envelope' /></a>
+                      <a href='https://www.google.com/maps' className='top-bar-icon' aria-label='Google'><i className='fa fa-google' /></a>
+                      <a href='mailto:info@westriverfd.com' className='top-bar-icon' aria-label='Email'><i className='fa fa-envelope' /></a>
                       <a href='#' className='top-bar-icon' aria-label='Print'><i className='fa fa-print' /></a>
-                      <a href='#' className='top-bar-icon' aria-label='Facebook'><i className='fa fa-facebook' /></a>
+                      <a href='https://facebook.com' className='top-bar-icon' aria-label='Facebook'><i className='fa fa-facebook' /></a>
                     </div>
                   </Col>
                   <Col xs='12' className='text-center d-block d-md-none py-2'>
