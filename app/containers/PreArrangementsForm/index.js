@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, FormGroup, Input, Label } from 'reactstrap';
 
+import { Link } from 'react-router-dom';
 
 export default function PreArrangementsForm() {
   const [formData, setFormData] = useState({});
@@ -17,33 +18,33 @@ export default function PreArrangementsForm() {
 
   return (
     <>
-       <div
-            className="relative h-80 bg-cover bg-center flex items-center justify-center"
-            style={{
-                backgroundImage: `url('https://images.pexels.com/photos/6192405/pexels-photo-6192405.jpeg?auto=compress&cs=tinysrgb&w=1600')`,
-            }}
-            >
-      <div className="absolute inset-0 bg-black/40"></div>
-
-      <div className="relative z-10 text-center">
-        <h1 className="text-5xl font-playfair font-bold text-white mb-4">
-         Pre-Arrangements Form
-        </h1>
+         <div
+        className="why-hero"
+        style={{
+          backgroundImage:
+            "url('https://s3.amazonaws.com/CFSV2/stockimages/981952-floral-03.jpg')",
+          backgroundSize: '110%',
+          backgroundPosition: 'center',
+        }}
+      >
+        <h1>Pre-Arrangements Form</h1>
       </div>
-    </div>
+       <div className="why-subnav">
+        <div className="subnav-inner">
+          <Link to="/prearrangements" >Pre-Plan</Link>  |{' '}
+            <span className="active">Pre-Arrangements Form</span> |{' '}
+            <Link to="/have-the-talk-of-a-lifetime">Have The Talk of a Lifetime</Link>
+        </div>
+      </div>
+      <div>
+        <Container className="py-5">
+          <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px' , fontWeight: '300'}}>Use this form to provide us with as much or as little detail as you wish.  At a minimum, provide us with your name and telephone number and tell us how you'd like us to work with you on the remaining information using the options at the base of the form.</p>
+        </Container>
+      </div>
 
-      <div style={{ background: '#e9f5f4' }} className="py-5">
+      <div style={{ background: '#e9f5f4', margin:'10px' }} className="py-5">
         <Container>
-          {/* Sub nav */}
-          <Row className="mb-4">
-            <Col className="text-center">
-              <p className="text-teal">
-                <a href="/pre-plan">Pre-Plan</a> |{' '}
-                <strong>Pre-Arrangements Form</strong> |{' '}
-                <a href="/have-the-talk">Have The Talk of a Lifetime</a>
-              </p>
-            </Col>
-          </Row>
+    
 
           <Form onSubmit={handleSubmit}>
             {/* Personal Info */}
