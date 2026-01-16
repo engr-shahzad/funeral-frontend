@@ -29,6 +29,7 @@ class ObituaryPage extends Component {
         this.handlePlantTree = this.handlePlantTree.bind(this);
     }
 
+
     componentDidMount() {
         const { slug } = this.props.match.params;
         if (slug) {
@@ -209,6 +210,7 @@ class ObituaryPage extends Component {
                 return 'Shared a Memory';
         }
     }
+    
 
     render() {
         const {
@@ -297,6 +299,42 @@ class ObituaryPage extends Component {
                                         className="profile-photo"
                                     />
                                 </div>
+                                    {/* Share Buttons */}
+                                <div className="obit-sharing">
+                                    <button
+                                    title="Share to Facebook"
+                                    className="btn ob-btn-social btn-facebook"
+                                    onClick={shareOnFacebook}
+                                    >
+                                    <i className="fa fa-facebook"></i>
+                                    </button>
+
+                                    <a
+                                    title="Share on X"
+                                    className="btn ob-btn-social btn-twitter"
+                                    href={`https://twitter.com/intent/tweet?text=Obituary posted for ${obituaryData.firstName} ${obituaryData.lastName}. See ${window.location.href}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    >
+                                    <i className="fa fa-twitter"></i>
+                                    </a>
+
+                                    <a
+                                    title="Share via email"
+                                    className="btn ob-btn-social btn-email"
+                                    href={`mailto:?subject=Obituary Listing&body=Obituary posted for ${obituaryData.firstName} ${obituaryData.lastName}. See ${window.location.href}`}
+                                    >
+                                    <i className="fa fa-envelope"></i>
+                                    </a>
+
+                                    <button
+                                    title="Print"
+                                    className="btn ob-btn-social btn-print"
+                                   // onClick={() => window.print()}
+                                    >
+                                    <i className="fa fa-print"></i>
+                                    </button>
+                                </div>
 
                                 {/* Action Buttons */}
                                 <div className="button-container">
@@ -311,7 +349,7 @@ class ObituaryPage extends Component {
                                         onClick={this.handlePlantTree}
                                         className="btns btn-tree"
                                     >
-                                        <TreePine size={18} />
+                                        
                                         Plant a Tree for {obituaryData.firstName}
                                     </button>
 
@@ -448,7 +486,6 @@ class ObituaryPage extends Component {
                                                 onClick={this.handlePlantTree}
                                                 className="btns btn-tree-full"
                                             >
-                                                <TreePine size={18} />
                                                 Plant a tree in memory of {obituaryData.firstName}
                                             </button>
                                         </div>
@@ -597,4 +634,9 @@ const mapStateToProps = (state) => {
     };
 };
 
+const     shareOnFacebook = () => {
+        const urlToShare = encodeURIComponent(window.location.href);
+        const fbSharerUrl = `https://www.facebook.com/sharer/sharer.php?u=${urlToShare}`;
+        window.open(fbSharerUrl, "_blank");
+        };
 export default connect(mapStateToProps, actions)(withRouter(ObituaryPage));
