@@ -89,7 +89,7 @@ export default function WhyChooseUs() {
           <h3>More Resources</h3>
           <ul>
             <li>
-              <Link to="/services">Our Services</Link>
+              <Link to="/our-services">Our Services</Link>
             </li>
             <li>
               <Link to="/grief-support">Grief Support</Link>
