@@ -7,96 +7,65 @@ export default function SocialSecurityBenefits() {
     <div className="social-security-benefits-page">
 
       {/* ================= HERO ================= */}
-      <div
-        style={{
-          backgroundImage:
-            "url('https://s3.amazonaws.com/CFSV2/stockimages/981952-floral-03.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          height: '300px',
-          position: 'relative'
-        }}
-      >
-        {/* Green overlay */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundColor: 'rgba(47,127,115,0.55)'
-          }}
-        />
-
-        <div
-          style={{
-            position: 'relative',
-            zIndex: 2,
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <h1 className="text-5xl font-playfair font-bold text-white mb-4">
-            Social Security Benefits
-          </h1>
-        </div>
-      </div>
-
-      {/* ================= SUB NAV ================= */}
-      <Container className="py-4 text-center">
-        <p style={{ fontFamily: 'Oswald', fontSize: '0.95rem' }}>
-          <Link to="/when-death-occurs">When Death Occurs</Link> |{' '}
-          <Link to="/grief-support">Grief Support</Link> |{' '}
-          <Link to="/funeral-etiquette">Funeral Etiquette</Link> |{' '}
-          <strong>Social Security Benefits</strong> |{' '}
-          <Link to="/faq">F.A.Q.</Link>
-        </p>
-      </Container>
-
-      <hr />
+              <div
+               className="why-hero"
+               style={{
+                 backgroundImage:
+                   "url('https://s3.amazonaws.com/CFSV2/stockimages/981952-floral-03.jpg')",
+                 backgroundSize: '110%',
+                 backgroundPosition: 'center',
+               }}
+             >
+               <h1>Social Security Benefits</h1>
+             </div>
+           <div className="why-subnav">
+                   <div className="subnav-inner">
+                     <Link to="/when-death-occurs">When Death Occurs</Link> |{' '}
+                     <Link to="/grief-support">Grief Support</Link> |{' '}
+                     <Link to="/funeral-etiquette">Funeral Etiquette</Link> |{' '}
+                     <span className="active">Social Security Benefits</span> |{' '}
+                     <Link to="/faqs">F.A.Q.</Link>
+                   </div>
+                 </div>
+ 
+     
 
       {/* ================= CONTENT ================= */}
       <Container className="pb-5">
         <Row>
           {/* LEFT COLUMN */}
           <Col md="8">
-            <p style={{ fontFamily: 'Oswald', lineHeight: 1.8 }}>
-              Some of the deceased’s family members may be able to receive Social
-              Security benefits if the deceased person worked long enough under
-              Social Security to qualify for benefits. You should get in touch
-              with Social Security as soon as you can to make sure you receive
-              all the benefits to which you are entitled.
+            <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300' }}>
+              Some of the deceased's family members may be able to receive Social Security benefits if the deceased person worked long enough under Social Security to quality for benefits.  You should get in touch with Social Security as soon as you can to make sure the family receives all of the benefits to which it may be entitled.  Please read the following information carefully to learn what benefits may be available.
             </p>
 
-            <p style={{ fontFamily: 'Oswald', lineHeight: 1.8 }}>
-              Certain family members may be eligible to receive monthly
-              benefits, including:
+            <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300' }}>
+             A one-time payment of $255 can be paid to the surviving spouse if he or she was living with the deceased; or, if living apart, was receiving certain Social Security benefits on the deceased's record.  If there is no surviving spouse, the payment is made to a child who is eligible for benefits on the deceased's record in the month of death.
             </p>
 
-            <ul style={{ fontFamily: 'Oswald', lineHeight: 1.8 }}>
+            <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300' }}>
+             Certain family members may be eligible to receive monthly benefits, including:
+            </p>
+
+            <ul  style={{listStyleType: 'disc', paddingLeft: '1.5rem', fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '200' }}>
               <li>
                 A widow or widower age 60 or older (age 50 or older if disabled)
               </li>
-              <li>
-                A surviving spouse at any age who is caring for the deceased’s
-                child under age 16 or disabled
+              <li >
+                A surviving spouse at any age who is caring for the deceased's child under age 16 or disabled;
               </li>
               <li>
-                An unmarried child of the deceased who is younger than age 18
-                (or age 18 or 19 if he or she is a full-time student in an
-                elementary or secondary school), or age 18 or older with a
-                disability that began before age 22
+                An unmarried child of the deceased who is younger than age 18 (or age 18 or 19 if he or she is a full-time student in an elementary or secondary school); or age 18 or older with a disability that began before age 22;
               </li>
               <li>
-                Parents, age 62 or older, who were dependent on the deceased for
-                at least half of their support
+                Parents, age 62 or older, who were dependent on the deceased for at least half of their support; and
               </li>
               <li>
-                A surviving divorced spouse, under certain circumstances
+                A surviving divorced spouse, under certain circumstances.
               </li>
             </ul>
 
-            <p style={{ fontFamily: 'Oswald', lineHeight: 1.8 }}>
+            <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300' }}>
               The Social Security website is a valuable resource for information
               about all of Social Security’s programs. There are a number of{' '}
               <a href="https://www.ssa.gov" target="_blank" rel="noreferrer">
@@ -104,20 +73,15 @@ export default function SocialSecurityBenefits() {
               </a>.
             </p>
 
-            <p style={{ fontFamily: 'Oswald', lineHeight: 1.8 }}>
-              In addition to using the Social Security website, you can call them
-              toll-free at <strong>1-800-772-1213</strong>. Staff can answer
-              specific questions from 7 a.m. to 7 p.m., Monday through Friday.
-              They can also provide information by automated phone service 24
-              hours a day. If you are deaf or hard of hearing, you may call the
-              TTY number at <strong>1-800-325-0778</strong>.
+            <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300' }}>
+             In addition to using the Social Security website, you can call them toll-free at 1-800-772-1213.  Staff can answer specific questions from 7 a.m. to 7 p.m., Monday through Friday.  They can also provide information by automated phone service 24 hours a day.  If you are deaf or hard of hearing, you may call the TTY number at 1-800-325-0778.
             </p>
           </Col>
 
           {/* RIGHT COLUMN */}
           <Col md="4" className="text-center">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/5/59/Social_Security_Administration_seal.svg"
+              src="	https://s3.amazonaws.com/CFSV2/stockimages/893286-socsec.png"
               alt="Social Security Administration"
               style={{
                 maxWidth: '240px',

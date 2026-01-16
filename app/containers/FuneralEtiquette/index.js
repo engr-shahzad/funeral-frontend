@@ -7,79 +7,59 @@ export default function FuneralEtiquette() {
     <div className="funeral-etiquette-page">
 
       {/* ================= HERO ================= */}
-      <div
-        style={{
-          backgroundImage:
-            "url('https://s3.amazonaws.com/CFSV2/stockimages/981952-floral-03.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          height: '300px',
-          position: 'relative'
-        }}
-      >
-        {/* Green overlay */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundColor: 'rgba(47,127,115,0.55)'
-          }}
-        />
 
-        <div
-          style={{
-            position: 'relative',
-            zIndex: 2,
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <h1 className="text-5xl font-playfair font-bold text-white mb-4">
-            Funeral Etiquette
-          </h1>
-        </div>
-      </div>
+      {/* HERO */}
+             <div
+              className="why-hero"
+              style={{
+                backgroundImage:
+                  "url('https://s3.amazonaws.com/CFSV2/stockimages/981952-floral-03.jpg')",
+                backgroundSize: '110%',
+                backgroundPosition: 'center',
+              }}
+            >
+              <h1>Funeral Etiquette</h1>
+            </div>
+          <div className="why-subnav">
+                  <div className="subnav-inner">
+                    <Link to="/when-death-occurs">When Death Occurs</Link> |{' '}
+                    <Link to="/grief-support">Grief Support</Link> |{' '}
+                    <span className="active">Funeral Etiquette</span> |{' '}
+                    <Link to="/social-security">Social Security Benefits</Link> |{' '}
+                    <Link to="/faqs">F.A.Q.</Link>
+                  </div>
+                </div>
 
-      {/* ================= SUB NAV ================= */}
-      <Container className="py-4 text-center">
-        <p style={{ fontFamily: 'Oswald', fontSize: '0.95rem' }}>
-          <Link to="/when-death-occurs">When Death Occurs</Link> |{' '}
-          <Link to="/grief-support">Grief Support</Link> |{' '}
-          <strong>Funeral Etiquette</strong> |{' '}
-          <Link to="/social-security-benefits">Social Security Benefits</Link> |{' '}
-          <Link to="/faq">F.A.Q.</Link>
-        </p>
-      </Container>
+    
+  
 
-      <hr />
-
-      {/* ================= CONTENT ================= */}
+      {/* CONTENT */}
       <Container className="pb-5">
         <Row>
-          {/* LEFT COLUMN */}
-          <Col md="7">
-            <p style={{ fontFamily: 'Oswald', lineHeight: 1.8 }}>
-              When someone you know passes away, your first instinct is to offer
-              encouragement, help, and support to those affected — but you may
-              not be sure what to say or do. It’s okay to feel this way.
+            <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300' }}>
+              When someone you know passes away, your first instinct is to offer encouragement, help, and support to those affected — but you may not be sure what to say or do. It's okay to feel this way.</p>
+ <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300' }}>
+Does it matter what I wear? Can I bring the children? What should I say to the family of the deceased? When should I visit? West River Funeral Directors LLC offers guidance on the proper etiquette of visitations and funerals, so you'll feel more comfortable and prepared for attending services.
             </p>
+            </Row>
+            <hr/>
+        <Row>
+          {/* LEFT COLUMN */}
+          <Col md="7" >
+          
 
-            <div style={{ marginTop: '2rem' }}>
+             <div style={{ marginTop: '2rem' }}>
               <h5
                 style={{
                   fontFamily: "'Playfair Display', serif",
                   fontWeight: 700,
-                  color: '#2f7f73'
+                  fontSize: '18px'
                 }}
               >
-                What to Wear
+                WHAT TO SAY
               </h5>
-              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8 }}>
-                When attending a memorial service or funeral, dress in dark and
-                subdued colors such as black, gray, brown, or navy. Jewelry
-                should be subtle and traditional.
+              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300' }}>
+              It can be difficult to know what to say to the family of the deceased to express your sympathy. To begin, offer your condolences to the family. If you are comfortable, share a memory of the deceased. In this difficult time, sharing the joy of the deceased’s life can help comfort the bereaved. For example, “I was so sorry to hear of Mary’s passing.  She was always such a wonderful friend to me."
               </p>
             </div>
 
@@ -88,14 +68,13 @@ export default function FuneralEtiquette() {
                 style={{
                   fontFamily: "'Playfair Display', serif",
                   fontWeight: 700,
-                  color: '#2f7f73'
+                  fontSize: '18px'
                 }}
               >
-                Arriving
+                WHAT TO WEAR
               </h5>
-              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8 }}>
-                Arrive on time and enter quietly. The first rows are typically
-                reserved for the immediate family and close friends.
+              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8 , fontSize: '18px', fontWeight: '300'  }}>
+             When attending a memorial service or funeral, dress in dark and subdued colors, such as dark blues, grays, browns, and black. Be sure to dress simply and conservatively. Men are encouraged to wear a jacket and tie paired with dress shoes, while women should choose either a dress or a suit. Any jewelry should be subtle and traditional. 
               </p>
             </div>
 
@@ -104,14 +83,66 @@ export default function FuneralEtiquette() {
                 style={{
                   fontFamily: "'Playfair Display', serif",
                   fontWeight: 700,
-                  color: '#2f7f73'
+                  fontSize: '18px'
                 }}
               >
-                Flowers
+                ARRIVING
               </h5>
-              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8 }}>
-                Flowers are a meaningful way to express sympathy and may be sent
-                to the funeral home or directly to the family’s residence.
+              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300'  }}>
+                When attending a funeral or a service, do your best to be on time. Try to enter the facility as quietly as possible. If there are no ushers present, remember that the first few rows of seats are usually for the immediate family and close friends. Acquaintances should appropriately seat themselves in the middle or towards the rear.
+
+
+              </p>
+            </div>
+            
+            <div style={{ marginTop: '2rem' }}>
+              <h5
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontWeight: 700,
+                  fontSize: '18px'
+                }}
+              >
+                WHEN TO VISIT</h5>
+              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300'  }}>
+                Immediately upon learning of a death, it is appropriate for family and close friends to go to the home of the bereaved to offer sympathy and support. This can be a very overwhelming time for a family. Offering to assist with child care, food preparation, receiving visitors, or service preparations can provide immense comfort during this difficult process.
+
+The funeral home is the best place to visit the family to offer your condolences, as they are prepared for visitors at these services.
+
+              </p>
+            </div>
+            
+            <div style={{ marginTop: '2rem' }}>
+              <h5
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontWeight: 700,
+                  fontSize: '18px'
+                }}
+              >
+               FLOWERS
+              </h5>
+              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300'  }}>
+                Sending flowers is a wonderful way to express your sympathy to the family of the deceased, and can bring comfort in a difficult time. Flowers are a meaningful gift that can be enjoyed during and after the funeral service.
+
+Floral arrangements and plants can be sent to the funeral home to be present at services, or sent to the home of the family directly.
+
+              </p>
+            </div>
+            <div style={{ marginTop: '2rem' }}>
+              <h5
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontWeight: 700,
+                  fontSize: '18px'
+                }}
+              >
+                WHAT NOT TO SAY
+              </h5>
+              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8 , fontSize: '18px', fontWeight: '300'  }}>
+            Try not to give comments that minimize the loss, such as "It's probably for the best, because he was suffering too much," or "I've been in your shoes myself."  These will not provide comfort to the bereaved
+
+Wait for the family to discuss the cause of death. Do not bring it up yourself.
               </p>
             </div>
 
@@ -120,14 +151,61 @@ export default function FuneralEtiquette() {
                 style={{
                   fontFamily: "'Playfair Display', serif",
                   fontWeight: 700,
-                  color: '#2f7f73'
+                  fontSize: '18px'
                 }}
               >
-                Children
+               KEEP THE LINE MOVING
               </h5>
-              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8 }}>
-                Allowing children to attend a service can help them understand
-                and say goodbye. Prepare them by explaining what they may see.
+              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300'  }}>
+               Visitations can be very emotional, especially when speaking with the family of the deceased. If there is a line to speak with the bereaved and view the casket, be conscious of keeping the line moving. After passing through the line, be sure to stand to the side to continue conversation, or allow the family member to continue to greet guests. The family will often be more available to speak following the conclusion of the service.
+
+              </p>
+            </div>
+            
+            <div style={{ marginTop: '2rem' }}>
+              <h5
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontWeight: 700,
+                  fontSize: '18px'
+                }}
+              >
+               MOBILE PHONE USE</h5>
+              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300'  }}>
+                Smart phones should be turned off or silenced completely during the service. Checking your phone is noticeable and is a distraction to those who are trying to pay their respects. If you must return a message or receive a call, exit the service quietly.
+              </p>
+            </div>
+            
+            <div style={{ marginTop: '2rem' }}>
+              <h5
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontWeight: 700,
+                  fontSize: '18px'
+                }}
+              >
+               CHILDREN
+              </h5>
+              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300'  }}>
+                Allowing a child to attend a memorial or funeral service can help them say goodbye to a friend or loved one. It is important to not force a child to go, but instead encourage them to share in this tribute with the rest of the family. Before attending, help prepare them by explaining what they might see at the service.
+              </p>
+            </div>
+             <div style={{ marginTop: '2rem' }}>
+              <h5
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontWeight: 700,
+                  fontSize: '18px'
+                }}
+              >
+               GIFTS
+              </h5>
+              <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300'  }}>
+               This can be a very draining time for a family. The gift of food is a kind gesture that the family will deeply appreciate and help alleviate the stress of funeral planning and mourning.
+
+Remembering children in the family is a thoughtful gesture, as this is often a difficult time for them as well. A small gift like a stuffed animal or a book is best.
+
+Time is precious. Helping with household tasks ease the family's burden. Caring for pets, driving children to school, running errands, or helping around the house are wonderful ways to help the family.
               </p>
             </div>
           </Col>
@@ -135,63 +213,12 @@ export default function FuneralEtiquette() {
           {/* RIGHT COLUMN */}
           <Col md="5">
             <img
-              src="https://images.pexels.com/photos/3768146/pexels-photo-3768146.jpeg?auto=compress&cs=tinysrgb&w=600"
-              alt="Funeral Service"
+              src="		https://s3.amazonaws.com/CFSV2/stockimages/513338-GatheredPeople.jpg"
+              alt="Grief Support"
               className="img-fluid rounded mb-4"
             />
 
-            {/* SIGNUP CARD */}
-            <div
-              style={{
-                backgroundColor: '#f9f9f9',
-                padding: '1.5rem',
-                borderRadius: '6px',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-              }}
-            >
-              <h5
-                style={{
-                  fontFamily: "'Playfair Display', serif",
-                  fontWeight: 700,
-                  marginBottom: '1rem'
-                }}
-              >
-                A year of daily grief support
-              </h5>
-
-              <p style={{ fontFamily: 'Oswald', lineHeight: 1.6 }}>
-                Our support does not end after the funeral services. Enter your
-                email below to receive a daily grief support message for the
-                next year. You may unsubscribe at any time.
-              </p>
-
-              <label
-                style={{
-                  fontFamily: 'Oswald',
-                  fontWeight: 600,
-                  marginTop: '1rem'
-                }}
-              >
-                Your Email Address
-              </label>
-
-              <Input
-                type="email"
-                placeholder="Required"
-                className="mb-3"
-              />
-
-              <Button
-                outline
-                color="dark"
-                style={{
-                  borderRadius: '30px',
-                  padding: '0.4rem 1.5rem'
-                }}
-              >
-                Sign Up
-              </Button>
-            </div>
+           
           </Col>
         </Row>
       </Container>

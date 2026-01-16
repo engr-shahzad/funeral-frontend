@@ -8,6 +8,8 @@ import actions from '../../actions';
 import banners from './banners.json';
 import CarouselSlider from '../../components/Common/CarouselSlider';
 import { responsiveOneItemCarousel } from '../../components/Common/CarouselSlider/utils';
+import ImmediateNeedPopup from '../ImmediateNeedPopup';
+
 
 import './Home.css';
 
@@ -22,6 +24,7 @@ class Homepage extends Component {
       error: null
     };
   }
+
 
   componentDidMount() {
     this.fetchRecentTributes();
@@ -72,6 +75,7 @@ class Homepage extends Component {
     const options = { month: 'short', day: 'numeric', year: 'numeric' };
     return date.toLocaleDateString('en-US', options);
   };
+
 
   handlePrevious = () => {
     this.setState(prevState => ({
@@ -526,6 +530,7 @@ class Homepage extends Component {
             </div>
           </Container>
         </div>
+         <ImmediateNeedPopup />
       </div>
     );
   }

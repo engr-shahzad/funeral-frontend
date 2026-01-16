@@ -56,6 +56,7 @@ import VeteransOverview from '../VeteransOverview';
 import VeteransHeadstones from '../VeteransHeadstones';
 import VeteransBurialFlags from '../VeteransBurialFlags';
 import FAQ from '../FAQ';
+import Location from '../Location';
 
 class Application extends React.PureComponent {
   constructor(props) {
@@ -120,7 +121,7 @@ class Application extends React.PureComponent {
                 <Route path='/veterans-headstones' component={VeteransHeadstones} />
                 <Route path='/veterans-burial-flags' component={VeteransBurialFlags} />
                 <Route path='/faqs' component={FAQ} />
-                
+                <Route path='/location' component={Location} />
                 <Route path='/obituaries' component={AllObituaries} />
                 <Route path='/obituary/:slug' component={ObituaryPage} />
                 <Route path='/add-obituary' component={Authentication(AddObituary)} />

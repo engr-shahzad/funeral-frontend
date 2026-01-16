@@ -132,7 +132,7 @@ class Navigation extends React.PureComponent {
                   <UncontrolledDropdown nav inNavbar>
                     <DropdownToggle nav caret className='nav-link-custom'>OBITUARIES</DropdownToggle>
                     <DropdownMenu>
-                      <DropdownItem tag={Link} to='/listings'>All Obituaries</DropdownItem>
+                      <DropdownItem tag={Link} to='/obituaries'>All Obituaries</DropdownItem>
                       <DropdownItem tag={Link} to='/obituary-writer'>Obituary Writer</DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
