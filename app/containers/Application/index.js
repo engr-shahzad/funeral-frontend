@@ -39,7 +39,8 @@ import AddProduct from '../AddProduct';
 import Footer from '../../components/Common/Footer';
 import Page404 from '../../components/Common/Page404';
 import { CART_ITEMS } from '../../constants';
-
+import DashboardNew from '../DashboardNew';
+import ProductDashboard from '../ProductDashboard';
 
 class Application extends React.PureComponent {
   constructor(props) {
@@ -101,6 +102,8 @@ class Application extends React.PureComponent {
                 <Route path='/order/:id' component={OrderPage} />
                 <Route path='/login' component={Login} />
                 <Route path='/register' component={Signup} />
+                <Route path='/dashboard' component={DashboardNew} />
+                <Route path='/product-dashboard' component={ProductDashboard} />
                 <Route
                   path='/merchant-signup/:token'
                   component={MerchantSignup}
