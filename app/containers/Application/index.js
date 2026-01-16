@@ -98,7 +98,6 @@ class Application extends React.PureComponent {
   render() {
     const { location } = this.props; // Get the current location
   const isObituaryPage = location.pathname.startsWith('/obituary/');
-   const isShopPage = location.pathname.startsWith('/shop/');
     return (
       <div className='application'>
         <Notification />
