@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './ObituaryForm.css';
+import './Obituaryform.css';
 
 class New extends Component {
     constructor(props) {
