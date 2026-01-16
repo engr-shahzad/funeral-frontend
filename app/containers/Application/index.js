@@ -101,7 +101,7 @@ class Application extends React.PureComponent {
       <div className='application'>
         <Notification />
         {/* Only show Navigation if NOT on an obituary page */}
-        {!isObituaryPage || !isShopPage && <Navigation />}
+        {!isObituaryPage  && <Navigation />}
         <main className='main'>
           <Container style={{ maxWidth: '100vw', width: '100vw', padding: '0px' }}>
 
