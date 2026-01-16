@@ -96,11 +96,12 @@ class Application extends React.PureComponent {
   render() {
     const { location } = this.props; // Get the current location
   const isObituaryPage = location.pathname.startsWith('/obituary/');
+   const isShopPage = location.pathname.startsWith('/shop/');
     return (
       <div className='application'>
         <Notification />
         {/* Only show Navigation if NOT on an obituary page */}
-        {!isObituaryPage && <Navigation />}
+        {!isObituaryPage || !isShopPage && <Navigation />}
         <main className='main'>
           <Container style={{ maxWidth: '100vw', width: '100vw', padding: '0px' }}>
 
