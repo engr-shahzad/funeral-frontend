@@ -170,7 +170,7 @@ class Homepage extends Component {
               <div className='hero-content'>
                 <div className='hero-text-wrapper'>
                   <h1 className='hero-title'>Celebrate Life</h1>
-                  <Link to='/services'>
+                  <Link to='/our-services'>
                     <button className='hero-cta-button'>
                       OUR SERVICES
                     </button>
@@ -358,11 +358,11 @@ class Homepage extends Component {
           <Container fluid style={{ padding: 0 }}>
             <Row className="g-0">
               <Col md={6} lg={3} className="service-grid-item">
-                <Link to="/pre-planning" className="service-card-link">
+                <Link to="/pre-arrangements" className="service-card-link">
                   <div
                     className="service-card"
                     style={{
-                      backgroundImage: `url(https://images.unsplash.com/photo-1527689368864-3a821dbccc34?w=800)`,
+                      backgroundImage: `url(	https://s3.amazonaws.com/CFSV2/stockimages/28865-people-3120717.jpg)`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center'
                     }}
@@ -380,7 +380,7 @@ class Homepage extends Component {
                   <div
                     className="service-card"
                     style={{
-                      backgroundImage: `url(https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=800)`,
+                      backgroundImage: `url(https://s3.amazonaws.com/CFSV2/stockimages/804104-Send-Flowers-8.jpg)`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center'
                     }}
@@ -398,7 +398,7 @@ class Homepage extends Component {
                   <div
                     className="service-card"
                     style={{
-                      backgroundImage: `url(https://images.unsplash.com/photo-1509099652299-30938b0aeb63?w=800)`,
+                      backgroundImage: `url(https://s3.amazonaws.com/CFSV2/stockimages/170757-mother-daughter-hug.jpg)`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center'
                     }}
@@ -412,11 +412,11 @@ class Homepage extends Component {
               </Col>
 
               <Col md={6} lg={3} className="service-grid-item">
-                <Link to="/faq" className="service-card-link">
+                <Link to="/faqs" className="service-card-link">
                   <div
                     className="service-card"
                     style={{
-                      backgroundImage: `url(https://images.unsplash.com/photo-1517842645767-c639042777db?w=800)`,
+                      backgroundImage: `url(https://s3.amazonaws.com/CFSV2/stockimages/383488-Notebook-4.png)`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center'
                     }}
@@ -522,7 +522,7 @@ class Homepage extends Component {
         <div className="view-services-cta">
           <Container>
             <div className="text-center">
-              <Link to="/services">
+              <Link to="/our-services">
                 <button className="view-services-btn">
                   VIEW SERVICES
                 </button>
