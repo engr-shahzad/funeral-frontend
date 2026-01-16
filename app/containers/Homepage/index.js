@@ -357,7 +357,7 @@ class Homepage extends Component {
         <div className="services-grid-section">
           <Container fluid style={{ padding: 0 }}>
             <Row className="g-0">
-              <Col md={6} lg={3} className="service-grid-item">
+              <Col md={6} lg={6} className="service-grid-item">
                 <Link to="/pre-arrangements" className="service-card-link">
                   <div
                     className="service-card"
@@ -375,7 +375,7 @@ class Homepage extends Component {
                 </Link>
               </Col>
 
-              <Col md={6} lg={3} className="service-grid-item">
+              <Col md={6} lg={6} className="service-grid-item">
                 <Link to="/flowers" className="service-card-link">
                   <div
                     className="service-card"
@@ -392,8 +392,9 @@ class Homepage extends Component {
                   </div>
                 </Link>
               </Col>
-
-              <Col md={6} lg={3} className="service-grid-item">
+              </Row>
+              <Row className="g-0 mt-4" >
+              <Col md={6} lg={6} className="service-grid-item">
                 <Link to="/grief-support" className="service-card-link">
                   <div
                     className="service-card"
@@ -411,7 +412,7 @@ class Homepage extends Component {
                 </Link>
               </Col>
 
-              <Col md={6} lg={3} className="service-grid-item">
+              <Col md={6} lg={6} className="service-grid-item">
                 <Link to="/faqs" className="service-card-link">
                   <div
                     className="service-card"
