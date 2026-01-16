@@ -153,18 +153,22 @@ export const handleRemoveFromCart = product => {
 export const calculateCartTotal = () => {
   return (dispatch, getState) => {
     const cartItems = getState().cart.cartItems;
+    const TAX_RATE = 0.08; // Define your tax rate here
 
-    let total = 0;
-
+    let subtotal = 0;
     cartItems.forEach(item => {
-      total += item.price * item.quantity;
+      subtotal += item.price * item.quantity;
     });
 
-    total = parseFloat(total.toFixed(2));
-    localStorage.setItem(CART_TOTAL, total);
+    // Calculate tax and final total
+    const tax = parseFloat((subtotal * TAX_RATE).toFixed(2));
+    const totalWithTax = parseFloat((subtotal + tax).toFixed(2));
+
+    localStorage.setItem(CART_TOTAL, totalWithTax);
+    
     dispatch({
       type: HANDLE_CART_TOTAL,
-      payload: total
+      payload: totalWithTax // Now Redux has the total including tax
     });
   };
 };

@@ -1,77 +1,77 @@
 /**
  * Order Summary Component
- * Displays cart items and total calculation
  */
 import "./OrderSummary.css"
-
 import React from 'react';
 
-const OrderSummary = ({ cartItems, cartTotal }) => {
-  // Calculate tax (using same rate as backend)
-  const TAX_RATE = 0.08; // 8% - match with your backend config
-  const subtotal = cartTotal;
-  const tax = parseFloat((subtotal * TAX_RATE).toFixed(2));
-  const total = parseFloat((subtotal + tax).toFixed(2));
+const OrderSummary = ({ cartItems, cartTotal, handleRemoveFromCart }) => {
+  const TAX_RATE = 0.08; 
+  const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+  const tax = cartTotal - subtotal;
 
   return (
     <div className="order-summary-container">
-      <div className="order-summary">
-        <h4>Order Summary</h4>
+      <div className="order-summary-card">
+        <h4 className="summary-title">Order Summary</h4>
 
         <div className="items-list">
           {cartItems.map((item, index) => (
             <div key={index} className="summary-item">
-              <div className="item-image-container">
+              <div className="item-image-wrapper">
                 <img
                   src={item.imageUrl || '/images/placeholder-image.png'}
                   alt={item.name}
                   className="item-image"
                 />
               </div>
-              <div className="item-details">
+              
+              <div className="item-info">
                 <p className="item-name">{item.name}</p>
-                <p className="item-meta">
-                  Qty: {item.quantity} × ${item.price}
-                </p>
+                <p className="item-quantity">Qty: {item.quantity} × ${item.price}</p>
+                {/* Remove button added here */}
+                <button 
+                  className="remove-item-btn" 
+                  onClick={() => handleRemoveFromCart(item)}
+                  title="Remove item"
+                >
+                  Remove
+                </button>
               </div>
-              <div className="item-price">
-                <p>${item.totalPrice.toFixed(2)}</p>
+
+              <div className="item-price-total">
+                <p>${(item.price * item.quantity).toFixed(2)}</p>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="summary-divider"></div>
-
-        <div className="summary-row">
-          <span>Subtotal</span>
-          <span>${subtotal.toFixed(2)}</span>
+        <div className="cost-breakdown">
+          <div className="cost-row">
+            <span>Subtotal</span>
+            <span>${subtotal.toFixed(2)}</span>
+          </div>
+          <div className="cost-row">
+            <span>Tax (8%)</span>
+            <span>${tax.toFixed(2)}</span>
+          </div>
+          <div className="cost-row shipping-row">
+            <span>Shipping</span>
+            <span className="free-text">FREE</span>
+          </div>
+          
+          <div className="total-divider"></div>
+          
+          <div className="cost-row grand-total">
+            <span>Total</span>
+            <span>${cartTotal.toFixed(2)}</span>
+          </div>
         </div>
 
-        <div className="summary-row">
-          <span>Tax (8%)</span>
-          <span>${tax.toFixed(2)}</span>
-        </div>
-
-        <div className="summary-row">
-          <span className="text-muted">Shipping</span>
-          <span className="text-success">FREE</span>
-        </div>
-
-        <div className="summary-divider"></div>
-
-        <div className="summary-row total-row">
-          <span>Total</span>
-          <span>${total.toFixed(2)}</span>
-        </div>
-
-        <div className="secure-badge">
-          <i className="icon-lock"></i>
-          <span>Secure Checkout</span>
+        <div className="trust-footer">
+          <i className="fa fa-lock"></i>
+          <span>100% Secure Checkout</span>
         </div>
       </div>
-
-
     </div>
   );
 };
