@@ -47,7 +47,10 @@ class Homepage extends Component {
 
       const data = await response.json();
 
-      const formattedTributes = data.map(obituary => ({
+      // FIX: The API returns an object with an 'obituaries' array, not a direct array
+      const obituaries = data.obituaries || [];
+
+      const formattedTributes = obituaries.map(obituary => ({
         id: obituary._id,
         name: `${obituary.firstName} ${obituary.lastName}`.toUpperCase(),
         date: this.formatDate(obituary.deathDate),
@@ -118,7 +121,10 @@ class Homepage extends Component {
 
       const data = await response.json();
 
-      const formattedTributes = data.map(obituary => ({
+      // FIX: Apply the same fix for search results
+      const obituaries = Array.isArray(data) ? data : (data.obituaries || []);
+
+      const formattedTributes = obituaries.map(obituary => ({
         id: obituary._id,
         name: `${obituary.firstName} ${obituary.lastName}`.toUpperCase(),
         date: this.formatDate(obituary.deathDate),
