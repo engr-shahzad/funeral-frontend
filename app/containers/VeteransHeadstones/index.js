@@ -1,125 +1,72 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { CloudOff } from 'lucide-react';
 
 export default function VeteransHeadstones() {
   return (
     <div className="when-death-occurs-page">
 
-      {/* HERO */}
-      <div
-        style={{
-          backgroundImage:
-            "url('https://images.pexels.com/photos/931162/pexels-photo-931162.jpeg?auto=compress&cs=tinysrgb&w=1600')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          height: '300px',
-          position: 'relative'
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundColor: 'rgba(0,0,0,0.45)'
-          }}
-        />
-        <div
-          style={{
-            position: 'relative',
-            zIndex: 2,
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <h1
-            style={{
-              color: '#fff',
-              fontFamily: "'Playfair Display', serif",
-              fontSize: '3rem',
-              fontWeight: 700
-            }}
-          >
-            Veterans Headstones
-          </h1>
-        </div>
-      </div>
-
-      {/* SUB NAV */}
-      <Container className="py-4 text-center">
-        <p style={{ fontFamily: 'Oswald', fontSize: '0.95rem' }}>
-          <p style={{ fontSize: "14px" }}>
-                   <Link to="/veterans">Veterans Overview </Link>  |{" "}
-                    <Link to="/veterans-headstones"> <strong>Veterans Headstones</strong></Link> |{" "}
-                    <Link to="/veterans-burial-flags">Veterans Burial Flags</Link>
-                  </p>
-        </p>
-      </Container>
-
-      <hr />
+         {/* HERO */}
+                  <div
+                   className="why-hero"
+                   style={{
+                     backgroundImage:
+                       "url('https://s3.amazonaws.com/CFSV2/stockimages/981952-floral-03.jpg')",
+                     backgroundSize: '110%',
+                     backgroundPosition: 'center',
+                   }}
+                 >
+                   <h1>Veterans Headstones</h1>
+                 </div>
+               <div className="why-subnav">
+                       <div className="subnav-inner">
+                         <Link to="/veterans">Veterans Overview </Link> |{' '}
+                         <span className="active"> Veterans Headstones </span> |{' '}
+                         <Link to="/veterans-burial-flags">Veterans Burial Flags</Link> 
+                       </div>
+                     </div>
+     
 
       {/* INTRO */}
-      <Container className="pb-5">
-        <Row>
-          <Col md="7">
-            <p style={{ fontFamily: 'Oswald', lineHeight: 1.8 }}>
-              The overwhelming feelings of despair, disbelief, shock, and numbness
-              caused by the passing of a loved one cannot be conveyed by words.
-              On this page, we’ve put together helpful information to guide you
-              through this process.
-            </p>
-
-            {/* SECTION */}
-            <Section
-              title="Notify Proper Authorities"
-              content={[
-                'If your loved one passes away while under the care of a facility — such as a nursing home or a hospital — staff from the facility will contact you and notify appropriate authorities themselves.',
-                'If the death occurred in the workplace or at home, you will need to get in touch with his/her physician or emergency medical personnel, as the cause of death must be identified and indicated in legal documents.',
-                'In the event that no one was present at the time of death, you will need to contact the police before moving the deceased to another location.'
-              ]}
-            />
-
-            <Section
-              title="Call the Funeral Home"
-              content={[
-                'Our caring funeral director can assist you with your funeral arrangements. We will collect information from you in order to facilitate the transfer of your loved one’s remains to our facility.',
-                'You may be asked whether the deceased has made pre-arrangements and whether burial or cremation is preferred. We encourage you to ask any questions you may have during this call.',
-                'Remember, we are here to listen, help you, and guide you during this difficult time.'
-              ]}
-            />
-
-            <Section
-              title="Meet the Funeral Director / Staff"
-              content={[
-                'On your first meeting with us, we will discuss arrangements for your loved one’s burial or cremation. You will be shown a list of our services so you can decide what suits your family’s preferences and budget.',
-                'You may be asked to select a casket, schedule the service date and time, choose pallbearers, and arrange vehicle services.',
-                'You are encouraged to bring photographs, videos, letters, or treasured items to help us better understand how you envision honoring your loved one.'
-              ]}
-            />
-
-            <Section
-              title="File for a Death Certificate"
-              content={[
-                'A death certificate is a legal document indicating the cause of death and other vital statistics pertaining to the deceased.',
-                'Certified copies are required for insurance claims, Social Security benefits, veteran benefits, transferring property ownership, and closing bank accounts.',
-                'If you need assistance filing this document, we can help you with the process.'
-              ]}
-            />
-          </Col>
-
-          {/* IMAGE COLUMN */}
-          <Col md="5">
-            <img
-              src="https://images.pexels.com/photos/3768146/pexels-photo-3768146.jpeg?auto=compress&cs=tinysrgb&w=600"
-              alt="Comfort"
-              className="img-fluid rounded"
-              style={{ marginTop: '10px' }}
-            />
-          </Col>
-        </Row>
-      </Container>
+     {/* CONTENT */}
+           <Container className="pb-5">
+            
+                 <hr/>
+             <Row>
+               {/* LEFT COLUMN */}
+               <Col md="7" >
+                
+                 <p style={{ fontFamily: 'Oswald', lineHeight: 1.8, fontSize: '18px', fontWeight: '300' }}>
+                 The Department of Veterans Affairs (VA) furnishes upon request, at no charge to the applicant, a Government headstone or marker for the unmarked grave of any deceased eligible veteran in any cemetery around the world, regardless of their date of death.   For eligible veterans that died on or after Nov. 1, 1990, VA may also provide a headstone or marker for graves that are already marked with a private headstone or marker. When the grave is already marked, applicants will have the option to apply for either a traditional headstone or marker, or a new device (available spring 2009).  <br/>
+                 
+                 Flat markers in granite, marble, and bronze and upright headstones in granite and marble are available. The style chosen must be consistent with existing monuments at the place of burial. Niche markers are also available to mark columbaria used for inurnment of cremated remains.
+                <br/>
+                When burial or memorialization is in a national cemetery, state veterans' cemetery, or military post/base cemetery, a headstone or marker will be ordered by the cemetery officials based on inscription information provided by the next of kin or authorized representative.
+                <br/>
+                Spouses and dependents are not eligible for a Government-furnished headstone or marker unless they are buried in a national cemetery, state veteran's cemetery, or military post/base cemetery.
+                <br/>
+                Note: There is no charge for the headstone or marker itself, however arrangements for placing it in a private cemetery are the applicant's responsibility and all setting fees are at private expense.
+                <br/>
+                <span style={{ color: '#379078' }}>Important Notice - New Law Concerning Eligibility for Headstones and Markers</span>
+                 </p>
+                 
+     
+           
+               </Col>
+     
+               {/* RIGHT COLUMN */}
+               <Col md="5">
+                 <img
+                   src="https://s3.amazonaws.com/CFSV2/stockimages/822130-veteran4.jpg"
+                   alt="Grief Support"
+                   className="img-fluid rounded mb-4"
+                 />
+     
+                
+               </Col>
+             </Row>
+           </Container>
 
     </div>
   );
