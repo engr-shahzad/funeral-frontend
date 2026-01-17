@@ -339,7 +339,7 @@ class ObituaryPage extends Component {
                                 {/* Action Buttons */}
                                 <div className="button-container">
                                     <button
-                                        onClick={this.handleSendFlowers}
+                                        onClick={this.handlePlantTree}
                                         className="btns btn-sympathy"
                                     >
                                         Send Sympathy Gifts
