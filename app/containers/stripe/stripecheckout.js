@@ -9,6 +9,7 @@ import {
 
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+console.log('My Stripe Key is:', process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 /**
  * Checkout Form Component

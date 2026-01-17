@@ -16,6 +16,7 @@ import { success } from 'react-notification-system-redux';
 
 const API_URL = process.env.API_URL;
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+console.log('My Stripe Key is:', process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 // ==============================================
 // PAYMENT FORM

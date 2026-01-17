@@ -20,6 +20,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'https://funeralbackend.onrende
 
 // Initialize Stripe
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+console.log('My Stripe Key is:', process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 // ==============================================
 // PAYMENT FORM - Only rendered when Elements is ready
