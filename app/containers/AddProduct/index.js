@@ -70,7 +70,7 @@ class AddProduct extends Component {
         formData.append('variants', JSON.stringify(variants));
         formData.append('image', image);
 
-        await axios.post('https://funeralbackend.onrender.com/product/add', formData, {
+        await axios.post('https://funeralbackend.onrender.com/api/product/add', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
         });
 
