@@ -159,16 +159,16 @@ class ProductsShop extends React.PureComponent {
                   </button>
 
                   <button
-                    onClick={() => this.handleFilterChange('flower')}
-                    className={`filter-btn filter-btn-flower ${filterType === 'flower' ? 'active' : ''}`}
+                    onClick={() => this.handleFilterChange('tree')}
+                    className={`filter-btn filter-btn-flower ${filterType === 'tree' ? 'active' : ''}`}
                   >
                     <Flower size={16} />
                     Flowers
                   </button>
 
                   <button
-                    onClick={() => this.handleFilterChange('gift')}
-                    className={`filter-btn filter-btn-gift ${filterType === 'gift' ? 'active' : ''}`}
+                    onClick={() => this.handleFilterChange('tree')}
+                    className={`filter-btn filter-btn-gift ${filterType === 'tree' ? 'active' : ''}`}
                   >
                     <Gift size={16} />
                     Memorial Gifts
