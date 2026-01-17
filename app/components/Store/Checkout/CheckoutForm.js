@@ -14,7 +14,7 @@ import Button from '../../components/Common/Button';
 import { clearCart } from '../Cart/actions';
 import { success } from 'react-notification-system-redux';
 
-const API_URL = process.env.REACT_APP_API_URL || 'https://funeral-frontend-1xx5.onrender.com/';
+const API_URL = process.env.API_URL;
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 // ==============================================
@@ -128,7 +128,7 @@ const PaymentForm = (props) => {
 
                 try {
                     await axios.post(
-                        `${API_URL}/api/order/stripe/confirm-payment`,
+                        `${API_URL}/order/stripe/confirm-payment`,
                         {
                             paymentIntentId: paymentIntent.id,
                             orderId: orderId, // ✅ Send order ID

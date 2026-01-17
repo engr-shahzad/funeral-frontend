@@ -134,7 +134,7 @@ const PaymentForm = (props) => {
 
                 try {
                     await axios.post(
-                        `${API_URL}/api/order/stripe/confirm-payment`,
+                        `${API_URL}/order/stripe/confirm-payment`,
                         {
                             paymentIntentId: paymentIntent.id,
                             cartId: cartId,
