@@ -16,7 +16,7 @@ import { success } from 'react-notification-system-redux';
 // ✅ FIXED: Import clearCart directly from the cart actions
 import { clearCart } from '../Cart/actions';
 
-const API_URL = process.env.REACT_APP_API_URL || 'https://funeralbackend.onrender.com/';
+const API_URL = process.env.REACT_APP_API_URL || 'https://funeralbackend.onrender.com/api';
 
 // Initialize Stripe
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
