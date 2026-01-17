@@ -25,7 +25,7 @@ const OrderConfirmation = () => {
   const fetchOrderDetails = async () => {
     try {
       const response = await axios.get(
-        `https://funeralbackend.onrender.com/api/order/${orderId}`,
+        `https://funeralbackend.onrender.com/order/${orderId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`

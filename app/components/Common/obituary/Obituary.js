@@ -49,7 +49,7 @@ class ObituaryPage extends Component {
 
         const baseURL = 'https://funeralbackend.onrender.com';
 
-        fetch(`${baseURL}/api/obituaries/${slug}`)
+        fetch(`${baseURL}/obituaries/${slug}`)
             .then(obituaryResponse => {
                 if (!obituaryResponse.ok) {
                     throw new Error(`Obituary not found (${obituaryResponse.status})`);
@@ -58,7 +58,7 @@ class ObituaryPage extends Component {
             })
             .then(obituaryData => {
                 this.setState({ obituaryData });
-                return fetch(`${baseURL}/api/condolences/obituary/${obituaryData._id}`);
+                return fetch(`${baseURL}/condolences/obituary/${obituaryData._id}`);
             })
             .then(condolencesResponse => {
                 if (condolencesResponse.ok) {
