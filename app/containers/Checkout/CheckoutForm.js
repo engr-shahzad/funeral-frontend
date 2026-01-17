@@ -19,7 +19,7 @@ import { clearCart } from '../Cart/actions';
 const API_URL = process.env.REACT_APP_API_URL || 'https://funeralbackend.onrender.com/api';
 
 // Initialize Stripe
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || 'pk_live_51SS0ScPPeMBEYfbSjkXmPb8Z3G5hs4gSF6YsQ2VKcXGFPHpbzJ8rGfYzZqrS6JVHybJL7ukpGNdT6XLKhiX5NA7400TxG0lKAI');
 console.log('My Stripe Key is:', process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 // ==============================================

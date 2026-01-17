@@ -8,7 +8,7 @@ import {
 } from '@stripe/react-stripe-js';
 
 // Initialize Stripe with your publishable key
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || 'pk_live_51SS0ScPPeMBEYfbSjkXmPb8Z3G5hs4gSF6YsQ2VKcXGFPHpbzJ8rGfYzZqrS6JVHybJL7ukpGNdT6XLKhiX5NA7400TxG0lKAI');
 console.log('My Stripe Key is:', process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 /**
