@@ -30,7 +30,7 @@ const Footer = () => {
 
             <div className='footer-grief-support'>
               <h3 className='grief-support-title'>A year of daily grief support</h3>
-              <p className='grief-support-text'>
+              <p className='grief-support-text' style={{ color: '#ffffff' }}>
                 Our support in your time of need does not end after the funeral services.
                 ◆Enter your email below to receive a grief support message from us each day
                 for a year. ◆You can unsubscribe at any time.
