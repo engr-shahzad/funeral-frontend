@@ -221,7 +221,7 @@ export default function ContactUs() {
               </h4>
               <div className="h-96 rounded shadow-md overflow-hidden border border-gray-200">
                <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2843.8!2d-103.2!3d44.08!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDTCsDA0JzQ4LjAiTiAxMDPCsDEyJzAwLjAiVw!5e0!3m2!1sen!2sus!4v1234567890"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2866.7432352779197!2d-103.2094104!3d44.0680104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x877d43ef63b356ed%3A0xae3a396c4423ff90!2sWest%20River%20Funeral%20Directors%2C%20Funeral%20Home%20%26%20Cremation%20Services!5e0!3m2!1sen!2sus!4v1768864728088!5m2!1sen!2sus"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
