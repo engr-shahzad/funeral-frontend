@@ -44,11 +44,10 @@
     line-height: 1.4;
 }
 
+.funeral-footer .grief-support-text,
+.footer-grief-support .grief-support-text,
 .grief-support-text {
-    font-size: 0.9rem;
-    line-height: 1.7;
     color: #ffffff !important;
-    margin-bottom: 1.5rem;
 }
 
 .grief-support-form {
