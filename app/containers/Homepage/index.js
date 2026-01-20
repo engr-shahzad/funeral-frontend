@@ -164,11 +164,11 @@ class Homepage extends Component {
     title: 'Celebrate Life'
   },
   {
-    image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1600',
+    image: 'https://s3.amazonaws.com/CFSV2/obituaries/galleries/12123/1663011/68b14f5742047.png',
     title: 'Celebrate Life'
   },
   {
-    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1600',
+    image: '/images/banners/banner2.jpeg?w=1600',
     title: 'Celebrate Life'
   }
 ];
