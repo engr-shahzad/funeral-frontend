@@ -9,6 +9,13 @@ import banners from './banners.json';
 import CarouselSlider from '../../components/Common/CarouselSlider';
 import { responsiveOneItemCarousel } from '../../components/Common/CarouselSlider/utils';
 import ImmediateNeedPopup from '../ImmediateNeedPopup';
+import SwiperCore, { Autoplay, Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import 'swiper/swiper.min.css';
+import 'swiper/components/pagination/pagination.min.css';
+
+SwiperCore.use([Autoplay, Pagination]);
 
 
 import './Home.css';
@@ -24,6 +31,7 @@ class Homepage extends Component {
       error: null
     };
   }
+  
 
 
   componentDidMount() {
@@ -150,36 +158,60 @@ class Homepage extends Component {
     const itemsPerPage = 6;
     const maxIndex = Math.max(0, tributes.length - itemsPerPage);
     const visibleTributes = tributes.slice(currentIndex, currentIndex + itemsPerPage);
+    const slides = [
+  {
+    image: 'https://images.unsplash.com/photo-1589802829985-817e51171b92?w=1600',
+    title: 'Celebrate Life'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1600',
+    title: 'Celebrate Life'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1600',
+    title: 'Celebrate Life'
+  }
+];
 
     return (
       <div className='homepage'>
         {/* Hero Banner Section - "Celebrate Life" */}
-        <div className='hero-banner-section'>
-          <div className='hero-slide'>
-            <div
-              className='hero-slide-bg'
-              style={{
-                backgroundImage: `url(https://images.unsplash.com/photo-1589802829985-817e51171b92?w=1600)`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                height: '500px',
-                position: 'relative'
-              }}
-            >
-              <div className='hero-overlay'></div>
-              <div className='hero-content'>
-                <div className='hero-text-wrapper'>
-                  <h1 className='hero-title'>Celebrate Life</h1>
-                  <Link to='/our-services'>
-                    <button className='hero-cta-button'>
-                      OUR SERVICES
-                    </button>
-                  </Link>
+         <div className="hero-banner-section">
+      <Swiper
+  autoplay={{ delay: 4000 }}
+  loop
+  pagination={{ clickable: true }}
+>
+  {slides.map((slide, index) => (
+    <SwiperSlide key={index}>
+      <div
+        className="hero-slide-bg"
+        style={{
+          backgroundImage: `url(${slide.image})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          height: '500px',
+          position: 'relative'
+        }}
+      >
+        <div className="hero-overlay" />
+       
+          <div className="hero-content">
+                  <div className="hero-text-wrapper">
+                    <h1 className="hero-title">{slide.title}</h1>
+                    <Link to="/our-services">
+                      <button className="hero-cta-button">
+                        OUR SERVICES
+                      </button>
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      </div>
+    </SwiperSlide>
+  ))}
+</Swiper>
+
+    </div>
 
         {/* Recent Tributes Section */}
         <Container fluid className="tributes-section-wrapper">

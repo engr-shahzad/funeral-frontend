@@ -43,6 +43,7 @@
     "sass": "^1.32.12",
     "simple-line-icons": "^2.4.1",
     "socket.io-client": "^4.2.0",
+    "swiper": "^6.8.4",
     "tailwindcss": "^4.1.18",
     "validatorjs": "^3.18.1"
   },
