@@ -23,15 +23,19 @@ export default function SendFlowers() {
           <p>Allow us to take care of your expression of sympathy by connecting with our local florists through our website.</p>
           <p></p>
           <ul>
-            <li><span >Buy direct from our local area florist.</span><br/></li>
-            <li><span >No need to enter our funeral home address, nor the service details - our order system already knows this.</span><br/></li>
-            <li><span >Just pick out the flowers, add your message and pay online. Your order is immediately sent to our local flower shop.</span><br/></li>
-            <li><span >We retain a copy of your order so we know that your flowers are on their way.</span><br/></li>
+            <li>Buy direct from our local area florist.</li>
+            <li>No need to enter our funeral home address, nor the service details - our order system already knows this.</li>
+            <li>Just pick out the flowers, add your message and pay online. Your order is immediately sent to our local flower shop.</li>
+            <li>We retain a copy of your order so we know that your flowers are on their way.</li>
          </ul>
+         <hr/>
+
         </div>
+        
+        
 
         {/* RIGHT SIDEBAR */}
-        <aside className="why-sidebar">
+        {/* <aside className="why-sidebar">
          
 
           <h3>More Resources</h3>
@@ -49,7 +53,7 @@ export default function SendFlowers() {
               <Link to="/send-flowers">Send Flowers</Link>
             </li>
           </ul>
-        </aside>
+        </aside> */}
       </div>
     </div>
   );

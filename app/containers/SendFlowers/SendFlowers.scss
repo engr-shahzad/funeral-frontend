@@ -61,53 +61,10 @@ $body-font: Georgia, 'Times New Roman', serif;
   }
 }
 
-ul {
-    display: block;
-    list-style-type: disc;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    padding-inline-start: 40px;
-    unicode-bidi: isolate;
-    line-height: 1.42857143;
-    color: #333;
-}
-ul, ol {
-    margin-top: 0;
-    margin-bottom: 10px;
-}
+
 // ===============================
 // Sub Navigation
 // ===============================
-.why-subnav {
-  border-bottom: 1px solid #e5e7eb;
-  font-size: 1.2em;
-
-  .subnav-inner {
-    max-width: 72rem;
-    margin: 0 auto;
-    padding: 1rem;
-    text-align: center;
-    font-family: $heading-font;
-    //font-size: 1.2em;
-    color: $primary-teal;
-
-    a {
-      color: $primary-teal;
-      text-decoration: none;
-      font-size: 21.6px;
-      font-weight: 300;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-
-    .active {
-      font-weight: 700;
-      color: $primary-teal;
-      font-size: 21.6px;
-    }
-  }
-}
 
 // ===============================
 // Main Layout
@@ -137,28 +94,40 @@ ul, ol {
     font-size: 15px;
     line-height: 1.7;
   }
+  ul li{
+    color: #333;
+  }
 
   .intro {
     margin: 0px 0px 10px;
   }
-  span{
-    color: $primary-teal;
-  }
+
   .contact{
     margin-bottom: 20px;
   }
-  .service {
-    margin-bottom: 2.5rem;
-
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    padding-inline-start: 40px;
+    unicode-bidi: isolate;
+    line-height: 1.42857143;
+    color: #333;
+}
+ul, ol {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
     h2 {
       font-size: 1.25rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
       font-family: 'Playfair Display', serif;
     }
-    p{
-        font-family: $heading-font;
-    }
-  }
+    // p{
+    //     font-family: $heading-font;
+    // }
+  
 }
 
