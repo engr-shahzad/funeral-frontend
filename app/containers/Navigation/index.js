@@ -1,15 +1,9 @@
 /**
- *
- * Navigation
- *
+ * Navigation.js
  */
-
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, NavLink as ActiveLink, withRouter } from 'react-router-dom';
-import Autosuggest from 'react-autosuggest';
-import AutosuggestHighlightMatch from 'autosuggest-highlight/match';
-import AutosuggestHighlightParse from 'autosuggest-highlight/parse';
 import {
   Container,
   Row,
@@ -52,41 +46,29 @@ class Navigation extends React.PureComponent {
     window.removeEventListener('scroll', this.handleScroll);
   }
 
-  handleScroll() {
-    if (window.scrollY > 50) {
-      if (!this.state.isScrolled) {
-        this.setState({ isScrolled: true });
-      }
-    } else {
-      if (this.state.isScrolled) {
-        this.setState({ isScrolled: false });
-      }
+  // Close the menu when a link is clicked (route changes)
+  componentDidUpdate(prevProps) {
+    if (this.props.location.pathname !== prevProps.location.pathname) {
+      if (this.props.isMenuOpen) this.props.toggleMenu();
+      if (this.props.isCartOpen) this.props.toggleCart();
     }
   }
 
-  toggleBrand() {
-    this.props.fetchStoreBrands();
-    this.props.toggleBrand();
-  }
-
-  toggleMenu() {
-    this.props.fetchStoreCategories();
-    this.props.toggleMenu();
+  handleScroll() {
+    if (window.scrollY > 50) {
+      if (!this.state.isScrolled) this.setState({ isScrolled: true });
+    } else {
+      if (this.state.isScrolled) this.setState({ isScrolled: false });
+    }
   }
 
   render() {
     const { isScrolled } = this.state;
-    const {
-      cartItems,
-      isMenuOpen,
-      isCartOpen,
-      toggleCart,
-      toggleMenu
-    } = this.props;
+    const { cartItems, isMenuOpen, isCartOpen, toggleCart, toggleMenu } = this.props;
 
     return (
       <header className={`header fixed-mobile-header ${isScrolled ? 'scrolled' : ''}`}>
-         <div className="h-2" style={{ backgroundColor: '#1a2928' }}></div>
+       <div className="h-2" style={{ backgroundColor: '#1a2928' }}></div>
         {/* Top bar - Hidden on scroll */}
         {!isScrolled && (
           <div>
@@ -206,16 +188,18 @@ class Navigation extends React.PureComponent {
           <div style={{ backgroundColor: 'white', height: '2px' }}></div>
          )
   }
-        
-
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation Bar */}
         <div className='mobile-nav d-block d-md-none'>
           <Container>
             <Row className='align-items-center py-2'>
               <Col xs='3'>
-                <Button borderless variant='empty' icon={<BarsIcon />} onClick={() => this.toggleMenu()} />
+                <Button borderless variant='empty' icon={<BarsIcon />} onClick={() => toggleMenu()} />
               </Col>
-              <Col xs='6' className='text-center'></Col>
+              <Col xs='6' className='text-center'>
+                <Link to='/'>
+                  <img src={logo} alt='Logo' style={{ maxHeight: '40px' }} />
+                </Link>
+              </Col>
               <Col xs='3' className='text-right'>
                 <CartIcon cartItems={cartItems} onClick={toggleCart} />
               </Col>
@@ -223,14 +207,15 @@ class Navigation extends React.PureComponent {
           </Container>
         </div>
 
-        {/* Hidden drawers */}
+        {/* Drawer Overlays */}
         <div className={isCartOpen ? 'mini-cart-open' : 'hidden-mini-cart'}>
           <div className='mini-cart'><Cart /></div>
-          <div className={isCartOpen ? 'drawer-backdrop dark-overflow' : 'drawer-backdrop'} onClick={toggleCart} />
+          <div className='drawer-backdrop' onClick={toggleCart} />
         </div>
+
         <div className={isMenuOpen ? 'mini-menu-open' : 'hidden-mini-menu'}>
           <div className='mini-menu'><Menu /></div>
-          <div className={isMenuOpen ? 'drawer-backdrop dark-overflow' : 'drawer-backdrop'} onClick={toggleMenu} />
+          <div className='drawer-backdrop' onClick={toggleMenu} />
         </div>
       </header>
     );
