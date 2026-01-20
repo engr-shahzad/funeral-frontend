@@ -59,6 +59,7 @@ import VeteransHeadstones from '../VeteransHeadstones';
 import VeteransBurialFlags from '../VeteransBurialFlags';
 import FAQ from '../FAQ';
 import Location from '../Location';
+import SendFlowers from '../SendFlowers';
 
 class Application extends React.PureComponent {
   constructor(props) {
@@ -129,6 +130,8 @@ class Application extends React.PureComponent {
                 <Route path='/location' component={Location} />
                 <Route path='/obituaries' component={AllObituaries} />
                 <Route path='/obituary/:slug' component={ObituaryPage} />
+                <Route path='/send-flowers' component={SendFlowers} />
+
                 <Route path='/add-obituary' component={Authentication(AddObituary)} />
                 <Route path='/add-product' component={Authentication(AddProduct)} />
 

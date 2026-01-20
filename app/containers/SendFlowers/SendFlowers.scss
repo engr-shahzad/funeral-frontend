@@ -1,0 +1,133 @@
+// ===============================
+// Variables
+// ===============================
+$primary-teal: #00a097;
+$dark-text: #333;
+$muted-teal: #4f7f7a;
+$overlay-teal: rgba(74, 107, 107, 0.55);
+
+// Fonts
+$heading-font: 'Oswald', sans-serif;
+$body-font: Georgia, 'Times New Roman', serif;
+
+// ===============================
+// Root Wrapper
+// ===============================
+.why-choose-us {
+  background-color: #fff;
+  color: $dark-text;
+  font-family: $body-font;
+}
+
+// ===============================
+// Hero Section
+// ===============================
+.hero {
+  position: relative;
+  height: 18rem;
+  background-size: 110%;
+  background-position: center 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: white;
+  }
+
+  h2 {
+    position: relative;
+    z-index: 1;
+    color: #426965;
+    font-size: 2rem;
+    font-weight: 400;
+    font-family: 'Playfair Display', serif;
+    margin-top: 100px;
+    display: block;
+
+    @media (max-width: 768px) {
+      font-size: 2.25rem;
+    }
+  }
+  p{
+     position: absolute;
+     display: block;
+     margin-top: 12rem;
+     font-size: 1rem;
+     color: #777;
+  }
+}
+
+
+// ===============================
+// Sub Navigation
+// ===============================
+
+// ===============================
+// Main Layout
+// ===============================
+.why-content {
+ font-weight: 200;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  color: #333;
+  font-size: 18px;
+  font-family: $heading-font;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+// ===============================
+// Left Column
+// ===============================
+.why-main {
+    font-weight: 200;
+  p {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  ul li{
+    color: #333;
+  }
+
+  .intro {
+    margin: 0px 0px 10px;
+  }
+
+  .contact{
+    margin-bottom: 20px;
+  }
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    padding-inline-start: 40px;
+    unicode-bidi: isolate;
+    line-height: 1.42857143;
+    color: #333;
+}
+ul, ol {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      font-family: 'Playfair Display', serif;
+    }
+    // p{
+    //     font-family: $heading-font;
+    // }
+  
+}
+
