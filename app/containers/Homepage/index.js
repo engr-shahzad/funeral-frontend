@@ -159,10 +159,7 @@ class Homepage extends Component {
     const maxIndex = Math.max(0, tributes.length - itemsPerPage);
     const visibleTributes = tributes.slice(currentIndex, currentIndex + itemsPerPage);
     const slides = [
-  {
-    image: 'https://images.unsplash.com/photo-1589802829985-817e51171b92?w=1600',
-    title: 'Celebrate Life'
-  },
+  
   {
     image: 'https://s3.amazonaws.com/CFSV2/obituaries/galleries/12123/1663011/68b14f5742047.png',
     title: 'Celebrate Life'

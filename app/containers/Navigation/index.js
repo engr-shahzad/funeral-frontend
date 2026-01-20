@@ -103,7 +103,7 @@ class Navigation extends React.PureComponent {
 
         {/* Main navigation */}
         <div className='header-main-nav'>
-          <Container>
+          <Container className='desktop-nav'> 
             <Row className='align-items-center'>
               {/* Left Navigation */}
               <Col md='5' className='d-none d-md-block'>
@@ -191,19 +191,30 @@ class Navigation extends React.PureComponent {
         {/* Mobile Navigation Bar */}
         <div className='mobile-nav d-block d-md-none'>
           <Container>
-            <Row className='align-items-center py-2'>
-              <Col xs='3'>
-                <Button borderless variant='empty' icon={<BarsIcon />} onClick={() => toggleMenu()} />
+            <Row className="align-items-center py-2">
+              {/* Menu - 25% */}
+              <Col xs={3} className="d-flex justify-content-start">
+                <Button
+                  borderless
+                  variant="empty"
+                  icon={<BarsIcon />}
+                  onClick={toggleMenu}
+                />
               </Col>
-              <Col xs='6' className='text-center'>
-                <Link to='/'>
-                  <img src={logo} alt='Logo' style={{ maxHeight: '40px' }} />
+
+              {/* Logo - 50% */}
+              <Col xs={6} className="d-flex justify-content-center">
+                <Link to="/">
+                  <img src={logo} alt="Logo" style={{ maxHeight: '40px' }} />
                 </Link>
               </Col>
-              <Col xs='3' className='text-right'>
+
+              {/* Cart - 25% */}
+              <Col xs={3} className="d-flex justify-content-end">
                 <CartIcon cartItems={cartItems} onClick={toggleCart} />
               </Col>
             </Row>
+
           </Container>
         </div>
 
