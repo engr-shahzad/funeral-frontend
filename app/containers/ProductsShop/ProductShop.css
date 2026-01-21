@@ -25,6 +25,7 @@
     top: 0;
     height: 100vh;
     overflow-y: auto;
+    margin-top: 8em;
 }
 
 .category-item {
@@ -90,6 +91,7 @@
     flex: 1;
     padding: 40px 48px;
     background-color: #ffffff;
+    margin-top: 7em;
 }
 
 /* Memorial Banner */
