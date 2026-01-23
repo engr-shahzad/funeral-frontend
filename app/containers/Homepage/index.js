@@ -369,9 +369,9 @@ class Homepage extends Component {
                     guide you through all aspects of the funeral service.
                   </p>
                   <p className="welcome-text">
-                    We invite you to <Link to="/contact" className="welcome-link">contact us</Link> with your questions, 24 hours a day, 7 days a week.
+                    We invite you to <Link to="/contact-us" className="welcome-link">contact us</Link> with your questions, 24 hours a day, 7 days a week.
                   </p>
-                  <Link to="/about">
+                  <Link to="/about-us">
                     <button className="welcome-cta-btn">
                       LEARN MORE
                     </button>

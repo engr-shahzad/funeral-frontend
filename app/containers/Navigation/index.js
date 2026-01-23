@@ -78,7 +78,7 @@ class Navigation extends React.PureComponent {
               <Container>
                 <Row className='align-items-center'>
                   <Col md='6' className='text-left d-none d-md-block'>
-                    <span className='top-bar-contact'>
+                    <span className='top-bar-contact' style={{color:'white'}}>
                       <i className='fa fa-phone' style={{ marginRight: '8px' }} />
                       For Immediate Support: 1-605-787-3940
                     </span>
@@ -86,7 +86,7 @@ class Navigation extends React.PureComponent {
                   <Col md='6' className='text-right d-none d-md-block'>
                     <div className='top-bar-icons'>
                       <a href='https://www.google.com/maps' className='top-bar-icon' aria-label='Google'><i className='fa fa-google' /></a>
-                      <a href='mailto:info@westriverfd.com' className='top-bar-icon' aria-label='Email'><i className='fa fa-envelope' /></a>
+                      <a href='contact-us' className='top-bar-icon' aria-label='Email'><i className='fa fa-envelope' /></a>
                       <a href='#' className='top-bar-icon' aria-label='Print'><i className='fa fa-print' /></a>
                       <a href='https://facebook.com' className='top-bar-icon' aria-label='Facebook'><i className='fa fa-facebook' /></a>
                     </div>
@@ -193,7 +193,7 @@ class Navigation extends React.PureComponent {
           <Container>
             <Row className="align-items-center py-2">
               {/* Menu - 25% */}
-              <Col xs={3} className="d-flex justify-content-start">
+              <Col xs={3} className="d-flex justify-content-start" style={{color:'black'}}>
                 <Button
                   borderless
                   variant="empty"

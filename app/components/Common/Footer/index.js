@@ -78,7 +78,7 @@ const Footer = () => {
                   <a href='https://www.google.com/maps' target='_blank' rel='noreferrer noopener' className='social-icon'>
                     <MapPin size={20} />
                   </a>
-                  <a href='mailto:info@westriverfd.com' className='social-icon'>
+                  <a href='contact-us' className='social-icon'>
                     <Mail size={20} />
                   </a>
                   <a href='#' onClick={(e) => { e.preventDefault(); window.print(); }} className='social-icon'>
