@@ -60,6 +60,7 @@ import VeteransBurialFlags from '../VeteransBurialFlags';
 import FAQ from '../FAQ';
 import Location from '../Location';
 import SendFlowers from '../SendFlowers';
+import AdminRoute from '../AdminRoute'; // ✅ Admin Dashboard Import
 
 class Application extends React.PureComponent {
   constructor(props) {
@@ -98,12 +99,14 @@ class Application extends React.PureComponent {
 
   render() {
     const { location } = this.props; // Get the current location
-  const isObituaryPage = location.pathname.startsWith('/obituary/');
+    const isObituaryPage = location.pathname.startsWith('/obituary/');
+    const isAdminPage = location.pathname.startsWith('/admin'); // ✅ Check for admin route
+    
     return (
       <div className='application'>
         <Notification />
-        {/* Only show Navigation if NOT on an obituary page */}
-        {!isObituaryPage  && <Navigation />}
+        {/* Only show Navigation if NOT on obituary page or admin page */}
+        {!isObituaryPage && !isAdminPage && <Navigation />}
         <main className='main'>
           <Container style={{ maxWidth: '100vw', width: '100vw', padding: '0px' }}>
 
@@ -132,6 +135,9 @@ class Application extends React.PureComponent {
                 <Route path='/obituary/:slug' component={ObituaryPage} />
                 <Route path='/send-flowers' component={SendFlowers} />
 
+                {/* ✅ ADMIN DASHBOARD ROUTE - Must be BEFORE /dashboard */}
+                <Route path='/admin' component={AdminRoute} />
+
                 <Route path='/add-obituary' component={Authentication(AddObituary)} />
                 <Route path='/add-product' component={Authentication(AddProduct)} />
 
@@ -157,17 +163,14 @@ class Application extends React.PureComponent {
                 />
                 <Route path='/auth/success' component={AuthSuccess} />
                 <Route path='/support' component={Authentication(Support)} />
-                <Route
-                  path='/dashboard'
-                  component={Authentication(Dashboard)}
-                />
                 <Route path='/404' component={Page404} />
                 <Route path='*' component={Page404} />
               </Switch>
             </div>
           </Container>
         </main>
-        <Footer />
+        {/* Hide Footer on admin page */}
+        {!isAdminPage && <Footer />}
       </div>
     );
   }

@@ -22,11 +22,13 @@ class AddObituaryForm extends Component {
                 serviceLocation: '',
                 floralStoreLink: '',
                 treePlantingLink: '',
-                isPublished: true
+                isPublished: true,
+                // ✅ Base64 fields (will be sent to backend)
+                photoBase64: '',
+                backgroundImageBase64: ''
             },
-            photoFile: null,
+            // ✅ Preview URLs (only for UI display)
             photoPreview: null,
-            backgroundFile: null,
             backgroundPreview: null,
             loading: false,
             error: null,
@@ -44,34 +46,103 @@ class AddObituaryForm extends Component {
         }));
     };
 
-    handleFileChange = (e, type) => {
+    // ✅ Convert file to Base64
+    fileToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    };
+
+    handleFileChange = async (e, type) => {
         const file = e.target.files[0];
-        if (file) {
+        
+        if (!file) return;
+        
+        // ✅ VALIDATE FILE TYPE
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+        
+        if (!allowedTypes.includes(file.type.toLowerCase())) {
+            this.setState({ 
+                error: 'Only image files are allowed (JPEG, PNG, GIF, WebP)' 
+            });
+            e.target.value = '';
+            return;
+        }
+        
+        // ✅ VALIDATE FILE SIZE (max 5MB)
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (file.size > maxSize) {
+            this.setState({ 
+                error: 'Image size must be less than 5MB' 
+            });
+            e.target.value = '';
+            return;
+        }
+        
+        try {
+            // ✅ Convert to Base64
+            const base64 = await this.fileToBase64(file);
+            
             if (type === 'photo') {
-                this.setState({
-                    photoFile: file,
-                    photoPreview: URL.createObjectURL(file)
-                });
+                this.setState(prevState => ({
+                    formData: {
+                        ...prevState.formData,
+                        photoBase64: base64 // ✅ Save base64 to send to backend
+                    },
+                    photoPreview: URL.createObjectURL(file), // ✅ Preview only
+                    error: null
+                }));
+                console.log('✅ Photo converted to base64');
             } else {
-                this.setState({
-                    backgroundFile: file,
-                    backgroundPreview: URL.createObjectURL(file)
-                });
+                this.setState(prevState => ({
+                    formData: {
+                        ...prevState.formData,
+                        backgroundImageBase64: base64 // ✅ Save base64
+                    },
+                    backgroundPreview: URL.createObjectURL(file),
+                    error: null
+                }));
+                console.log('✅ Background converted to base64');
             }
+        } catch (err) {
+            console.error('Error converting file to base64:', err);
+            this.setState({ error: 'Failed to process image' });
         }
     };
 
     removeFile = (type) => {
         if (type === 'photo') {
-            this.setState({ photoFile: null, photoPreview: null });
+            if (this.state.photoPreview) {
+                URL.revokeObjectURL(this.state.photoPreview);
+            }
+            this.setState(prevState => ({
+                formData: {
+                    ...prevState.formData,
+                    photoBase64: '' // ✅ Clear base64
+                },
+                photoPreview: null
+            }));
         } else {
-            this.setState({ backgroundFile: null, backgroundPreview: null });
+            if (this.state.backgroundPreview) {
+                URL.revokeObjectURL(this.state.backgroundPreview);
+            }
+            this.setState(prevState => ({
+                formData: {
+                    ...prevState.formData,
+                    backgroundImageBase64: '' // ✅ Clear base64
+                },
+                backgroundPreview: null
+            }));
         }
     };
 
     handleSubmit = async () => {
-        const { formData, photoFile, backgroundFile } = this.state;
+        const { formData } = this.state;
 
+        // ✅ VALIDATE REQUIRED FIELDS
         if (!formData.firstName || !formData.lastName) {
             this.setState({ error: 'First name and last name are required' });
             return;
@@ -80,50 +151,31 @@ class AddObituaryForm extends Component {
         this.setState({ loading: true, error: null, success: false });
 
         try {
-            const submitData = new FormData();
+            // ✅ Send as JSON (NOT FormData anymore!)
+            const payload = { ...formData };
 
-            // Add all form fields
-            Object.keys(formData).forEach(key => {
-                const value = formData[key];
-                // Only append non-empty values
-                if (value !== '' && value !== null && value !== undefined) {
-                    submitData.append(key, value);
-                }
-            });
+            console.log('📤 Submitting obituary (Base64)...');
+            console.log('Photo Base64:', payload.photoBase64 ? 'Present' : 'None');
+            console.log('Background Base64:', payload.backgroundImageBase64 ? 'Present' : 'None');
 
-            // DON'T add slug - let backend generate it with timestamp for uniqueness
-            // The controller will create: firstname-lastname-timestamp
-
-            // Add files (optional - you can skip these if adding manually to DB)
-            if (photoFile) {
-                submitData.append('photo', photoFile);
-            }
-            if (backgroundFile) {
-                submitData.append('backgroundImage', backgroundFile);
-            }
-
-            // Debug: Log what we're sending
-            console.log('Form Data being sent:');
-            for (let pair of submitData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
-            }
-
-            // IMPORTANT: Update this URL to match your backend port
             const API_URL = process.env.REACT_APP_API_URL || 'https://funeralbackend.onrender.com/';
 
             const response = await fetch(`${API_URL}api/obituaries`, {
                 method: 'POST',
-                body: submitData,
-                // Don't set Content-Type header - browser will set it with boundary
+                headers: {
+                    'Content-Type': 'application/json' // ✅ JSON, NOT multipart/form-data
+                },
+                body: JSON.stringify(payload) // ✅ Send as JSON
             });
 
             const data = await response.json();
-            console.log('Server response:', data);
+            console.log('📥 Server response:', data);
 
             if (!response.ok) {
                 throw new Error(data.error || data.message || 'Failed to create obituary');
             }
 
+            // ✅ Success - Reset form
             this.setState({
                 success: true,
                 formData: {
@@ -143,11 +195,11 @@ class AddObituaryForm extends Component {
                     serviceLocation: '',
                     floralStoreLink: '',
                     treePlantingLink: '',
-                    isPublished: true
+                    isPublished: true,
+                    photoBase64: '',
+                    backgroundImageBase64: ''
                 },
-                photoFile: null,
                 photoPreview: null,
-                backgroundFile: null,
                 backgroundPreview: null
             });
 
@@ -158,12 +210,22 @@ class AddObituaryForm extends Component {
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } catch (err) {
-            console.error('Submit error:', err);
+            console.error('❌ Submit error:', err);
             this.setState({ error: err.message });
         } finally {
             this.setState({ loading: false });
         }
     };
+
+    // Cleanup on unmount
+    componentWillUnmount() {
+        if (this.state.photoPreview) {
+            URL.revokeObjectURL(this.state.photoPreview);
+        }
+        if (this.state.backgroundPreview) {
+            URL.revokeObjectURL(this.state.backgroundPreview);
+        }
+    }
 
     render() {
         const {
@@ -194,7 +256,7 @@ class AddObituaryForm extends Component {
                         {success && (
                             <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
                                 <div className="text-green-800 font-medium">✓ Obituary created successfully!</div>
-                                <div className="text-green-700 text-sm mt-1">You can now add images manually to the database.</div>
+                                <div className="text-green-700 text-sm mt-1">Images uploaded to Cloudinary via Base64.</div>
                             </div>
                         )}
 
@@ -315,10 +377,10 @@ class AddObituaryForm extends Component {
                                 />
                             </div>
 
-                            {/* Images - Optional */}
+                            {/* Images */}
                             <div className="border-b border-gray-200 pb-6">
                                 <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                                    Images (Optional - Can add manually to DB later)
+                                    Images (Base64 → Cloudinary)
                                 </h2>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -344,10 +406,11 @@ class AddObituaryForm extends Component {
                                         ) : (
                                             <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500">
                                                 <Upload className="w-8 h-8 text-gray-400 mb-2" />
-                                                <span className="text-sm text-gray-500">Click to upload photo (optional)</span>
+                                                <span className="text-sm text-gray-500">Click to upload photo</span>
+                                                <span className="text-xs text-gray-400 mt-1">JPEG, PNG, GIF, WebP (Max 5MB)</span>
                                                 <input
                                                     type="file"
-                                                    accept="image/*"
+                                                    accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
                                                     onChange={(e) => this.handleFileChange(e, 'photo')}
                                                     className="hidden"
                                                 />
@@ -377,10 +440,11 @@ class AddObituaryForm extends Component {
                                         ) : (
                                             <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500">
                                                 <Upload className="w-8 h-8 text-gray-400 mb-2" />
-                                                <span className="text-sm text-gray-500">Click to upload background (optional)</span>
+                                                <span className="text-sm text-gray-500">Click to upload background</span>
+                                                <span className="text-xs text-gray-400 mt-1">JPEG, PNG, GIF, WebP (Max 5MB)</span>
                                                 <input
                                                     type="file"
-                                                    accept="image/*"
+                                                    accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
                                                     onChange={(e) => this.handleFileChange(e, 'background')}
                                                     className="hidden"
                                                 />
