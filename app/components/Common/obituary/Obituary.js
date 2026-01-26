@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Heart, Mail, Camera, Video, Flame, MessageSquare, TreePine, User, Gift, Flower } from 'lucide-react';
+import { Heart, Mail, Camera, Video, Flame, MessageSquare, TreePine, User, Gift, Flower, CloudOff } from 'lucide-react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import actions from '../../../actions';
@@ -362,9 +362,9 @@ class ObituaryPage extends Component {
                                 </div>
 
                                 {/* Grief Support Section */}
-                                <div className="grief-support-section">
-                                    <h3 className="grief-support-title">Coping with Grief</h3>
-                                    <p className="grief-support-text">
+                                <div className="obituary-grief-support-section" style={{color: '#333'}}>
+                                    <h3 className="obituary-grief-support-title" style={{color: '#333'}}>Coping with Grief</h3>
+                                    <p className="obituary-grief-support-text" style={{color: '#333'}}>
                                         We would like to offer our sincere support to anyone coping with grief. Enter your email
                                         below to receive a daily grief support messages. Messages run for up to one year and
                                         you can stop at any time. Your email will not be used for any other purpose.

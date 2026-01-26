@@ -288,25 +288,26 @@ button.btns:hover {
 /* ==========================================
      GRIEF SUPPORT SECTION
      ========================================== */
-.grief-support-section {
+.obituary-grief-support-section {
     padding: 20px;
     border-top: 1px solid var(--border-color);
     background-color: #ffffff;
-    color: #444;
+    color: #444 !important;
+
 
     input{
     border: 1px solid #609892;
     }
 }
 
-.grief-support-title {
+.obituary-grief-support-title {
     font-size: 14px;
     font-weight: 700;
     color: #444 !important;
     margin-bottom: 12px;
 }
 
-.grief-support-text {
+.obituary-grief-support-text {
     font-size: 13px;
     line-height: 1.6;
     color: #444 !important; 

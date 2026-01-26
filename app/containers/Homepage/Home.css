@@ -447,7 +447,7 @@
      TESTIMONIALS SECTION
      ========================================== */
 .testimonials-section {
-    background-color: var(--bg-light);
+    background-color: #d5e6e4 !important;
     padding: 4rem 0;
 }
 

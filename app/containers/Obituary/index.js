@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
-import { Heart, Mail, TreePine, User, Calendar, Gift, Flower } from 'lucide-react';
+import { Heart, Mail, TreePine, User, Calendar, Gift, Flower, MapPin, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import actions from '../../actions';
+
+// Import Swiper for Slider
+import SwiperCore, { Navigation, Pagination, Autoplay } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper.min.css';
+import 'swiper/components/pagination/pagination.min.css';
+
+SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 class ObituaryPage extends Component {
     constructor(props) {
@@ -22,11 +30,8 @@ class ObituaryPage extends Component {
             error: null,
             condolenceName: '',
             condolenceEmail: '',
-            activeTab: 'obituary',
             griefEmail: ''
         };
-
-        // Bind methods
         this.handlePlantTree = this.handlePlantTree.bind(this);
     }
 
@@ -46,45 +51,29 @@ class ObituaryPage extends Component {
     fetchObituaryData = async (slug) => {
         try {
             this.setState({ loading: true, error: null });
-
-            // Fetch obituary details
+            
+            // Fetch Obituary
             const obituaryResponse = await fetch(`https://funeralbackend.onrender.com/api/obituaries/${slug}`);
-
-            if (!obituaryResponse.ok) {
-                throw new Error('Obituary not found');
-            }
-
+            if (!obituaryResponse.ok) throw new Error('Obituary not found');
             const obituaryData = await obituaryResponse.json();
-            this.setState({ obituaryData });
-
-            // Fetch condolences for this obituary (including tree purchases)
-            const condolencesResponse = await fetch(
-                `https://funeralbackend.onrender.com/api/condolences/obituary/${obituaryData._id}`
-            );
-
+            
+            // Fetch Condolences
+            const condolencesResponse = await fetch(`https://funeralbackend.onrender.com/api/condolences/obituary/${obituaryData._id}`);
+            let condolencesData = { condolences: [], count: 0, stats: {} };
             if (condolencesResponse.ok) {
-                const condolencesData = await condolencesResponse.json();
-
-                // Backend returns: { condolences: [...], count: X, stats: {...} }
-                this.setState({
-                    condolences: condolencesData.condolences || [],
-                    totalCondolences: condolencesData.count || 0,
-                    condolenceStats: condolencesData.stats || {
-                        messages: 0,
-                        trees: 0,
-                        flowers: 0,
-                        gifts: 0
-                    }
-                });
+                condolencesData = await condolencesResponse.json();
             }
 
-            this.setState({ loading: false });
-        } catch (err) {
-            console.error('Error fetching obituary:', err);
             this.setState({
-                error: err.message,
+                obituaryData,
+                condolences: condolencesData.condolences || [],
+                totalCondolences: condolencesData.count || 0,
+                condolenceStats: condolencesData.stats || {},
                 loading: false
             });
+        } catch (err) {
+            console.error('Error fetching obituary:', err);
+            this.setState({ error: err.message, loading: false });
         }
     }
 
@@ -92,36 +81,16 @@ class ObituaryPage extends Component {
         this.setState({ [field]: e.target.value });
     }
 
-    // Navigate to shop with obituary context AND fetch memorial products
-    // UPDATE handlePlantTree method in your ObituaryPage component:
-
     async handlePlantTree() {
-        console.log('🔥 PLANT TREE CLICKED!');
-
         const { obituaryData } = this.state;
-
-        if (!obituaryData || !obituaryData._id) {
-            alert('Error: Obituary data not loaded. Please refresh the page.');
-            return;
-        }
-
+        if (!obituaryData || !obituaryData._id) return;
         const obituaryId = obituaryData._id;
-
-        console.log('🌳 Fetching memorial products for obituary:', obituaryId);
-
-        // Fetch memorial products via Redux action
         try {
             await this.props.fetchMemorialProducts(obituaryId, 'tree');
-            console.log('✅ Memorial products fetched!');
         } catch (error) {
-            console.error('❌ Error:', error);
+            console.error('Error:', error);
         }
-
-        // Navigate to shop page (only obituaryId and filter)
-        const url = `/shop?obituaryId=${obituaryId}&filter=tree`;
-
-        console.log('🌳 Navigating to:', url);
-        window.location.href = url;
+        window.location.href = `/shop?obituaryId=${obituaryId}&filter=tree`;
     }
 
     handleSubmitCondolence = async () => {
@@ -135,9 +104,7 @@ class ObituaryPage extends Component {
         try {
             const response = await fetch('https://funeralbackend.onrender.com/api/condolences', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     obituaryId: obituaryData._id,
                     name: condolenceName,
@@ -149,13 +116,7 @@ class ObituaryPage extends Component {
 
             if (response.ok) {
                 this.fetchObituaryData(this.getSlugFromUrl());
-
-                this.setState({
-                    newCondolence: '',
-                    condolenceName: '',
-                    condolenceEmail: ''
-                });
-
+                this.setState({ newCondolence: '', condolenceName: '', condolenceEmail: '' });
                 alert('Condolence posted successfully! It will be visible after approval.');
             } else {
                 alert('Failed to post condolence. Please try again.');
@@ -166,384 +127,272 @@ class ObituaryPage extends Component {
         }
     }
 
-    getCondolenceIcon = (type) => {
-        switch (type) {
-            case 'tree':
-                return <TreePine size={20} className="text-green-600" />;
-            case 'flower':
-                return <Flower size={20} className="text-pink-600" />;
-            case 'gift':
-                return <Gift size={20} className="text-purple-600" />;
-            default:
-                return <Heart size={20} className="text-blue-600" />;
-        }
-    }
-
     getBadgeColor = (type) => {
         switch (type) {
-            case 'tree':
-                return 'bg-green-100 text-green-800 border-green-200';
-            case 'flower':
-                return 'bg-pink-100 text-pink-800 border-pink-200';
-            case 'gift':
-                return 'bg-purple-100 text-purple-800 border-purple-200';
-            default:
-                return 'bg-blue-100 text-blue-800 border-blue-200';
-        }
-    }
-
-    getTypeLabel = (type) => {
-        switch (type) {
-            case 'tree':
-                return 'Planted a Tree';
-            case 'flower':
-                return 'Sent Flowers';
-            case 'gift':
-                return 'Sent a Gift';
-            default:
-                return 'Shared a Memory';
+            case 'tree': return 'bg-green-100 text-green-800 border-green-200';
+            case 'flower': return 'bg-pink-100 text-pink-800 border-pink-200';
+            case 'gift': return 'bg-purple-100 text-purple-800 border-purple-200';
+            default: return 'bg-blue-100 text-blue-800 border-blue-200';
         }
     }
 
     formatDate = (date) => {
+        if(!date) return "";
         return new Date(date).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-    }
-
-    formatDateTime = (date) => {
-        return new Date(date).toLocaleDateString('en-US', {
-            month: 'long',
-            day: 'numeric',
-            year: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric'
+            year: 'numeric', month: 'long', day: 'numeric'
         });
     }
 
     render() {
-        const {
-            obituaryData,
-            condolences,
-            condolenceStats,
-            totalCondolences,
-            loading,
-            error,
-            newCondolence,
-            condolenceName,
-            condolenceEmail,
-            activeTab,
-            griefEmail
-        } = this.state;
+        const { obituaryData, condolences, condolenceStats, totalCondolences, loading, error, newCondolence, condolenceName, condolenceEmail } = this.state;
 
-        if (loading) {
-            return (
-                <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f9fafb' }}>
-                    <div style={{ fontSize: '1.25rem', color: '#4b5563' }}>Loading obituary...</div>
-                </div>
-            );
-        }
-
-        if (error) {
-            return (
-                <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f9fafb' }}>
-                    <div style={{ textAlign: 'center' }}>
-                        <h2 style={{ fontSize: '1.5rem', fontWeight: '600', color: '#dc2626', marginBottom: '1rem' }}>Error</h2>
-                        <p style={{ color: '#4b5563' }}>{error}</p>
-                        <button
-                            onClick={() => window.location.href = '/'}
-                            style={{
-                                marginTop: '1rem',
-                                padding: '0.5rem 1.5rem',
-                                background: '#2563eb',
-                                color: 'white',
-                                borderRadius: '0.5rem',
-                                border: 'none',
-                                cursor: 'pointer'
-                            }}
-                        >
-                            Go to Homepage
-                        </button>
-                    </div>
-                </div>
-            );
-        }
-
-        if (!obituaryData) {
-            return (
-                <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f9fafb' }}>
-                    <div style={{ fontSize: '1.25rem', color: '#4b5563' }}>Obituary not found</div>
-                </div>
-            );
-        }
+        if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-500">Loading obituary...</div>;
+        if (error || !obituaryData) return <div className="min-h-screen flex items-center justify-center text-red-500">Error loading obituary.</div>;
 
         const approvedCondolences = condolences.filter(c => c.isApproved);
+        
+        // Dynamic Cover Image logic
+        const coverImage = obituaryData.backgroundImage || obituaryData.photo || 'https://images.unsplash.com/photo-1441260038675-7329ab4cc264?w=1200';
+        
+        // Gallery logic (ensure array)
+        const galleryImages = obituaryData.images && obituaryData.images.length > 0 
+            ? obituaryData.images 
+            : [obituaryData.photo, obituaryData.backgroundImage].filter(Boolean);
 
         return (
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-gray-50 font-sans">
                 {/* Header */}
-                <header className="bg-white shadow-sm py-4 px-6">
+                <header className="bg-white shadow-sm py-4 px-6 sticky top-0 z-50">
                     <div className="max-w-7xl mx-auto flex justify-between items-center">
-                        <h1 className="text-xl font-semibold text-gray-800">West River Funeral Directors LLC</h1>
-                        <Link
-                            to="/"
-                            className="text-blue-600 hover:text-blue-700 text-sm font-medium"
-                        >
-                            HOME PAGE
-                        </Link>
+                        <h1 className="text-xl font-semibold text-gray-800 tracking-wide">West River Funeral Directors</h1>
+                        <Link to="/" className="text-teal-700 hover:text-teal-900 font-medium text-sm uppercase tracking-wider">Home Page</Link>
                     </div>
                 </header>
 
-                {/* Hero Image */}
-                <div className="relative h-80 overflow-hidden">
+                {/* 1. Cover Photo (Unique per obituary) */}
+                <div className="relative h-96 w-full group">
                     <img
-                        src={obituaryData.backgroundImage || 'https://images.unsplash.com/photo-1441260038675-7329ab4cc264?w=1200'}
-                        alt="Memorial background"
+                        src={coverImage}
+                        alt="Cover"
                         className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-40"></div>
+                    <div className="absolute inset-0 bg-black bg-opacity-40 transition-opacity group-hover:bg-opacity-30"></div>
+                    <div className="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-black to-transparent">
+                        <div className="max-w-7xl mx-auto">
+                            <h1 className="text-5xl text-white font-serif font-bold shadow-sm mb-2">
+                                {obituaryData.firstName} {obituaryData.lastName}
+                            </h1>
+                            <p className="text-white text-xl opacity-90 font-light">
+                                {this.formatDate(obituaryData.birthDate)} – {this.formatDate(obituaryData.deathDate)}
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
-                {/* Main Content */}
-                <div className="max-w-7xl mx-auto px-4 py-8">
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {/* Left Sidebar */}
-                        <div className="lg:col-span-1">
-                            {/* Profile Card */}
-                            <div className="bg-white rounded-lg shadow-lg overflow-hidden -mt-32 relative z-10">
-                                <div className="relative">
-                                    <img
-                                        src={obituaryData.photo}
-                                        alt={`${obituaryData.firstName} ${obituaryData.lastName}`}
-                                        className="w-full h-80 object-cover"
-                                    />
-                                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                                        <h3 className="text-white text-xl font-semibold">
-                                            {obituaryData.firstName} {obituaryData.lastName}
-                                        </h3>
+                <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Left Sidebar */}
+                    <div className="lg:col-span-1">
+                        <div className="bg-white rounded-lg shadow-lg overflow-hidden relative -mt-24 z-10 border border-gray-100">
+                            <img src={obituaryData.photo} alt="Profile" className="w-full h-auto object-cover" />
+                            <div className="p-6">
+                                <button onClick={this.handlePlantTree} className="w-full bg-green-700 hover:bg-green-800 text-white py-3 rounded-md font-semibold mb-3 transition shadow-md flex items-center justify-center gap-2">
+                                    <TreePine size={20} /> Plant a Tree
+                                </button>
+                                <button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-3 rounded-md font-semibold transition border border-gray-200 flex items-center justify-center gap-2">
+                                    <Flower size={20} /> Send Flowers
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Grief Support Widget */}
+                        <div className="bg-white rounded-lg shadow-sm p-6 mt-6 border border-gray-100">
+                            <h3 className="font-serif text-lg font-bold text-gray-800 mb-2">Grief Support</h3>
+                            <p className="text-sm text-gray-600 mb-4">Subscribe to our daily grief support messages.</p>
+                            <input 
+                                type="email" 
+                                placeholder="Your Email" 
+                                className="w-full border border-gray-300 rounded p-2 text-sm mb-2"
+                            />
+                            <button className="w-full bg-teal-600 text-white py-2 rounded text-sm font-bold hover:bg-teal-700 transition">
+                                Subscribe
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Main Content */}
+                    <div className="lg:col-span-2">
+                        
+                        {/* 2. Slider (Multiple Images) */}
+                        {galleryImages.length > 0 && (
+                            <div className="bg-white p-2 rounded-lg shadow-sm mb-8">
+                                <Swiper
+                                    spaceBetween={10}
+                                    slidesPerView={1}
+                                    navigation
+                                    pagination={{ clickable: true }}
+                                    autoplay={{ delay: 4000, disableOnInteraction: false }}
+                                    className="rounded-lg overflow-hidden"
+                                    style={{ height: '400px' }}
+                                >
+                                    {galleryImages.map((img, idx) => (
+                                        <SwiperSlide key={idx}>
+                                            <img src={img} alt={`Memory ${idx}`} className="w-full h-full object-contain bg-gray-50" />
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
+                            </div>
+                        )}
+
+                        {/* Obituary Text */}
+                        <div className="bg-white rounded-lg shadow-sm p-8 mb-8 border-t-4 border-teal-600">
+                            <h2 className="text-3xl font-serif text-gray-800 mb-6 pb-2 border-b">Obituary</h2>
+                            <div className="prose max-w-none text-gray-700 leading-relaxed whitespace-pre-line text-lg">
+                                {obituaryData.biography}
+                            </div>
+                        </div>
+
+                        {/* 3. Service Section */}
+                        <div className="bg-white rounded-lg shadow-sm p-8 mb-8 border-l-4 border-teal-600">
+                            <h2 className="text-2xl font-serif text-gray-800 mb-6 flex items-center gap-2">
+                                <Calendar className="text-teal-600" /> Service Details
+                            </h2>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="p-4 bg-gray-50 rounded-md border border-gray-200">
+                                    <h4 className="font-bold text-gray-900 mb-2 uppercase text-sm tracking-wide text-teal-700">Visitation</h4>
+                                    <p className="text-gray-700 flex items-center gap-2 font-medium">
+                                        <Clock size={16} className="text-gray-500" /> 
+                                        {obituaryData.visitationTime || "Time Pending"}
+                                    </p>
+                                    <p className="text-gray-600 flex items-start gap-2 mt-2 text-sm">
+                                        <MapPin size={16} className="text-gray-500 mt-1 shrink-0" />
+                                        {obituaryData.visitationLocation || "Location Pending"}
+                                    </p>
+                                </div>
+
+                                <div className="p-4 bg-gray-50 rounded-md border border-gray-200">
+                                    <h4 className="font-bold text-gray-900 mb-2 uppercase text-sm tracking-wide text-teal-700">Funeral Service</h4>
+                                    <p className="text-gray-700 flex items-center gap-2 font-medium">
+                                        <Clock size={16} className="text-gray-500" />
+                                        {obituaryData.serviceTime || "Time Pending"}
+                                    </p>
+                                    <p className="text-gray-600 flex items-start gap-2 mt-2 text-sm">
+                                        <MapPin size={16} className="text-gray-500 mt-1 shrink-0" />
+                                        {obituaryData.serviceLocation || "Location Pending"}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* 4. List of Trees & Condolences (Under Service Section) */}
+                        <div className="bg-white rounded-lg shadow-sm p-8">
+                            <div className="flex flex-wrap justify-between items-center mb-8 border-b pb-4">
+                                <h2 className="text-2xl font-serif text-gray-800">Tributes & Condolences</h2>
+                                <span className="bg-teal-50 text-teal-800 py-1 px-4 rounded-full text-sm font-bold border border-teal-100">
+                                    {totalCondolences} Memories Shared
+                                </span>
+                            </div>
+
+                            {/* Tree Summary */}
+                            {condolenceStats.trees > 0 && (
+                                <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-8 flex items-center gap-4 shadow-sm">
+                                    <div className="bg-white p-3 rounded-full shadow-sm border border-green-100">
+                                        <TreePine className="text-green-600" size={32} />
+                                    </div>
+                                    <div>
+                                        <p className="font-bold text-green-900 text-xl">{condolenceStats.trees} Memorial Trees Planted</p>
+                                        <p className="text-green-700">A living tribute has been planted in memory of {obituaryData.firstName}.</p>
+                                        <button onClick={this.handlePlantTree} className="text-sm font-bold text-green-800 underline mt-1 hover:text-green-900">Plant another tree</button>
                                     </div>
                                 </div>
+                            )}
 
-                                <div style={{ padding: '24px', position: 'relative', zIndex: 1000 }}>
-                                    {/* TEST BUTTON */}
-                                    <button
-                                        onClick={() => {
-                                            alert('TEST BUTTON WORKS!');
-                                            console.log('🔥 TEST BUTTON CLICKED!');
-                                        }}
-                                        style={{
-                                            width: '100%',
-                                            backgroundColor: '#eab308',
-                                            color: 'white',
-                                            padding: '12px 16px',
-                                            borderRadius: '8px',
-                                            fontWeight: '500',
-                                            border: 'none',
-                                            cursor: 'pointer',
-                                            fontSize: '16px',
-                                            marginBottom: '12px',
-                                            display: 'block'
-                                        }}
-                                    >
-                                        TEST - Click Me First!
-                                    </button>
-
-                                    {/* PLANT A TREE BUTTON */}
-                                    <button
-                                        onClick={this.handlePlantTree}
-                                        style={{
-                                            width: '100%',
-                                            backgroundColor: '#15803d',
-                                            color: 'white',
-                                            padding: '12px 16px',
-                                            borderRadius: '8px',
-                                            fontWeight: '500',
-                                            border: 'none',
-                                            cursor: 'pointer',
-                                            fontSize: '16px',
-                                            marginBottom: '12px',
-                                            display: 'block'
-                                        }}
-                                    >
-                                        🌳 Plant a Tree for {obituaryData.firstName}
-                                    </button>
-
-                                    {/* SHARE MEMORY BUTTON */}
-                                    <button
-                                        onClick={() => this.setState({ activeTab: 'tribute' })}
-                                        style={{
-                                            width: '100%',
-                                            backgroundColor: '#e5e7eb',
-                                            color: '#1f2937',
-                                            padding: '12px 16px',
-                                            borderRadius: '8px',
-                                            fontWeight: '500',
-                                            border: 'none',
-                                            cursor: 'pointer',
-                                            fontSize: '16px',
-                                            display: 'block'
-                                        }}
-                                    >
-                                        💬 Share a memory
-                                    </button>
+                            {/* Add Condolence Form */}
+                            <div className="bg-gray-50 p-6 rounded-lg mb-8 border border-gray-200">
+                                <h4 className="font-bold text-gray-800 mb-4">Share a Memory</h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <input 
+                                        type="text" 
+                                        placeholder="Your Name" 
+                                        className="border rounded p-3 w-full"
+                                        value={condolenceName}
+                                        onChange={this.handleInputChange('condolenceName')}
+                                    />
+                                    <input 
+                                        type="email" 
+                                        placeholder="Your Email (Hidden)" 
+                                        className="border rounded p-3 w-full"
+                                        value={condolenceEmail}
+                                        onChange={this.handleInputChange('condolenceEmail')}
+                                    />
                                 </div>
+                                <textarea 
+                                    placeholder="Share your condolences or a memory..." 
+                                    className="border rounded p-3 w-full h-32 mb-4"
+                                    value={newCondolence}
+                                    onChange={this.handleInputChange('newCondolence')}
+                                ></textarea>
+                                <button 
+                                    onClick={this.handleSubmitCondolence}
+                                    className="bg-teal-700 text-white px-6 py-2 rounded font-bold hover:bg-teal-800 transition"
+                                >
+                                    Post Tribute
+                                </button>
+                            </div>
 
-                                {/* Memorial Stats */}
-                                {(condolenceStats.trees > 0 || condolenceStats.flowers > 0 || condolenceStats.gifts > 0) && (
-                                    <div className="px-6 pb-6">
-                                        <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-lg p-4 border border-green-100">
-                                            <h4 className="text-sm font-semibold text-gray-700 mb-3">Memorial Tributes</h4>
-                                            <div className="space-y-2">
-                                                {condolenceStats.trees > 0 && (
-                                                    <div className="flex items-center justify-between">
-                                                        <div className="flex items-center gap-2">
-                                                            <TreePine size={16} className="text-green-600" />
-                                                            <span className="text-sm text-gray-700">Trees Planted</span>
+                            {/* List */}
+                            <div className="space-y-8">
+                                {approvedCondolences.length === 0 ? (
+                                    <p className="text-gray-500 italic text-center py-8">No tributes have been shared yet. Be the first to light a candle or share a memory.</p>
+                                ) : (
+                                    approvedCondolences.map((condolence) => (
+                                        <div key={condolence._id} className="relative pl-8 border-l-2 border-gray-200 pb-8 last:pb-0">
+                                            <div className="absolute -left-2.5 top-0 w-5 h-5 rounded-full bg-teal-500 border-4 border-white shadow-sm"></div>
+                                            
+                                            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition">
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="w-10 h-10 rounded-full bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-lg">
+                                                            {condolence.name?.charAt(0).toUpperCase()}
                                                         </div>
-                                                        <span className="font-semibold text-green-700">{condolenceStats.trees}</span>
+                                                        <div>
+                                                            <h4 className="font-bold text-gray-900">{condolence.name}</h4>
+                                                            <p className="text-xs text-gray-500">{this.formatDate(condolence.createdAt)}</p>
+                                                        </div>
                                                     </div>
-                                                )}
-                                                {condolenceStats.flowers > 0 && (
-                                                    <div className="flex items-center justify-between">
-                                                        <div className="flex items-center gap-2">
-                                                            <Flower size={16} className="text-pink-600" />
-                                                            <span className="text-sm text-gray-700">Flowers Sent</span>
-                                                        </div>
-                                                        <span className="font-semibold text-pink-700">{condolenceStats.flowers}</span>
-                                                    </div>
-                                                )}
-                                                {condolenceStats.gifts > 0 && (
-                                                    <div className="flex items-center justify-between">
-                                                        <div className="flex items-center gap-2">
-                                                            <Gift size={16} className="text-purple-600" />
-                                                            <span className="text-sm text-gray-700">Gifts Sent</span>
-                                                        </div>
-                                                        <span className="font-semibold text-purple-700">{condolenceStats.gifts}</span>
+                                                    
+                                                    {condolence.type !== 'message' && (
+                                                        <span className={`text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wide ${this.getBadgeColor(condolence.type)}`}>
+                                                            {condolence.type === 'tree' ? 'Planted a Tree' : 'Sent a Gift'}
+                                                        </span>
+                                                    )}
+                                                </div>
+
+                                                <p className="text-gray-700 leading-relaxed">
+                                                    {condolence.message}
+                                                </p>
+                                                
+                                                {condolence.type === 'tree' && (
+                                                    <div className="mt-4 flex items-center gap-2 text-sm text-green-700 font-medium bg-green-50 p-2 rounded inline-block">
+                                                        <TreePine size={16} /> Planted a tree in memory of {obituaryData.firstName}
                                                     </div>
                                                 )}
                                             </div>
                                         </div>
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Grief Support */}
-                            <div className="bg-white rounded-lg shadow-md p-6 mt-6">
-                                <h3 className="text-lg font-semibold mb-3 text-gray-800">Coping with Grief</h3>
-                                <p className="text-sm text-gray-600 mb-4">
-                                    We would like to offer our sincere support to anyone coping with grief.
-                                </p>
-                                <div className="space-y-3">
-                                    <input
-                                        type="email"
-                                        value={griefEmail}
-                                        onChange={this.handleInputChange('griefEmail')}
-                                        placeholder="Your Email"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm"
-                                    />
-                                    <button className="w-full bg-blue-600 text-white py-2 rounded-lg text-sm font-medium">
-                                        Subscribe
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Main Content Area */}
-                        <div className="lg:col-span-2">
-                            <div className="bg-white rounded-lg shadow-md p-8">
-                                <p className="text-sm text-gray-500 mb-2">Official Obituary of</p>
-                                <h2 className="text-4xl font-serif text-gray-900 mb-3">
-                                    {obituaryData.firstName} {obituaryData.lastName}
-                                </h2>
-                                <p className="text-lg text-gray-600 mb-6">
-                                    {this.formatDate(obituaryData.birthDate)} – {this.formatDate(obituaryData.deathDate)}
-                                </p>
-
-                                {/* Tabs */}
-                                <div className="flex gap-6 border-b border-gray-200">
-                                    <button
-                                        onClick={() => this.setState({ activeTab: 'obituary' })}
-                                        className={`pb-3 border-b-2 font-medium ${activeTab === 'obituary' ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-600'}`}
-                                    >
-                                        Obituary & Services
-                                    </button>
-                                    <button
-                                        onClick={() => this.setState({ activeTab: 'tribute' })}
-                                        className={`pb-3 border-b-2 font-medium ${activeTab === 'tribute' ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-600'}`}
-                                    >
-                                        Tribute Wall ({totalCondolences})
-                                    </button>
-                                </div>
-
-                                {/* Tab Content */}
-                                {activeTab === 'obituary' ? (
-                                    <div className="mt-8">
-                                        <h3 className="text-2xl font-semibold mb-4">{obituaryData.firstName} {obituaryData.lastName} Obituary</h3>
-                                        <div className="text-gray-700 leading-relaxed whitespace-pre-line">
-                                            {obituaryData.biography}
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="mt-8">
-                                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                                            <p className="text-sm text-gray-700">
-                                                <span className="font-semibold">{totalCondolences}</span> tributes shared
-                                            </p>
-                                        </div>
-
-                                        {/* Condolences List */}
-                                        <div className="space-y-4">
-                                            {approvedCondolences.length === 0 ? (
-                                                <div className="text-center py-12">
-                                                    <p className="text-gray-500">No tributes yet.</p>
-                                                </div>
-                                            ) : (
-                                                approvedCondolences.map((condolence) => (
-                                                    <div key={condolence._id} className="bg-white rounded-lg p-6 shadow-sm">
-                                                        <div className="flex gap-4">
-                                                            <div className="w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center font-semibold">
-                                                                {condolence.name?.charAt(0).toUpperCase() || 'A'}
-                                                            </div>
-                                                            <div className="flex-1">
-                                                                <h4 className="font-semibold">{condolence.name}</h4>
-                                                                {condolence.type !== 'message' && (
-                                                                    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs ${this.getBadgeColor(condolence.type)}`}>
-                                                                        {this.getTypeLabel(condolence.type)}
-                                                                    </span>
-                                                                )}
-                                                                <p className="text-gray-700 mt-2">{condolence.message}</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                ))
-                                            )}
-                                        </div>
-                                    </div>
+                                    ))
                                 )}
                             </div>
                         </div>
                     </div>
                 </div>
-
-                {/* Footer */}
-                <footer className="bg-gray-800 text-gray-300 py-8 mt-12">
-                    <div className="max-w-7xl mx-auto px-4 text-center">
-                        <p className="text-sm">© 2025 West River Funeral Directors LLC. All Rights Reserved.</p>
-                    </div>
-                </footer>
             </div>
         );
     }
 }
 
-// Connect to Redux
-const mapStateToProps = (state) => {
-    return {
-        storeProducts: state.product.storeProducts,
-        isLoading: state.product.isLoading
-    };
-};
+const mapStateToProps = (state) => ({
+    storeProducts: state.product.storeProducts,
+    isLoading: state.product.isLoading
+});
 
 export default connect(mapStateToProps, actions)(ObituaryPage);
