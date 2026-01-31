@@ -4,10 +4,10 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import actions from '../../actions';
 
-// Layout Components (NEW)
+// Layout Components
 const MainLayout = ({ children }) => (
   <>
-    {/* <Navigation /> */}
+    <Navigation />
     <main className="main">
       <Container style={{ maxWidth: '100vw', width: '100vw', padding: 0 }}>
         <div className="wrapper">{children}</div>
@@ -83,28 +83,21 @@ class Application extends React.PureComponent {
   handleStorage = e => {
     if (e.key === CART_ITEMS) this.props.handleCart();
   };
-  
 
   render() {
-    const { history } = this.props;
-  // Check if the current route is an obituary page
-  const isObituaryPage = history.location.pathname.startsWith('/obituary/');
-    const isLoginPage = history.location.pathname.startsWith('/login');
     return (
       <div className="application">
-        {!isObituaryPage && !isLoginPage && <Navigation />}
         <Notification />
 
         <Switch>
-
-          {/* ================= ADMIN ROUTES (NO WRAPPER) ================= */}
+          {/* ================= ADMIN ROUTES (NO NAVIGATION/FOOTER) ================= */}
           <Route path="/admin">
             <AdminLayout>
               <Admin />
             </AdminLayout>
           </Route>
 
-          {/* ================= ALL OTHER ROUTES ================= */}
+          {/* ================= ALL OTHER ROUTES (WITH NAVIGATION/FOOTER) ================= */}
           <Route>
             <MainLayout>
               <Switch>
@@ -155,7 +148,6 @@ class Application extends React.PureComponent {
               </Switch>
             </MainLayout>
           </Route>
-
         </Switch>
       </div>
     );
