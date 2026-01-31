@@ -42,12 +42,13 @@ class Homepage extends Component {
     try {
       this.setState({ loading: true, error: null });
 
-      const response = await fetch('http://localhost:3000/api/obituaries/recent', {
+      const response = await fetch('https://funeralbackend.onrender.com/api/obituaries/recent', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
         }
       });
+      
 
       if (!response.ok) {
         throw new Error('Failed to fetch tributes');
