@@ -1,16 +1,25 @@
-/**
- *
- * Application
- *
- */
-
 import React from 'react';
-
 import { connect } from 'react-redux';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { Container } from 'reactstrap';
-
 import actions from '../../actions';
+
+// Layout Components (NEW)
+const MainLayout = ({ children }) => (
+  <>
+    <Navigation />
+    <main className="main">
+      <Container style={{ maxWidth: '100vw', width: '100vw', padding: 0 }}>
+        <div className="wrapper">{children}</div>
+      </Container>
+    </main>
+    <Footer />
+  </>
+);
+
+const AdminLayout = ({ children }) => (
+  <main className="main">{children}</main>
+);
 
 // routes
 import ObituaryPage from '../../components/Common/obituary/Obituary';
@@ -60,124 +69,96 @@ import VeteransBurialFlags from '../VeteransBurialFlags';
 import FAQ from '../FAQ';
 import Location from '../Location';
 import SendFlowers from '../SendFlowers';
+import Admin from '../Admin';
 
 class Application extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.handleStorage = this.handleStorage.bind(this);
-  }
   componentDidMount() {
     const token = localStorage.getItem('token');
-
-    if (token) {
-      this.props.fetchProfile();
-    }
+    if (token) this.props.fetchProfile();
 
     this.props.handleCart();
-
-    document.addEventListener('keydown', this.handleTabbing);
-    document.addEventListener('mousedown', this.handleMouseDown);
     window.addEventListener('storage', this.handleStorage);
   }
 
-  handleStorage(e) {
-    if (e.key === CART_ITEMS) {
-      this.props.handleCart();
-    }
-  }
-
-  handleTabbing(e) {
-    if (e.keyCode === 9) {
-      document.body.classList.add('user-is-tabbing');
-    }
-  }
-
-  handleMouseDown() {
-    document.body.classList.remove('user-is-tabbing');
-  }
+  handleStorage = e => {
+    if (e.key === CART_ITEMS) this.props.handleCart();
+  };
 
   render() {
-    const { location } = this.props; // Get the current location
-  const isObituaryPage = location.pathname.startsWith('/obituary/');
     return (
-      <div className='application'>
+      <div className="application">
         <Notification />
-        {/* Only show Navigation if NOT on an obituary page */}
-        {!isObituaryPage  && <Navigation />}
-        <main className='main'>
-          <Container style={{ maxWidth: '100vw', width: '100vw', padding: '0px' }}>
 
-            <div className='wrapper'>
+        <Switch>
+
+          {/* ================= ADMIN ROUTES (NO WRAPPER) ================= */}
+          <Route path="/admin">
+            <AdminLayout>
+              <Admin />
+            </AdminLayout>
+          </Route>
+
+          {/* ================= ALL OTHER ROUTES ================= */}
+          <Route>
+            <MainLayout>
               <Switch>
-                <Route exact path='/' component={HomePage} />
-                <Route path='/about-us' component={About} />
-                <Route path='/our-staff' component={OurStaff} />
-                <Route path='/contact-us' component={ContactUs} />
-                <Route path='/why-choose-us' component={WhyChooseUs} />
-                <Route path='/testimonials' component={Testimonials} />
-                <Route path='/our-services' component={OurServices} />
-                <Route path='/pre-arrangements' component={PrePlan} />
-                <Route path='/prearrangements-form' component={PreArrangementsForm} />
-                <Route path='/have-the-talk-of-a-lifetime' component={HaveTheTalk} />
-                <Route path='/when-death-occurs' component={WhenDeathOccurs} />
-                <Route path='/grief-support' component={GriefSupport} />
-                <Route path='/funeral-etiquette' component={FuneralEtiquette} />
-                <Route path='/social-security' component={SocialSecurityBenefits} />
-                <Route path='/veterans' component={VeteransOverview} />
-                <Route path='/veterans-headstones' component={VeteransHeadstones} />
-                <Route path='/veterans-burial-flags' component={VeteransBurialFlags} />
-                <Route path='/faqs' component={FAQ} />
-                <Route path='/location' component={Location} />
-                <Route path='/obituaries' component={AllObituaries} />
-                <Route path='/obituary/:slug' component={ObituaryPage} />
-                <Route path='/send-flowers' component={SendFlowers} />
+                <Route exact path="/" component={HomePage} />
+                <Route path="/about-us" component={About} />
+                <Route path="/our-staff" component={OurStaff} />
+                <Route path="/contact-us" component={ContactUs} />
+                <Route path="/why-choose-us" component={WhyChooseUs} />
+                <Route path="/testimonials" component={Testimonials} />
+                <Route path="/our-services" component={OurServices} />
+                <Route path="/pre-arrangements" component={PrePlan} />
+                <Route path="/prearrangements-form" component={PreArrangementsForm} />
+                <Route path="/have-the-talk-of-a-lifetime" component={HaveTheTalk} />
+                <Route path="/when-death-occurs" component={WhenDeathOccurs} />
+                <Route path="/grief-support" component={GriefSupport} />
+                <Route path="/funeral-etiquette" component={FuneralEtiquette} />
+                <Route path="/social-security" component={SocialSecurityBenefits} />
+                <Route path="/veterans" component={VeteransOverview} />
+                <Route path="/veterans-headstones" component={VeteransHeadstones} />
+                <Route path="/veterans-burial-flags" component={VeteransBurialFlags} />
+                <Route path="/faqs" component={FAQ} />
+                <Route path="/location" component={Location} />
+                <Route path="/obituaries" component={AllObituaries} />
+                <Route path="/obituary/:slug" component={ObituaryPage} />
+                <Route path="/send-flowers" component={SendFlowers} />
 
-                <Route path='/add-obituary' component={Authentication(AddObituary)} />
-                <Route path='/add-product' component={Authentication(AddProduct)} />
+                <Route path="/add-obituary" component={Authentication(AddObituary)} />
+                <Route path="/add-product" component={Authentication(AddProduct)} />
 
-                <Route path='/shop' component={Shop} />
-                <Route path='/sell' component={Sell} />
-                <Route path='/contact' component={Contact} />
-                <Route path='/brands' component={BrandsPage} />
-                <Route path='/product/:slug' component={ProductPage} />
-                <Route path='/order/success/:id' component={OrderSuccess} />
-                <Route path='/order/:id' component={OrderPage} />
-                <Route path='/login' component={Login} />
-                <Route path='/register' component={Signup} />
-                <Route path='/dashboard' component={DashboardNew} />
-                <Route path='/product-dashboard' component={ProductDashboard} />
-                <Route
-                  path='/merchant-signup/:token'
-                  component={MerchantSignup}
-                />
-                <Route path='/forgot-password' component={ForgotPassword} />
-                <Route
-                  path='/reset-password/:token'
-                  component={ResetPassword}
-                />
-                <Route path='/auth/success' component={AuthSuccess} />
-                <Route path='/support' component={Authentication(Support)} />
-                <Route
-                  path='/dashboard'
-                  component={Authentication(Dashboard)}
-                />
-                <Route path='/404' component={Page404} />
-                <Route path='*' component={Page404} />
+                <Route path="/shop" component={Shop} />
+                <Route path="/sell" component={Sell} />
+                <Route path="/contact" component={Contact} />
+                <Route path="/brands" component={BrandsPage} />
+                <Route path="/product/:slug" component={ProductPage} />
+                <Route path="/order/success/:id" component={OrderSuccess} />
+                <Route path="/order/:id" component={OrderPage} />
+                <Route path="/login" component={Login} />
+                <Route path="/register" component={Signup} />
+                <Route path="/dashboard" component={DashboardNew} />
+                <Route path="/product-dashboard" component={ProductDashboard} />
+                <Route path="/merchant-signup/:token" component={MerchantSignup} />
+                <Route path="/forgot-password" component={ForgotPassword} />
+                <Route path="/reset-password/:token" component={ResetPassword} />
+                <Route path="/auth/success" component={AuthSuccess} />
+                <Route path="/support" component={Authentication(Support)} />
+                <Route path="/404" component={Page404} />
+                <Route path="*" component={Page404} />
               </Switch>
-            </div>
-          </Container>
-        </main>
-        <Footer />
+            </MainLayout>
+          </Route>
+
+        </Switch>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    authenticated: state.authentication.authenticated,
-    products: state.product.storeProducts
-  };
-};
+const mapStateToProps = state => ({
+  authenticated: state.authentication.authenticated,
+  products: state.product.storeProducts
+});
 
 export default withRouter(connect(mapStateToProps, actions)(Application));
