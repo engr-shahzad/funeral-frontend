@@ -7,7 +7,7 @@ import actions from '../../actions';
 // Layout Components (NEW)
 const MainLayout = ({ children }) => (
   <>
-    <Navigation />
+    {/* <Navigation /> */}
     <main className="main">
       <Container style={{ maxWidth: '100vw', width: '100vw', padding: 0 }}>
         <div className="wrapper">{children}</div>
@@ -83,10 +83,16 @@ class Application extends React.PureComponent {
   handleStorage = e => {
     if (e.key === CART_ITEMS) this.props.handleCart();
   };
+  
 
   render() {
+    const { history } = this.props;
+  // Check if the current route is an obituary page
+  const isObituaryPage = history.location.pathname.startsWith('/obituary/');
+    const isLoginPage = history.location.pathname.startsWith('/login');
     return (
       <div className="application">
+        {!isObituaryPage && !isLoginPage && <Navigation />}
         <Notification />
 
         <Switch>
