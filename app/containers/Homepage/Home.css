@@ -32,7 +32,7 @@
 
 .hero-slide-bg {
     position: relative;
-    height: 500px;
+    height: 750px;
     background-size: cover;
     background-position: center;
 }
@@ -731,7 +731,7 @@
 /* Mobile Phones */
 @media (max-width: 575px) {
     .hero-slide-bg {
-        height: 400px;
+        height: 550px;
     }
 
     .hero-title {

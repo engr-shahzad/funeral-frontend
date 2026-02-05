@@ -64,7 +64,14 @@ class Navigation extends React.PureComponent {
 
   render() {
     const { isScrolled } = this.state;
-    const { cartItems, isMenuOpen, isCartOpen, toggleCart, toggleMenu } = this.props;
+    const { cartItems, isMenuOpen, isCartOpen, toggleCart, toggleMenu, location } = this.props;
+
+    // Hide header on obituary detail pages
+    const isObituaryPage = location.pathname.startsWith('/obituary/');
+    
+    if (isObituaryPage) {
+      return null; // Don't render header at all
+    }
 
     return (
       <header className={`header fixed-mobile-header ${isScrolled ? 'scrolled' : ''}`}>
@@ -186,8 +193,8 @@ class Navigation extends React.PureComponent {
         </div>
          {!isScrolled && (
           <div style={{ backgroundColor: 'white', height: '2px' }}></div>
-         )
-  }
+         )}
+        
         {/* Mobile Navigation Bar */}
         <div className='mobile-nav d-block d-md-none'>
           <Container>

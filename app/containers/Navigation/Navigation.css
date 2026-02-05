@@ -383,7 +383,7 @@
 
 /* Default (Tall Header) */
 .header {
-    height: 150px;
+    /* height: 150px; */
     transition: height 0.35s ease, box-shadow 0.35s ease;
 }
 
@@ -509,4 +509,47 @@
   color: #c5a059 !important; /* Gold/Accent color */
 }
 
+/* ===============================
+   HEADER SIZE + SCROLL BEHAVIOR (30% reduction on scroll)
+   =============================== */
 
+/* Default (Full Header) */
+.header {
+    transition: all 0.35s ease;
+}
+
+.header-main-nav {
+    padding: 30px 0;
+    transition: padding 0.35s ease;
+}
+
+.center-logo-img {
+    width: 155px;
+    height: auto;
+    transition: all 0.35s ease;
+}
+
+.nav-link-custom {
+    font-size: 15px;
+    padding: 1rem 0.8rem;
+    transition: all 0.35s ease;
+}
+
+/* Scrolled State - 70% of original size (30% reduction) */
+.header.scrolled .header-main-nav {
+    padding: 0; /* Padding set to 0 when scrolled */
+}
+
+.header.scrolled .center-logo-img {
+    width: 110px; /* 70% of 150px */
+}
+
+.header.scrolled .nav-link-custom {
+    font-size: 11.1px; /* 70% of 13px */
+    padding: 0.7rem 0.56rem; /* 70% of original padding */
+}
+
+/* Add subtle shadow when scrolled */
+.header.scrolled {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}

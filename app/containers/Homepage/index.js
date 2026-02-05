@@ -292,7 +292,7 @@ class Homepage extends Component {
                     backgroundImage: `url(${slide.image})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
-                    height: '500px',
+                    height: '750px',
                     position: 'relative'
                   }}
                 >

@@ -677,7 +677,7 @@ class ObituaryPage extends Component {
                     .profile-photo-wrapper .gallery-custom-slider {
                         position: relative;
                         width: 100%;
-                        height: 400px;
+                        height: 100%;
                         overflow: hidden;
                         border-radius: 0;
                         background-color: #f9fafb;
@@ -690,6 +690,11 @@ class ObituaryPage extends Component {
                     }
 
                     .profile-photo-wrapper .gallery-slider-image {
+                    border-radius: 2px;
+                        border: 1px solid #e0d9d9;
+                        padding: 4px;
+                        box-shadow: 1px 1px 1px 1px rgba(50, 50, 50, .1) !important;
+                        background: #fff;
                         position: absolute;
                         top: 0;
                         left: 0;
