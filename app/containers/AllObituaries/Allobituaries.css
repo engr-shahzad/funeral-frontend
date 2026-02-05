@@ -1,391 +1,405 @@
 /* All Obituaries Page Styles */
 
 .all-obituaries-page {
-    min-height: 100vh;
-    background-color: #f8f9fa;
-  }
-  
-  /* Header Banner */
-  .obituaries-header-banner {
-    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-    color: white;
-    padding: 80px 0 60px;
-    text-align: center;
-    margin-bottom: 50px;
-  }
-  
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+/* Header Banner */
+.obituaries-header-banner {
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  color: white;
+  padding: 80px 0 60px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.page-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.page-subtitle {
+  font-size: 1.2rem;
+  font-weight: 300;
+  opacity: 0.9;
+}
+
+/* Content Container */
+.obituaries-content {
+  max-width: 1400px;
+  padding: 0 20px 80px;
+}
+
+/* Search Section */
+.search-section {
+  margin-top: 40px;
+}
+
+.search-wrapper-large {
+  width: 100%;
+}
+
+.search-input-large {
+  padding: 15px 50px 15px 25px;
+  font-size: 1.1rem;
+  border: 2px solid #ddd;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.search-input-large:focus {
+  border-color: #3498db;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+  outline: none;
+}
+
+.search-icon-large {
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.search-icon-large:hover {
+  color: #3498db;
+}
+
+/* Results Count */
+.results-count {
+  font-size: 1rem;
+  color: #666;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+/* Obituaries Grid */
+.obituaries-grid {
+  margin-top: 30px;
+}
+
+/* Obituary Card */
+.obituary-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.obituary-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Image Wrapper - FIXED: Removed padding-top, added fixed height */
+.obituary-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 300px; /* Fixed height instead of padding trick */
+  overflow: hidden;
+  background-color: #f0f0f0;
+}
+
+.obituary-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.obituary-card:hover .obituary-image {
+  transform: scale(1.05);
+}
+
+/* Overlay */
+.obituary-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 5;
+}
+
+.obituary-card:hover .obituary-overlay {
+  opacity: 1;
+}
+
+.view-obituary-text {
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Obituary Info */
+.obituary-info {
+  padding: 20px;
+  text-align: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.obituary-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.3;
+}
+
+.obituary-dates {
+  font-size: 0.95rem;
+  color: #7f8c8d;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.obituary-location {
+  font-size: 0.9rem;
+  color: #95a5a6;
+  margin-bottom: 0;
+  font-style: italic;
+}
+
+/* Pagination Styles */
+.pagination-wrapper {
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.pagination {
+  margin: 0;
+}
+
+.pagination .page-item {
+  margin: 0 3px;
+}
+
+.pagination .page-link {
+  border: 2px solid #ddd;
+  color: #2c3e50;
+  font-weight: 600;
+  padding: 10px 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  min-width: 45px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination .page-link:hover {
+  background-color: #3498db;
+  border-color: #3498db;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #2c3e50;
+  border-color: #2c3e50;
+  color: white;
+  font-weight: 700;
+}
+
+.pagination .page-item.disabled .page-link {
+  background-color: #f8f9fa;
+  border-color: #ddd;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination .page-item.disabled .page-link:hover {
+  transform: none;
+  background-color: #f8f9fa;
+  border-color: #ddd;
+  color: #ccc;
+}
+
+/* Page Info Text */
+.page-info-text {
+  color: #666;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Loading and Error States */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.alert {
+  border-radius: 12px;
+  padding: 30px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
   .page-title {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    font-size: 2.5rem;
   }
   
-  .page-subtitle {
-    font-size: 1.2rem;
-    font-weight: 300;
-    opacity: 0.9;
-  }
-  
-  /* Content Container */
-  .obituaries-content {
-    max-width: 1400px;
-    padding: 0 20px 80px;
-  }
-  
-  /* Search Section */
-  .search-section {
-    margin-top: 40px;
-  }
-  
-  .search-wrapper-large {
-    width: 100%;
-  }
-  
-  .search-input-large {
-    padding: 15px 50px 15px 25px;
-    font-size: 1.1rem;
-    border: 2px solid #ddd;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  }
-  
-  .search-input-large:focus {
-    border-color: #3498db;
-    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
-    outline: none;
-  }
-  
-  .search-icon-large {
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #666;
-    cursor: pointer;
-    transition: color 0.3s ease;
-  }
-  
-  .search-icon-large:hover {
-    color: #3498db;
-  }
-  
-  /* Results Count */
-  .results-count {
-    font-size: 1rem;
-    color: #666;
-    font-weight: 500;
-    margin-bottom: 20px;
-  }
-  
-  /* Obituaries Grid */
-  .obituaries-grid {
-    margin-top: 30px;
-  }
-  
-  /* Obituary Card */
-  .obituary-card {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .obituary-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Image Wrapper */
   .obituary-image-wrapper {
-    position: relative;
-    width: 100%;
-    padding-top: 100%; /* 1:1 Aspect Ratio */
-    overflow: hidden;
-    background-color: #f0f0f0;
+    height: 280px;
   }
-  
-  .obituary-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .obituaries-header-banner {
+    padding: 60px 0 40px;
+    margin-bottom: 30px;
   }
-  
-  .obituary-card:hover .obituary-image {
-    transform: scale(1.05);
+
+  .page-title {
+    font-size: 2rem;
   }
-  
-  /* Overlay */
-  .obituary-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  .obituary-card:hover .obituary-overlay {
-    opacity: 1;
-  }
-  
-  .view-obituary-text {
-    color: white;
+
+  .page-subtitle {
     font-size: 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
   }
-  
-  /* Obituary Info */
-  .obituary-info {
-    padding: 20px;
-    text-align: center;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+
+  .search-input-large {
+    padding: 12px 45px 12px 20px;
+    font-size: 1rem;
   }
-  
+
+  .search-icon-large {
+    right: 15px;
+  }
+
   .obituary-name {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #2c3e50;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    line-height: 1.3;
+    font-size: 1.1rem;
+  }
+
+  .obituaries-content {
+    padding-bottom: 50px;
   }
   
-  .obituary-dates {
-    font-size: 0.95rem;
-    color: #7f8c8d;
-    margin-bottom: 5px;
-    font-weight: 500;
+  .obituary-image-wrapper {
+    height: 250px;
   }
-  
-  .obituary-location {
-    font-size: 0.9rem;
-    color: #95a5a6;
-    margin-bottom: 0;
-    font-style: italic;
-  }
-  
-  /* Pagination Styles */
-  .pagination-wrapper {
-    margin-top: 40px;
-    margin-bottom: 20px;
-  }
-  
+
+  /* Mobile Pagination */
   .pagination {
-    margin: 0;
+    flex-wrap: wrap;
   }
-  
-  .pagination .page-item {
-    margin: 0 3px;
-  }
-  
+
   .pagination .page-link {
-    border: 2px solid #ddd;
-    color: #2c3e50;
-    font-weight: 600;
-    padding: 10px 15px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-    min-width: 45px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    min-width: 40px;
   }
-  
-  .pagination .page-link:hover {
-    background-color: #3498db;
-    border-color: #3498db;
-    color: white;
-    transform: translateY(-2px);
-  }
-  
-  .pagination .page-item.active .page-link {
-    background-color: #2c3e50;
-    border-color: #2c3e50;
-    color: white;
-    font-weight: 700;
-  }
-  
-  .pagination .page-item.disabled .page-link {
-    background-color: #f8f9fa;
-    border-color: #ddd;
-    color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  .pagination .page-item.disabled .page-link:hover {
-    transform: none;
-    background-color: #f8f9fa;
-    border-color: #ddd;
-    color: #ccc;
-  }
-  
-  /* Page Info Text */
-  .page-info-text {
-    color: #666;
-    font-size: 0.95rem;
-    font-weight: 500;
-    margin: 0;
-  }
-  
-  /* Loading and Error States */
-  .spinner-border {
-    width: 3rem;
-    height: 3rem;
-  }
-  
-  .alert {
-    border-radius: 12px;
-    padding: 30px;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 1200px) {
-    .page-title {
-      font-size: 2.5rem;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .obituaries-header-banner {
-      padding: 60px 0 40px;
-      margin-bottom: 30px;
-    }
-  
-    .page-title {
-      font-size: 2rem;
-    }
-  
-    .page-subtitle {
-      font-size: 1rem;
-    }
-  
-    .search-input-large {
-      padding: 12px 45px 12px 20px;
-      font-size: 1rem;
-    }
-  
-    .search-icon-large {
-      right: 15px;
-    }
-  
-    .obituary-name {
-      font-size: 1.1rem;
-    }
-  
-    .obituaries-content {
-      padding-bottom: 50px;
-    }
-  
-    /* Mobile Pagination */
-    .pagination {
-      flex-wrap: wrap;
-    }
-  
-    .pagination .page-link {
-      padding: 8px 12px;
-      font-size: 0.9rem;
-      min-width: 40px;
-    }
-  
-    .pagination .page-item {
-      margin: 2px;
-    }
-  }
-  
-  @media (max-width: 576px) {
-    .page-title {
-      font-size: 1.5rem;
-    }
-  
-    .page-subtitle {
-      font-size: 0.9rem;
-    }
-  
-    .obituary-info {
-      padding: 15px;
-    }
-  
-    .obituary-name {
-      font-size: 1rem;
-    }
-  
-    .obituary-dates {
-      font-size: 0.85rem;
-    }
-  
-    .obituary-location {
-      font-size: 0.8rem;
-    }
-  
-    /* Compact pagination for mobile */
-    .pagination .page-link {
-      padding: 6px 10px;
-      font-size: 0.85rem;
-      min-width: 35px;
-    }
-  
-    .page-info-text {
-      font-size: 0.85rem;
-    }
-  }
-  
-  /* Animation for cards on load */
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .obituary-card {
-    animation: fadeInUp 0.5s ease-out forwards;
-  }
-  
-  /* Stagger animation for multiple cards */
-  .obituaries-grid .col-xs-12:nth-child(1) .obituary-card { animation-delay: 0.05s; }
-  .obituaries-grid .col-xs-12:nth-child(2) .obituary-card { animation-delay: 0.1s; }
-  .obituaries-grid .col-xs-12:nth-child(3) .obituary-card { animation-delay: 0.15s; }
-  .obituaries-grid .col-xs-12:nth-child(4) .obituary-card { animation-delay: 0.2s; }
-  .obituaries-grid .col-xs-12:nth-child(5) .obituary-card { animation-delay: 0.25s; }
-  .obituaries-grid .col-xs-12:nth-child(6) .obituary-card { animation-delay: 0.3s; }
-  .obituaries-grid .col-xs-12:nth-child(7) .obituary-card { animation-delay: 0.35s; }
-  .obituaries-grid .col-xs-12:nth-child(8) .obituary-card { animation-delay: 0.4s; }
-  
-  /* Pagination Animation */
+
   .pagination .page-item {
-    animation: fadeInUp 0.3s ease-out forwards;
+    margin: 2px;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .obituary-info {
+    padding: 15px;
+  }
+
+  .obituary-name {
+    font-size: 1rem;
+  }
+
+  .obituary-dates {
+    font-size: 0.85rem;
+  }
+
+  .obituary-location {
+    font-size: 0.8rem;
   }
   
-  .pagination .page-item:nth-child(1) { animation-delay: 0.05s; }
-  .pagination .page-item:nth-child(2) { animation-delay: 0.1s; }
-  .pagination .page-item:nth-child(3) { animation-delay: 0.15s; }
-  .pagination .page-item:nth-child(4) { animation-delay: 0.2s; }
-  .pagination .page-item:nth-child(5) { animation-delay: 0.25s; }
-  .pagination .page-item:nth-child(6) { animation-delay: 0.3s; }
-  .pagination .page-item:nth-child(7) { animation-delay: 0.35s; }
+  .obituary-image-wrapper {
+    height: 220px;
+  }
+
+  /* Compact pagination for mobile */
+  .pagination .page-link {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    min-width: 35px;
+  }
+
+  .page-info-text {
+    font-size: 0.85rem;
+  }
+}
+
+/* Animation for cards on load */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.obituary-card {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* Stagger animation for multiple cards */
+.obituaries-grid .col-xs-12:nth-child(1) .obituary-card { animation-delay: 0.05s; }
+.obituaries-grid .col-xs-12:nth-child(2) .obituary-card { animation-delay: 0.1s; }
+.obituaries-grid .col-xs-12:nth-child(3) .obituary-card { animation-delay: 0.15s; }
+.obituaries-grid .col-xs-12:nth-child(4) .obituary-card { animation-delay: 0.2s; }
+.obituaries-grid .col-xs-12:nth-child(5) .obituary-card { animation-delay: 0.25s; }
+.obituaries-grid .col-xs-12:nth-child(6) .obituary-card { animation-delay: 0.3s; }
+.obituaries-grid .col-xs-12:nth-child(7) .obituary-card { animation-delay: 0.35s; }
+.obituaries-grid .col-xs-12:nth-child(8) .obituary-card { animation-delay: 0.4s; }
+
+/* Pagination Animation */
+.pagination .page-item {
+  animation: fadeInUp 0.3s ease-out forwards;
+}
+
+.pagination .page-item:nth-child(1) { animation-delay: 0.05s; }
+.pagination .page-item:nth-child(2) { animation-delay: 0.1s; }
+.pagination .page-item:nth-child(3) { animation-delay: 0.15s; }
+.pagination .page-item:nth-child(4) { animation-delay: 0.2s; }
+.pagination .page-item:nth-child(5) { animation-delay: 0.25s; }
+.pagination .page-item:nth-child(6) { animation-delay: 0.3s; }
+.pagination .page-item:nth-child(7) { animation-delay: 0.35s; }

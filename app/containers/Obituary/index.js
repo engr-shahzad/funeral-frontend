@@ -4,13 +4,107 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import actions from '../../actions';
 
-// Import Swiper for Slider
-import SwiperCore, { Navigation, Pagination, Autoplay } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper.min.css';
-import 'swiper/components/pagination/pagination.min.css';
+// ✅ Custom Gallery Slider Component
+class GallerySlider extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentIndex: 0
+        };
+        this.autoplayInterval = null;
+    }
 
-SwiperCore.use([Navigation, Pagination, Autoplay]);
+    componentDidMount() {
+        this.startAutoplay();
+    }
+
+    componentWillUnmount() {
+        this.stopAutoplay();
+    }
+
+    startAutoplay = () => {
+        this.autoplayInterval = setInterval(() => {
+            this.nextSlide();
+        }, 4000);
+    };
+
+    stopAutoplay = () => {
+        if (this.autoplayInterval) {
+            clearInterval(this.autoplayInterval);
+        }
+    };
+
+    nextSlide = () => {
+        const { images } = this.props;
+        this.setState(prevState => ({
+            currentIndex: (prevState.currentIndex + 1) % images.length
+        }));
+    };
+
+    prevSlide = () => {
+        const { images } = this.props;
+        this.setState(prevState => ({
+            currentIndex: prevState.currentIndex === 0 ? images.length - 1 : prevState.currentIndex - 1
+        }));
+    };
+
+    goToSlide = (index) => {
+        this.setState({ currentIndex: index });
+        this.stopAutoplay();
+        this.startAutoplay();
+    };
+
+    render() {
+        const { images } = this.props;
+        const { currentIndex } = this.state;
+
+        return (
+            <div className="gallery-custom-slider">
+                <div className="gallery-slider-container">
+                    {images.map((img, idx) => (
+                        <img
+                            key={idx}
+                            src={img}
+                            alt={`Memory ${idx + 1}`}
+                            className={`gallery-slider-image ${idx === currentIndex ? 'active' : ''}`}
+                            onError={(e) => {
+                                e.target.src = 'https://via.placeholder.com/800x400?text=Image+Not+Found';
+                            }}
+                        />
+                    ))}
+                </div>
+
+                {/* Navigation Arrows */}
+                <button 
+                    className="gallery-nav-btn gallery-nav-prev" 
+                    onClick={this.prevSlide}
+                    aria-label="Previous slide"
+                >
+                    ‹
+                </button>
+                <button 
+                    className="gallery-nav-btn gallery-nav-next" 
+                    onClick={this.nextSlide}
+                    aria-label="Next slide"
+                >
+                    ›
+                </button>
+
+                {/* Pagination Dots */}
+                <div className="gallery-slider-pagination">
+                    {images.map((_, idx) => (
+                        <button
+                            key={idx}
+                            className={`gallery-pagination-dot ${idx === currentIndex ? 'active' : ''}`}
+                            onClick={() => this.goToSlide(idx)}
+                            aria-label={`Go to slide ${idx + 1}`}
+                        />
+                    ))}
+                </div>
+            </div>
+        );
+    }
+}
 
 class ObituaryPage extends Component {
     constructor(props) {
@@ -146,6 +240,29 @@ class ObituaryPage extends Component {
         });
     }
 
+    // ✅ Get gallery images with filtering
+    getGalleryImages = (obituaryData) => {
+        let images = [];
+
+        // Check photos array first
+        if (obituaryData.photos && Array.isArray(obituaryData.photos) && obituaryData.photos.length > 0) {
+            images = obituaryData.photos.filter(photo => photo && typeof photo === 'string' && photo.trim() !== '');
+        }
+        // Fallback to images array
+        else if (obituaryData.images && Array.isArray(obituaryData.images) && obituaryData.images.length > 0) {
+            images = obituaryData.images.filter(img => img && typeof img === 'string' && img.trim() !== '');
+        }
+        // Fallback to individual photo fields
+        else {
+            const photoFields = [obituaryData.photo, obituaryData.backgroundImage].filter(img => img && typeof img === 'string' && img.trim() !== '');
+            if (photoFields.length > 0) {
+                images = photoFields;
+            }
+        }
+
+        return images;
+    }
+
     render() {
         const { obituaryData, condolences, condolenceStats, totalCondolences, loading, error, newCondolence, condolenceName, condolenceEmail } = this.state;
 
@@ -158,11 +275,11 @@ class ObituaryPage extends Component {
         // Dynamic Cover Image logic
         const coverImage = obituaryData.backgroundImage || obituaryData.photo || 'https://images.unsplash.com/photo-1441260038675-7329ab4cc264?w=1200';
         
-        // Gallery logic (ensure array)
-        const galleryImages = obituaryData.images && obituaryData.images.length > 0 
-            ? obituaryData.images 
-            : [obituaryData.photo, obituaryData.backgroundImage].filter(Boolean);
-        console.log(galleryImages.length);
+        // ✅ Gallery logic with proper filtering
+        const galleryImages = this.getGalleryImages(obituaryData);
+        const hasMultipleImages = galleryImages.length > 1;
+
+        console.log('Gallery images:', galleryImages.length, galleryImages);
 
         return (
             <div className="min-h-screen bg-gray-50 font-sans">
@@ -227,24 +344,23 @@ class ObituaryPage extends Component {
                     {/* Main Content */}
                     <div className="lg:col-span-2">
                         
-                        {/* 2. Slider (Multiple Images) */}
+                        {/* 2. Gallery Slider or Single Image */}
                         {galleryImages.length > 0 && (
                             <div className="bg-white p-2 rounded-lg shadow-sm mb-8">
-                                <Swiper
-                                    spaceBetween={10}
-                                    slidesPerView={1}
-                                    navigation
-                                    pagination={{ clickable: true }}
-                                    autoplay={{ delay: 4000, disableOnInteraction: false }}
-                                    className="rounded-lg overflow-hidden"
-                                    style={{ height: '400px' }}
-                                >
-                                    {galleryImages.map((img, idx) => (
-                                        <SwiperSlide key={idx}>
-                                            <img src={img} alt={`Memory ${idx}`} className="w-full h-full object-contain bg-gray-50" />
-                                        </SwiperSlide>
-                                    ))}
-                                </Swiper>
+                                {hasMultipleImages ? (
+                                    <GallerySlider images={galleryImages} />
+                                ) : (
+                                    <div className="gallery-single-image-wrapper">
+                                        <img 
+                                            src={galleryImages[0]} 
+                                            alt="Memory" 
+                                            className="w-full h-full object-contain bg-gray-50 rounded-lg"
+                                            onError={(e) => {
+                                                e.target.src = 'https://via.placeholder.com/800x400?text=Image+Not+Found';
+                                            }}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         )}
 
@@ -390,6 +506,116 @@ class ObituaryPage extends Component {
                         </div>
                     </div>
                 </div>
+
+                <style>{`
+                    /* Custom Gallery Slider Styles */
+                    .gallery-custom-slider {
+                        position: relative;
+                        width: 100%;
+                        height: 400px;
+                        overflow: hidden;
+                        border-radius: 8px;
+                        background-color: #f9fafb;
+                    }
+
+                    .gallery-slider-container {
+                        position: relative;
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    .gallery-slider-image {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: contain;
+                        opacity: 0;
+                        transition: opacity 0.5s ease-in-out;
+                        background-color: #f9fafb;
+                    }
+
+                    .gallery-slider-image.active {
+                        opacity: 1;
+                        z-index: 1;
+                    }
+
+                    .gallery-nav-btn {
+                        position: absolute;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        background: rgba(0, 0, 0, 0.5);
+                        color: white;
+                        border: none;
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        font-size: 24px;
+                        cursor: pointer;
+                        z-index: 10;
+                        transition: background 0.3s ease;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+
+                    .gallery-nav-btn:hover {
+                        background: rgba(0, 0, 0, 0.7);
+                    }
+
+                    .gallery-nav-prev {
+                        left: 10px;
+                    }
+
+                    .gallery-nav-next {
+                        right: 10px;
+                    }
+
+                    .gallery-slider-pagination {
+                        position: absolute;
+                        bottom: 15px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        display: flex;
+                        gap: 8px;
+                        z-index: 10;
+                    }
+
+                    .gallery-pagination-dot {
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.6);
+                        border: none;
+                        padding: 0;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                    }
+
+                    .gallery-pagination-dot:hover {
+                        background: rgba(255, 255, 255, 0.8);
+                    }
+
+                    .gallery-pagination-dot.active {
+                        background: white;
+                        transform: scale(1.2);
+                    }
+
+                    .gallery-single-image-wrapper {
+                        width: 100%;
+                        height: 400px;
+                        border-radius: 8px;
+                        overflow: hidden;
+                        background-color: #f9fafb;
+                    }
+
+                    .gallery-single-image-wrapper img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: contain;
+                    }
+                `}</style>
             </div>
         );
     }

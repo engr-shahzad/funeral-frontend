@@ -70,6 +70,8 @@ import FAQ from '../FAQ';
 import Location from '../Location';
 import SendFlowers from '../SendFlowers';
 import Admin from '../Admin';
+import BlogList from '../Blog/Bloglist';
+import BlogPage from '../Blog/Blogpage';
 
 class Application extends React.PureComponent {
   componentDidMount() {
@@ -123,6 +125,10 @@ class Application extends React.PureComponent {
                 <Route path="/obituaries" component={AllObituaries} />
                 <Route path="/obituary/:slug" component={ObituaryPage} />
                 <Route path="/send-flowers" component={SendFlowers} />
+
+                {/* ================= BLOG ROUTES ================= */}
+                <Route exact path="/blogs" component={BlogList} />
+                <Route path="/blog/:id" component={BlogPage} />
 
                 <Route path="/add-obituary" component={Authentication(AddObituary)} />
                 <Route path="/add-product" component={Authentication(AddProduct)} />

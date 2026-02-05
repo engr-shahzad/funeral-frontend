@@ -13,6 +13,108 @@ import 'swiper/swiper-bundle.css';
 // Install Swiper modules
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
+// ✅ Custom Gallery Slider Component
+class GallerySlider extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentIndex: 0
+        };
+        this.autoplayInterval = null;
+    }
+
+    componentDidMount() {
+        this.startAutoplay();
+    }
+
+    componentWillUnmount() {
+        this.stopAutoplay();
+    }
+
+    startAutoplay = () => {
+        this.autoplayInterval = setInterval(() => {
+            this.nextSlide();
+        }, 4000);
+    };
+
+    stopAutoplay = () => {
+        if (this.autoplayInterval) {
+            clearInterval(this.autoplayInterval);
+        }
+    };
+
+    nextSlide = () => {
+        const { images } = this.props;
+        this.setState(prevState => ({
+            currentIndex: (prevState.currentIndex + 1) % images.length
+        }));
+    };
+
+    prevSlide = () => {
+        const { images } = this.props;
+        this.setState(prevState => ({
+            currentIndex: prevState.currentIndex === 0 ? images.length - 1 : prevState.currentIndex - 1
+        }));
+    };
+
+    goToSlide = (index) => {
+        this.setState({ currentIndex: index });
+        this.stopAutoplay();
+        this.startAutoplay();
+    };
+
+    render() {
+        const { images } = this.props;
+        const { currentIndex } = this.state;
+
+        return (
+            <div className="gallery-custom-slider">
+                <div className="gallery-slider-container">
+                    {images.map((img, idx) => (
+                        <img
+                            key={idx}
+                            src={img}
+                            alt={`Memory ${idx + 1}`}
+                            className={`gallery-slider-image ${idx === currentIndex ? 'active' : ''}`}
+                            onError={(e) => {
+                                e.target.src = 'https://via.placeholder.com/800x400?text=Image+Not+Found';
+                            }}
+                        />
+                    ))}
+                </div>
+
+                {/* Navigation Arrows */}
+                <button 
+                    className="gallery-nav-btn gallery-nav-prev" 
+                    onClick={this.prevSlide}
+                    aria-label="Previous slide"
+                >
+                    ‹
+                </button>
+                <button 
+                    className="gallery-nav-btn gallery-nav-next" 
+                    onClick={this.nextSlide}
+                    aria-label="Next slide"
+                >
+                    ›
+                </button>
+
+                {/* Pagination Dots */}
+                <div className="gallery-slider-pagination">
+                    {images.map((_, idx) => (
+                        <button
+                            key={idx}
+                            className={`gallery-pagination-dot ${idx === currentIndex ? 'active' : ''}`}
+                            onClick={() => this.goToSlide(idx)}
+                            aria-label={`Go to slide ${idx + 1}`}
+                        />
+                    ))}
+                </div>
+            </div>
+        );
+    }
+}
+
 class ObituaryPage extends Component {
     constructor(props) {
         super(props);
@@ -30,11 +132,15 @@ class ObituaryPage extends Component {
             loading: true,
             error: null,
             condolenceName: '',
-            condolenceEmail: ''
-            // Removed activeTab state
+            condolenceEmail: '',
+            // ✅ NEW: Music player state
+            isMusicPlaying: false,
+            isMusicMuted: false
         };
 
         this.handlePlantTree = this.handlePlantTree.bind(this);
+        // ✅ NEW: Audio ref
+        this.audioRef = React.createRef();
     }
 
     componentDidMount() {
@@ -84,6 +190,9 @@ class ObituaryPage extends Component {
                         gifts: 0
                     },
                     loading: false
+                }, () => {
+                    // ✅ NEW: Autoplay music after data is loaded
+                    this.playMusic();
                 });
             })
             .catch(err => {
@@ -178,6 +287,68 @@ class ObituaryPage extends Component {
         }
     }
 
+    // ✅ NEW: Music control methods
+    playMusic = () => {
+        const { obituaryData } = this.state;
+        if (obituaryData && obituaryData.music && this.audioRef.current) {
+            this.audioRef.current.play()
+                .then(() => {
+                    this.setState({ isMusicPlaying: true });
+                })
+                .catch(error => {
+                    console.log('Autoplay prevented:', error);
+                    // Browser might block autoplay, that's okay
+                });
+        }
+    }
+
+    pauseMusic = () => {
+        if (this.audioRef.current) {
+            this.audioRef.current.pause();
+            this.setState({ isMusicPlaying: false });
+        }
+    }
+
+    toggleMusic = () => {
+        const { isMusicPlaying } = this.state;
+        if (isMusicPlaying) {
+            this.pauseMusic();
+        } else {
+            this.playMusic();
+        }
+    }
+
+    toggleMute = () => {
+        const { isMusicMuted } = this.state;
+        if (this.audioRef.current) {
+            this.audioRef.current.muted = !isMusicMuted;
+            this.setState({ isMusicMuted: !isMusicMuted });
+        }
+    }
+
+    // ✅ Get gallery images with filtering
+    getGalleryImages = (obituaryData) => {
+        let images = [];
+
+        // Check photos array first
+        if (obituaryData.photos && Array.isArray(obituaryData.photos) && obituaryData.photos.length > 0) {
+            images = obituaryData.photos.filter(photo => photo && typeof photo === 'string' && photo.trim() !== '');
+        }
+        // Fallback to images array
+        else if (obituaryData.images && Array.isArray(obituaryData.images) && obituaryData.images.length > 0) {
+            images = obituaryData.images.filter(img => img && typeof img === 'string' && img.trim() !== '');
+        }
+        // Fallback to individual photo fields
+        else {
+            const photoFields = [obituaryData.photo, obituaryData.backgroundImage].filter(img => img && typeof img === 'string' && img.trim() !== '');
+            if (photoFields.length > 0) {
+                images = photoFields;
+            }
+        }
+
+        return images;
+    }
+
     render() {
         const {
             obituaryData,
@@ -196,10 +367,11 @@ class ObituaryPage extends Component {
         const approvedCondolences = condolences.filter(c => c.isApproved);
         console.log('Approved Condolences:', obituaryData);
         
-        // Prepare images for slider (Mock array if only single photo exists)
-        const galleryImages = obituaryData.images && obituaryData.images.length > 0 
-            ? obituaryData.images 
-            : [obituaryData.photo, obituaryData.backgroundImage].filter(Boolean);
+        // ✅ Gallery logic with proper filtering
+        const galleryImages = this.getGalleryImages(obituaryData);
+        const hasMultipleImages = galleryImages.length > 1;
+
+        console.log('Gallery images:', galleryImages.length, galleryImages);
 
         return (
             <div className="obituary-page">
@@ -207,9 +379,41 @@ class ObituaryPage extends Component {
                 <header className="obituary-header">
                     <div className="header-content">
                         <h1 className="header-title">West River Funeral Directors LLC</h1>
-                        <button onClick={() => window.location.href = '/'} className="home-button">HOME PAGE</button>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                            {/* ✅ NEW: Music Controls */}
+                            {obituaryData.music && (
+                                <div className="music-controls">
+                                    <button 
+                                        onClick={this.toggleMusic} 
+                                        className="music-control-btn"
+                                        title={this.state.isMusicPlaying ? 'Pause Music' : 'Play Music'}
+                                    >
+                                        <i className={`fa fa-${this.state.isMusicPlaying ? 'pause' : 'play'}`}></i>
+                                    </button>
+                                    <button 
+                                        onClick={this.toggleMute} 
+                                        className="music-control-btn"
+                                        title={this.state.isMusicMuted ? 'Unmute' : 'Mute'}
+                                    >
+                                        <i className={`fa fa-volume-${this.state.isMusicMuted ? 'off' : 'up'}`}></i>
+                                    </button>
+                                </div>
+                            )}
+                            <button onClick={() => window.location.href = '/'} className="home-button">HOME PAGE</button>
+                        </div>
                     </div>
                 </header>
+
+                {/* ✅ NEW: Hidden Audio Element */}
+                {obituaryData.music && (
+                    <audio 
+                        ref={this.audioRef} 
+                        src={obituaryData.music} 
+                        loop
+                        onPlay={() => this.setState({ isMusicPlaying: true })}
+                        onPause={() => this.setState({ isMusicPlaying: false })}
+                    />
+                )}
 
                 {/* Hero Image (Cover Photo) */}
                 <div className="hero-section">
@@ -227,11 +431,15 @@ class ObituaryPage extends Component {
                         <aside className="sidebar">
                             <div className="photo-card">
                                 <div className="profile-photo-wrapper">
-                                    <img
-                                        src={obituaryData.photo || 'https://via.placeholder.com/300x400?text=No+Photo'}
-                                        alt={`${obituaryData.firstName} ${obituaryData.lastName}`}
-                                        className="profile-photo"
-                                    />
+                                    {hasMultipleImages ? (
+                                        <GallerySlider images={galleryImages} />
+                                    ) : (
+                                        <img
+                                            src={galleryImages.length > 0 ? galleryImages[0] : (obituaryData.photo || 'https://via.placeholder.com/300x400?text=No+Photo')}
+                                            alt={`${obituaryData.firstName} ${obituaryData.lastName}`}
+                                            className="profile-photo"
+                                        />
+                                    )}
                                 </div>
                                 <div className="obit-sharing">
                                     <button className="btn ob-btn-social btn-facebook" onClick={shareOnFacebook}><i className="fa fa-facebook"></i></button>
@@ -310,26 +518,6 @@ class ObituaryPage extends Component {
                                 <p className="date-text">
                                     {new Date(obituaryData.birthDate).toLocaleDateString()} - {new Date(obituaryData.deathDate).toLocaleDateString()}
                                 </p>
-
-                                {/* 1. Image Slider */}
-                                {/* {galleryImages.length > 0 && (
-                                    <div className="obituary-slider-wrapper">
-                                        <Swiper
-                                            spaceBetween={10}
-                                            slidesPerView={1}
-                                            navigation
-                                            pagination={{ clickable: true }}
-                                            autoplay={{ delay: 3000 }}
-                                            className="obituary-swiper"
-                                        >
-                                            {galleryImages.map((img, idx) => (
-                                                <SwiperSlide key={idx}>
-                                                    <img src={img} alt={`Slide ${idx}`} className="slider-image" />
-                                                </SwiperSlide>
-                                            ))}
-                                        </Swiper>
-                                    </div>
-                                )} */}
 
                                 {/* 2. Biography */}
                                 <div className="obituary-content">
@@ -446,6 +634,139 @@ class ObituaryPage extends Component {
                         </main>
                     </div>
                 </div>
+
+                <style jsx>{`
+                    /* Music Controls */
+                    .music-controls {
+                        display: flex;
+                        gap: 8px;
+                        align-items: center;
+                    }
+
+                    .music-control-btn {
+                        background: rgba(255, 255, 255, 0.95);
+                        border: 2px solid #ddd;
+                        border-radius: 50%;
+                        width: 40px;
+                        height: 40px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                    }
+
+                    .music-control-btn:hover {
+                        background: #ffffff;
+                        border-color: #4CAF50;
+                        transform: scale(1.05);
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                    }
+
+                    .music-control-btn i {
+                        font-size: 16px;
+                        color: #333;
+                    }
+
+                    .music-control-btn:hover i {
+                        color: #4CAF50;
+                    }
+
+                    /* Custom Gallery Slider Styles for Profile Photo Wrapper */
+                    .profile-photo-wrapper .gallery-custom-slider {
+                        position: relative;
+                        width: 100%;
+                        height: 400px;
+                        overflow: hidden;
+                        border-radius: 0;
+                        background-color: #f9fafb;
+                    }
+
+                    .profile-photo-wrapper .gallery-slider-container {
+                        position: relative;
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    .profile-photo-wrapper .gallery-slider-image {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        opacity: 0;
+                        transition: opacity 0.5s ease-in-out;
+                        background-color: #f9fafb;
+                    }
+
+                    .profile-photo-wrapper .gallery-slider-image.active {
+                        opacity: 1;
+                        z-index: 1;
+                    }
+
+                    .profile-photo-wrapper .gallery-nav-btn {
+                        position: absolute;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        background: rgba(0, 0, 0, 0.5);
+                        color: white;
+                        border: none;
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        font-size: 24px;
+                        cursor: pointer;
+                        z-index: 10;
+                        transition: background 0.3s ease;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+
+                    .profile-photo-wrapper .gallery-nav-btn:hover {
+                        background: rgba(0, 0, 0, 0.7);
+                    }
+
+                    .profile-photo-wrapper .gallery-nav-prev {
+                        left: 10px;
+                    }
+
+                    .profile-photo-wrapper .gallery-nav-next {
+                        right: 10px;
+                    }
+
+                    .profile-photo-wrapper .gallery-slider-pagination {
+                        position: absolute;
+                        bottom: 15px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        display: flex;
+                        gap: 8px;
+                        z-index: 10;
+                    }
+
+                    .profile-photo-wrapper .gallery-pagination-dot {
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.6);
+                        border: none;
+                        padding: 0;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                    }
+
+                    .profile-photo-wrapper .gallery-pagination-dot:hover {
+                        background: rgba(255, 255, 255, 0.8);
+                    }
+
+                    .profile-photo-wrapper .gallery-pagination-dot.active {
+                        background: white;
+                        transform: scale(1.2);
+                    }
+                `}</style>
             </div>
         );
     }

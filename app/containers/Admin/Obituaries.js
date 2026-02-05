@@ -1,5 +1,5 @@
 /**
- * Admin Obituaries Management - Updated with Data Mapping
+ * Admin Obituaries Management - Updated with Multiple Image URLs, Background Image, and Music
  */
 
 import React, { useState, useEffect } from 'react';
@@ -29,9 +29,13 @@ const mapObituary = (jsonObituary) => {
     lastName: jsonObituary.LAST || jsonObituary.lastName || '',
     birthDate: jsonObituary.DOB || jsonObituary.birthDate || null,
     deathDate: jsonObituary.DOD || jsonObituary.deathDate || null,
-    location: jsonObituary.location || '', // Extract from biography if needed
+    location: jsonObituary.location || '',
     biography: jsonObituary.OBITUARY ? cleanHtmlText(jsonObituary.OBITUARY) : (jsonObituary.biography || ''),
-    photo: jsonObituary.IMAGE || jsonObituary.photo || '',
+    photos: jsonObituary.photos || (jsonObituary.photo ? [jsonObituary.photo] : []) || (jsonObituary.IMAGE ? [jsonObituary.IMAGE] : []),
+    primaryPhoto: jsonObituary.primaryPhoto || jsonObituary.photo || jsonObituary.IMAGE || '',
+    backgroundImage: jsonObituary.backgroundImage || '',
+    music: jsonObituary.music || '',
+    musicType: jsonObituary.musicType || null,
     serviceType: jsonObituary.serviceType || 'PRIVATE FAMILY SERVICE',
     serviceDate: jsonObituary.serviceDate || null,
     serviceLocation: jsonObituary.serviceLocation || '',
@@ -57,13 +61,24 @@ const ObituariesAdmin = () => {
     deathDate: '',
     location: '',
     biography: '',
-    photo: '',
+    photos: [],
+    backgroundImage: '',
+    music: '',
+    musicType: null,
     serviceType: 'PRIVATE FAMILY SERVICE',
     serviceDate: '',
     serviceLocation: '',
     isPublished: true
   });
   const [saving, setSaving] = useState(false);
+  // State for adding photo URLs
+  const [newPhotoUrl, setNewPhotoUrl] = useState('');
+  // ✅ NEW: State for background image
+  const [backgroundImageUrl, setBackgroundImageUrl] = useState('');
+  // ✅ NEW: State for music (link or file)
+  const [musicUrl, setMusicUrl] = useState('');
+  const [musicFile, setMusicFile] = useState(null);
+  const [musicInputType, setMusicInputType] = useState('link'); // 'link' or 'file'
 
   useEffect(() => {
     fetchObituaries();
@@ -74,15 +89,12 @@ const ObituariesAdmin = () => {
       setLoading(true);
       const response = await axios.get(`${API_URL}/obituaries`);
       
-      // Map the obituaries data to the expected format
       let obituariesData = response.data.obituaries || response.data || [];
       
-      // If data is not an array, try to extract it
       if (!Array.isArray(obituariesData)) {
         obituariesData = [];
       }
       
-      // Map each obituary to the frontend format
       const mappedObituaries = obituariesData.map(mapObituary);
       
       setObituaries(mappedObituaries);
@@ -102,6 +114,66 @@ const ObituariesAdmin = () => {
     }));
   };
 
+  // Add photo URL to the list
+  const addPhotoUrl = () => {
+    if (newPhotoUrl.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        photos: [...prev.photos, newPhotoUrl.trim()]
+      }));
+      setNewPhotoUrl('');
+    }
+  };
+
+  // Remove photo from the list
+  const removePhoto = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      photos: prev.photos.filter((_, i) => i !== index)
+    }));
+  };
+
+  // ✅ NEW: Add background image URL
+  const addBackgroundImage = () => {
+    if (backgroundImageUrl.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        backgroundImage: backgroundImageUrl.trim()
+      }));
+    }
+  };
+
+  // ✅ NEW: Remove background image
+  const removeBackgroundImage = () => {
+    setFormData(prev => ({
+      ...prev,
+      backgroundImage: ''
+    }));
+    setBackgroundImageUrl('');
+  };
+
+  // ✅ NEW: Add music (link or file)
+  const addMusic = () => {
+    if (musicInputType === 'link' && musicUrl.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        music: musicUrl.trim(),
+        musicType: 'link'
+      }));
+    }
+  };
+
+  // ✅ NEW: Remove music
+  const removeMusic = () => {
+    setFormData(prev => ({
+      ...prev,
+      music: '',
+      musicType: null
+    }));
+    setMusicUrl('');
+    setMusicFile(null);
+  };
+
   const openAddModal = () => {
     setEditingObituary(null);
     setFormData({
@@ -112,12 +184,20 @@ const ObituariesAdmin = () => {
       deathDate: '',
       location: '',
       biography: '',
-      photo: '',
+      photos: [],
+      backgroundImage: '',
+      music: '',
+      musicType: null,
       serviceType: 'PRIVATE FAMILY SERVICE',
       serviceDate: '',
       serviceLocation: '',
       isPublished: true
     });
+    setNewPhotoUrl('');
+    setBackgroundImageUrl('');
+    setMusicUrl('');
+    setMusicFile(null);
+    setMusicInputType('link');
     setShowModal(true);
   };
 
@@ -131,12 +211,20 @@ const ObituariesAdmin = () => {
       deathDate: obituary.deathDate ? obituary.deathDate.split('T')[0] : '',
       location: obituary.location || '',
       biography: obituary.biography || '',
-      photo: obituary.photo || '',
+      photos: obituary.photos || [],
+      backgroundImage: obituary.backgroundImage || '',
+      music: obituary.music || '',
+      musicType: obituary.musicType || null,
       serviceType: obituary.serviceType || 'PRIVATE FAMILY SERVICE',
       serviceDate: obituary.serviceDate ? obituary.serviceDate.split('T')[0] : '',
       serviceLocation: obituary.serviceLocation || '',
       isPublished: obituary.isPublished !== false
     });
+    setNewPhotoUrl('');
+    setBackgroundImageUrl(obituary.backgroundImage || '');
+    setMusicUrl(obituary.musicType === 'link' ? obituary.music : '');
+    setMusicFile(null);
+    setMusicInputType(obituary.musicType === 'upload' ? 'file' : 'link');
     setShowModal(true);
   };
 
@@ -151,6 +239,13 @@ const ObituariesAdmin = () => {
         deathDate: formData.deathDate || null,
         serviceDate: formData.serviceDate || null
       };
+
+      // Handle music file upload separately if needed
+      if (musicFile) {
+        // You'll need to implement file upload logic here
+        // For now, we're just handling URLs
+        console.log('Music file upload not yet implemented:', musicFile);
+      }
 
       if (editingObituary) {
         await axios.put(`${API_URL}/obituaries/${editingObituary._id}`, payload);
@@ -284,7 +379,7 @@ const ObituariesAdmin = () => {
             <table className="admin-table">
               <thead>
                 <tr>
-                  <th>Photo</th>
+                  <th>Photos</th>
                   <th>Name</th>
                   <th>Dates</th>
                   <th>Age</th>
@@ -297,8 +392,33 @@ const ObituariesAdmin = () => {
                 {filteredObituaries.map(obituary => (
                   <tr key={obituary._id}>
                     <td>
-                      {obituary.photo ? (
-                        <img src={obituary.photo} alt="" className="image-preview" />
+                      {obituary.photos && obituary.photos.length > 0 ? (
+                        <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                          {obituary.photos.slice(0, 3).map((photo, idx) => (
+                            <img 
+                              key={idx}
+                              src={photo} 
+                              alt="" 
+                              className="image-preview" 
+                              style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }}
+                            />
+                          ))}
+                          {obituary.photos.length > 3 && (
+                            <div style={{ 
+                              width: '40px', 
+                              height: '40px', 
+                              background: '#e5e7eb', 
+                              borderRadius: '4px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '12px',
+                              fontWeight: 'bold'
+                            }}>
+                              +{obituary.photos.length - 3}
+                            </div>
+                          )}
+                        </div>
                       ) : (
                         <div className="image-preview" style={{ background: '#e5e7eb', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           <i className="fa fa-user" style={{ color: '#9ca3af' }} />
@@ -366,7 +486,7 @@ const ObituariesAdmin = () => {
       {/* Add/Edit Modal */}
       {showModal && (
         <div className="admin-modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="admin-modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '700px' }}>
+          <div className="admin-modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '700px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div className="modal-header">
               <h2>{editingObituary ? 'Edit Obituary' : 'Add New Obituary'}</h2>
               <button className="modal-close" onClick={() => setShowModal(false)}>&times;</button>
@@ -438,15 +558,326 @@ const ObituariesAdmin = () => {
                     />
                   </div>
 
+                  {/* Photo URL Input Section */}
                   <div className="form-group">
-                    <label>Photo URL</label>
-                    <input
-                      type="url"
-                      name="photo"
-                      value={formData.photo}
-                      onChange={handleInputChange}
-                      placeholder="https://..."
-                    />
+                    <label>Photo URLs</label>
+                    <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
+                      <input
+                        type="url"
+                        placeholder="Enter image URL (https://...)"
+                        value={newPhotoUrl}
+                        onChange={(e) => setNewPhotoUrl(e.target.value)}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            addPhotoUrl();
+                          }
+                        }}
+                        style={{ flex: 1 }}
+                      />
+                      <button
+                        type="button"
+                        onClick={addPhotoUrl}
+                        className="btn-admin btn-sm btn-primary"
+                        style={{ whiteSpace: 'nowrap' }}
+                      >
+                        <i className="fa fa-plus" /> Add
+                      </button>
+                    </div>
+                    
+                    {/* Show added photos */}
+                    {formData.photos && formData.photos.length > 0 && (
+                      <div>
+                        <small style={{ color: '#666', display: 'block', marginBottom: '8px' }}>
+                          Added Photos ({formData.photos.length}):
+                        </small>
+                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                          {formData.photos.map((photo, index) => (
+                            <div key={index} style={{ position: 'relative', width: '100px', height: '100px' }}>
+                              <img 
+                                src={photo} 
+                                alt="" 
+                                style={{ 
+                                  width: '100%', 
+                                  height: '100%', 
+                                  objectFit: 'cover', 
+                                  borderRadius: '4px',
+                                  border: '2px solid #e5e7eb'
+                                }}
+                                onError={(e) => {
+                                  e.target.style.display = 'none';
+                                  e.target.nextSibling.style.display = 'flex';
+                                }}
+                              />
+                              <div style={{
+                                display: 'none',
+                                width: '100%',
+                                height: '100%',
+                                background: '#f3f4f6',
+                                borderRadius: '4px',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '12px',
+                                color: '#9ca3af',
+                                textAlign: 'center',
+                                padding: '5px'
+                              }}>
+                                Invalid URL
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => removePhoto(index)}
+                                style={{
+                                  position: 'absolute',
+                                  top: '-8px',
+                                  right: '-8px',
+                                  background: '#ef4444',
+                                  color: 'white',
+                                  border: 'none',
+                                  borderRadius: '50%',
+                                  width: '24px',
+                                  height: '24px',
+                                  cursor: 'pointer',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  fontSize: '14px',
+                                  fontWeight: 'bold',
+                                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                                }}
+                                title="Remove photo"
+                              >
+                                ×
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* ✅ NEW: Background Image URL Section */}
+                  <div className="form-group">
+                    <label>Background Image URL (Optional)</label>
+                    <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
+                      <input
+                        type="url"
+                        placeholder="Enter background image URL (https://...)"
+                        value={backgroundImageUrl}
+                        onChange={(e) => setBackgroundImageUrl(e.target.value)}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            addBackgroundImage();
+                          }
+                        }}
+                        style={{ flex: 1 }}
+                        disabled={!!formData.backgroundImage}
+                      />
+                      <button
+                        type="button"
+                        onClick={addBackgroundImage}
+                        className="btn-admin btn-sm btn-primary"
+                        style={{ whiteSpace: 'nowrap' }}
+                        disabled={!!formData.backgroundImage}
+                      >
+                        <i className="fa fa-plus" /> Add
+                      </button>
+                    </div>
+                    
+                    {/* Show background image preview */}
+                    {formData.backgroundImage && (
+                      <div>
+                        <small style={{ color: '#666', display: 'block', marginBottom: '8px' }}>
+                          Background Image:
+                        </small>
+                        <div style={{ position: 'relative', width: '100%', maxWidth: '300px', height: '150px' }}>
+                          <img 
+                            src={formData.backgroundImage} 
+                            alt="Background" 
+                            style={{ 
+                              width: '100%', 
+                              height: '100%', 
+                              objectFit: 'cover', 
+                              borderRadius: '4px',
+                              border: '2px solid #e5e7eb'
+                            }}
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                              e.target.nextSibling.style.display = 'flex';
+                            }}
+                          />
+                          <div style={{
+                            display: 'none',
+                            width: '100%',
+                            height: '100%',
+                            background: '#f3f4f6',
+                            borderRadius: '4px',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '12px',
+                            color: '#9ca3af',
+                            textAlign: 'center',
+                            padding: '5px'
+                          }}>
+                            Invalid URL
+                          </div>
+                          <button
+                            type="button"
+                            onClick={removeBackgroundImage}
+                            style={{
+                              position: 'absolute',
+                              top: '-8px',
+                              right: '-8px',
+                              background: '#ef4444',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '50%',
+                              width: '24px',
+                              height: '24px',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '14px',
+                              fontWeight: 'bold',
+                              boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                            }}
+                            title="Remove background image"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* ✅ NEW: Music Section */}
+                  <div className="form-group">
+                    <label>Music (Optional)</label>
+                    
+                    {/* Music type selector */}
+                    <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+                        <input
+                          type="radio"
+                          name="musicInputType"
+                          value="link"
+                          checked={musicInputType === 'link'}
+                          onChange={() => setMusicInputType('link')}
+                        />
+                        <span>Music Link</span>
+                      </label>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+                        <input
+                          type="radio"
+                          name="musicInputType"
+                          value="file"
+                          checked={musicInputType === 'file'}
+                          onChange={() => setMusicInputType('file')}
+                        />
+                        <span>Upload File (MP3)</span>
+                      </label>
+                    </div>
+
+                    {/* Music Link Input */}
+                    {musicInputType === 'link' && (
+                      <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
+                        <input
+                          type="url"
+                          placeholder="Enter music URL (https://...song.mp3)"
+                          value={musicUrl}
+                          onChange={(e) => setMusicUrl(e.target.value)}
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              addMusic();
+                            }
+                          }}
+                          style={{ flex: 1 }}
+                          disabled={!!formData.music}
+                        />
+                        <button
+                          type="button"
+                          onClick={addMusic}
+                          className="btn-admin btn-sm btn-primary"
+                          style={{ whiteSpace: 'nowrap' }}
+                          disabled={!!formData.music}
+                        >
+                          <i className="fa fa-plus" /> Add
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Music File Input */}
+                    {musicInputType === 'file' && (
+                      <div style={{ marginBottom: '10px' }}>
+                        <input
+                          type="file"
+                          accept="audio/mp3,audio/mpeg"
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              setMusicFile(file);
+                              setFormData(prev => ({
+                                ...prev,
+                                music: file.name,
+                                musicType: 'upload'
+                              }));
+                            }
+                          }}
+                          disabled={!!formData.music && !musicFile}
+                        />
+                        <small style={{ display: 'block', color: '#666', marginTop: '5px' }}>
+                          Only MP3 files are supported
+                        </small>
+                      </div>
+                    )}
+                    
+                    {/* Show added music */}
+                    {formData.music && (
+                      <div>
+                        <small style={{ color: '#666', display: 'block', marginBottom: '8px' }}>
+                          Added Music:
+                        </small>
+                        <div style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: '10px', 
+                          padding: '10px', 
+                          background: '#f3f4f6', 
+                          borderRadius: '4px',
+                          border: '1px solid #e5e7eb'
+                        }}>
+                          <i className="fa fa-music" style={{ color: '#6366f1', fontSize: '20px' }} />
+                          <div style={{ flex: 1 }}>
+                            <div style={{ fontSize: '14px', fontWeight: '500' }}>
+                              {formData.musicType === 'link' ? 'Music Link' : 'Uploaded File'}
+                            </div>
+                            <div style={{ fontSize: '12px', color: '#666', wordBreak: 'break-all' }}>
+                              {formData.music}
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={removeMusic}
+                            style={{
+                              background: '#ef4444',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '4px',
+                              padding: '5px 10px',
+                              cursor: 'pointer',
+                              fontSize: '12px',
+                              fontWeight: 'bold'
+                            }}
+                            title="Remove music"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   <div className="form-group">

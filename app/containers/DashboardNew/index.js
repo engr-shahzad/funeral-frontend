@@ -18,7 +18,7 @@ class DashboardNew extends Component {
             }
         };
 
-        this.API_BASE_URL = 'http://localhost:3000/api/obituaries';
+        this.API_BASE_URL = 'https://funeralbackend.onrender.com/api/obituaries';
     }
 
     componentDidMount() {

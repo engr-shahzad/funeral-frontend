@@ -17,8 +17,86 @@ import 'swiper/components/pagination/pagination.min.css';
 
 SwiperCore.use([Autoplay, Pagination]);
 
-
 import './Home.css';
+
+// ✅ Custom Image Slider Component for Tributes
+class TributeImageSlider extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentIndex: 0
+    };
+    this.autoplayInterval = null;
+  }
+
+  componentDidMount() {
+    this.startAutoplay();
+  }
+
+  componentWillUnmount() {
+    this.stopAutoplay();
+  }
+
+  startAutoplay = () => {
+    this.autoplayInterval = setInterval(() => {
+      this.nextSlide();
+    }, 3000);
+  };
+
+  stopAutoplay = () => {
+    if (this.autoplayInterval) {
+      clearInterval(this.autoplayInterval);
+    }
+  };
+
+  nextSlide = () => {
+    const { images } = this.props;
+    this.setState(prevState => ({
+      currentIndex: (prevState.currentIndex + 1) % images.length
+    }));
+  };
+
+  goToSlide = (index) => {
+    this.setState({ currentIndex: index });
+    this.stopAutoplay();
+    this.startAutoplay();
+  };
+
+  render() {
+    const { images, name } = this.props;
+    const { currentIndex } = this.state;
+
+    return (
+      <div className="tribute-custom-slider">
+        <div className="tribute-slider-container">
+          {images.map((img, idx) => (
+            <img
+              key={idx}
+              src={img}
+              alt={`${name} ${idx + 1}`}
+              className={`tribute-slider-image ${idx === currentIndex ? 'active' : ''}`}
+              onError={(e) => {
+                e.target.src = 'https://via.placeholder.com/200x200?text=No+Image';
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Pagination Dots */}
+        <div className="tribute-slider-pagination">
+          {images.map((_, idx) => (
+            <button
+              key={idx}
+              className={`tribute-pagination-dot ${idx === currentIndex ? 'active' : ''}`}
+              onClick={() => this.goToSlide(idx)}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+}
 
 class Homepage extends Component {
   constructor(props) {
@@ -31,8 +109,6 @@ class Homepage extends Component {
       error: null
     };
   }
-  
-
 
   componentDidMount() {
     this.fetchRecentTributes();
@@ -48,7 +124,6 @@ class Homepage extends Component {
           'Content-Type': 'application/json'
         }
       });
-      
 
       if (!response.ok) {
         throw new Error('Failed to fetch tributes');
@@ -56,14 +131,32 @@ class Homepage extends Component {
 
       const data = await response.json();
 
-      const formattedTributes = data.map(obituary => ({
-        id: obituary._id,
-        name: `${obituary.firstName} ${obituary.lastName}`.toUpperCase(),
-        date: this.formatDate(obituary.deathDate),
-        location: obituary.location || 'Unknown',
-        image: obituary.photo,
-        slug: obituary.slug || obituary._id
-      }));
+      const formattedTributes = data.map(obituary => {
+        // ✅ Handle photos array properly with filtering
+        let images = [];
+        if (obituary.photos && Array.isArray(obituary.photos) && obituary.photos.length > 0) {
+          images = obituary.photos.filter(photo => photo && typeof photo === 'string' && photo.trim() !== '');
+        } else if (obituary.photo && typeof obituary.photo === 'string' && obituary.photo.trim() !== '') {
+          images = [obituary.photo];
+        } else if (obituary.IMAGE && typeof obituary.IMAGE === 'string' && obituary.IMAGE.trim() !== '') {
+          images = [obituary.IMAGE];
+        }
+
+        // Default to placeholder if no images
+        if (images.length === 0) {
+          images = ['https://via.placeholder.com/200x200?text=No+Image'];
+        }
+
+        return {
+          id: obituary._id,
+          name: `${obituary.firstName || obituary.FIRST || ''} ${obituary.lastName || obituary.LAST || ''}`.toUpperCase().trim(),
+          date: this.formatDate(obituary.deathDate || obituary.DOD),
+          location: obituary.location || 'Unknown',
+          images: images,
+          image: images[0],
+          slug: obituary.slug || obituary._id
+        };
+      });
 
       this.setState({
         tributes: formattedTributes,
@@ -80,11 +173,11 @@ class Homepage extends Component {
   };
 
   formatDate = (dateString) => {
+    if (!dateString) return '';
     const date = new Date(dateString);
     const options = { month: 'short', day: 'numeric', year: 'numeric' };
     return date.toLocaleDateString('en-US', options);
   };
-
 
   handlePrevious = () => {
     this.setState(prevState => ({
@@ -127,14 +220,30 @@ class Homepage extends Component {
 
       const data = await response.json();
 
-      const formattedTributes = data.map(obituary => ({
-        id: obituary._id,
-        name: `${obituary.firstName} ${obituary.lastName}`.toUpperCase(),
-        date: this.formatDate(obituary.deathDate),
-        location: obituary.location || 'Unknown',
-        image: obituary.photo,
-        slug: obituary.slug || obituary._id
-      }));
+      const formattedTributes = data.map(obituary => {
+        let images = [];
+        if (obituary.photos && Array.isArray(obituary.photos) && obituary.photos.length > 0) {
+          images = obituary.photos.filter(photo => photo && typeof photo === 'string' && photo.trim() !== '');
+        } else if (obituary.photo && typeof obituary.photo === 'string' && obituary.photo.trim() !== '') {
+          images = [obituary.photo];
+        } else if (obituary.IMAGE && typeof obituary.IMAGE === 'string' && obituary.IMAGE.trim() !== '') {
+          images = [obituary.IMAGE];
+        }
+
+        if (images.length === 0) {
+          images = ['https://via.placeholder.com/200x200?text=No+Image'];
+        }
+
+        return {
+          id: obituary._id,
+          name: `${obituary.firstName || obituary.FIRST || ''} ${obituary.lastName || obituary.LAST || ''}`.toUpperCase().trim(),
+          date: this.formatDate(obituary.deathDate || obituary.DOD),
+          location: obituary.location || 'Unknown',
+          images: images,
+          image: images[0],
+          slug: obituary.slug || obituary._id
+        };
+      });
 
       this.setState({
         tributes: formattedTributes,
@@ -160,56 +269,47 @@ class Homepage extends Component {
     const maxIndex = Math.max(0, tributes.length - itemsPerPage);
     const visibleTributes = tributes.slice(currentIndex, currentIndex + itemsPerPage);
     const slides = [
-  
-  {
-    image: 'https://s3.amazonaws.com/CFSV2/obituaries/galleries/12123/1663011/68b14f5742047.png',
-    title: 'Celebrate Life'
-  },
-  {
-    image: '/images/banners/banner2.jpeg?w=1600',
-    title: 'Celebrate Life'
-  }
-];
+      {
+        image: 'https://s3.amazonaws.com/CFSV2/obituaries/galleries/12123/1663011/68b14f5742047.png',
+        title: 'Celebrate Life'
+      },
+      {
+        image: '/images/banners/banner2.jpeg?w=1600',
+        title: 'Celebrate Life'
+      }
+    ];
 
     return (
       <div className='homepage'>
-        {/* Hero Banner Section - "Celebrate Life" */}
-         <div className="hero-banner-section">
-      <Swiper
-  autoplay={{ delay: 4000 }}
-  loop
-  pagination={{ clickable: true }}
->
-  {slides.map((slide, index) => (
-    <SwiperSlide key={index}>
-      <div
-        className="hero-slide-bg"
-        style={{
-          backgroundImage: `url(${slide.image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          height: '500px',
-          position: 'relative'
-        }}
-      >
-        <div className="hero-overlay" />
-       
-          <div className="hero-content">
-                  <div className="hero-text-wrapper">
-                    <h1 className="hero-title">{slide.title}</h1>
-                    <Link to="/our-services">
-                      <button className="hero-cta-button">
-                        OUR SERVICES
-                      </button>
-                    </Link>
+        {/* Hero Banner Section */}
+        <div className="hero-banner-section">
+          <Swiper autoplay={{ delay: 4000 }} loop pagination={{ clickable: true }}>
+            {slides.map((slide, index) => (
+              <SwiperSlide key={index}>
+                <div
+                  className="hero-slide-bg"
+                  style={{
+                    backgroundImage: `url(${slide.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    height: '500px',
+                    position: 'relative'
+                  }}
+                >
+                  <div className="hero-overlay" />
+                  <div className="hero-content">
+                    <div className="hero-text-wrapper">
+                      <h1 className="hero-title">{slide.title}</h1>
+                      <Link to="/our-services">
+                        <button className="hero-cta-button">OUR SERVICES</button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
-      </div>
-    </SwiperSlide>
-  ))}
-</Swiper>
-
-    </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
 
         {/* Recent Tributes Section */}
         <Container fluid className="tributes-section-wrapper">
@@ -228,11 +328,7 @@ class Homepage extends Component {
                     onKeyPress={this.handleSearchKeyPress}
                     className="search-input rounded-pill"
                   />
-                  <Search
-                    className="search-icon position-absolute"
-                    size={18}
-                    onClick={this.handleSearch}
-                  />
+                  <Search className="search-icon position-absolute" size={18} onClick={this.handleSearch} />
                 </div>
               </Col>
             </Row>
@@ -254,9 +350,7 @@ class Homepage extends Component {
                   <div className="alert alert-danger" role="alert">
                     <h4 className="alert-heading">Error</h4>
                     <p>{error}</p>
-                    <button color="primary" onClick={this.fetchRecentTributes}>
-                      Try Again
-                    </button>
+                    <button color="primary" onClick={this.fetchRecentTributes}>Try Again</button>
                   </div>
                 </Col>
               </Row>
@@ -265,70 +359,54 @@ class Homepage extends Component {
             {!loading && !error && tributes.length > 0 && (
               <div className="tributes-carousel-wrapper">
                 <div className="tributes-carousel position-relative">
-                  <button
-                    className="carousel-nav-btn carousel-nav-prev"
-                    onClick={this.handlePrevious}
-                    disabled={currentIndex === 0}
-                  >
+                  <button className="carousel-nav-btn carousel-nav-prev" onClick={this.handlePrevious} disabled={currentIndex === 0}>
                     <ChevronLeft size={24} />
                   </button>
 
-                  <button
-                    className="carousel-nav-btn carousel-nav-next"
-                    onClick={this.handleNext}
-                    disabled={currentIndex >= maxIndex}
-                  >
+                  <button className="carousel-nav-btn carousel-nav-next" onClick={this.handleNext} disabled={currentIndex >= maxIndex}>
                     <ChevronRight size={24} />
                   </button>
 
                   <Row className="tribute-cards-row">
-                    {visibleTributes.map((tribute) => (
-                      <Col
-                        key={tribute.id}
-                        xs={6}
-                        sm={4}
-                        md={4}
-                        lg={2}
-                        className="mb-4 tribute-card-col"
-                      >
-                        <Link
-                          to={`/obituary/${tribute.slug}`}
-                          className="text-decoration-none"
-                        >
-                          <div className="tribute-card text-center">
-                            <div className="tribute-image-wrapper mb-2">
-                              <img
-                                src={tribute.image}
-                                alt={tribute.name}
-                                className="tribute-image"
-                                onError={(e) => {
-                                  e.target.src = 'https://via.placeholder.com/200x200?text=No+Image';
-                                }}
-                              />
+                    {visibleTributes.map((tribute) => {
+                      const hasMultipleImages = tribute.images.length > 1 && tribute.images[0] !== 'https://via.placeholder.com/200x200?text=No+Image';
+                      
+                      return (
+                        <Col key={tribute.id} xs={6} sm={4} md={4} lg={2} className="mb-4 tribute-card-col">
+                          <Link to={`/obituary/${tribute.slug}`} className="text-decoration-none">
+                            <div className="tribute-card text-center">
+                              <div className="tribute-image-wrapper mb-2">
+                                {hasMultipleImages ? (
+                                  <TributeImageSlider images={tribute.images} name={tribute.name} />
+                                ) : (
+                                  <img
+                                    src={tribute.image}
+                                    alt={tribute.name}
+                                    className="tribute-image"
+                                    onError={(e) => {
+                                      e.target.src = 'https://via.placeholder.com/200x200?text=No+Image';
+                                    }}
+                                  />
+                                )}
+                              </div>
+                              <h3 className="tribute-name">{tribute.name}</h3>
+                              <p className="tribute-date">{tribute.date}</p>
+                              <p className="tribute-location">{tribute.location}</p>
                             </div>
-                            <h3 className="tribute-name">
-                              {tribute.name}
-                            </h3>
-                            <p className="tribute-date">{tribute.date}</p>
-                            <p className="tribute-location">{tribute.location}</p>
-                          </div>
-                        </Link>
-                      </Col>
-                    ))}
+                          </Link>
+                        </Col>
+                      );
+                    })}
                   </Row>
                 </div>
 
                 <Row className="mt-4">
                   <Col className="d-flex justify-content-center flex-wrap">
                     <Link to="/obituaries">
-                      <button className="tributes-action-btn mx-2 mb-2">
-                        VIEW ALL TRIBUTES
-                      </button>
+                      <button className="tributes-action-btn mx-2 mb-2">VIEW ALL TRIBUTES</button>
                     </Link>
                     <Link to="/alerts">
-                      <button className="tributes-action-btn mx-2 mb-2">
-                        JOIN OBITUARY ALERTS
-                      </button>
+                      <button className="tributes-action-btn mx-2 mb-2">JOIN OBITUARY ALERTS</button>
                     </Link>
                   </Col>
                 </Row>
@@ -346,17 +424,14 @@ class Homepage extends Component {
           </Container>
         </Container>
 
+        {/* Rest of the sections remain the same... */}
         {/* Welcome Section */}
         <div className="welcome-section">
           <Container style={{ maxWidth: '1400px' }}>
             <Row className="align-items-center">
               <Col lg={6} className="mb-4 mb-lg-0">
                 <div className="welcome-image-wrapper">
-                  <img
-                    src="https://s3.amazonaws.com/CFSV2/siteimages/wvr/321486-img.jpg"
-                    alt="West River Funeral Directors"
-                    className="img-fluid welcome-image"
-                  />
+                  <img src="https://s3.amazonaws.com/CFSV2/siteimages/wvr/321486-img.jpg" alt="West River Funeral Directors" className="img-fluid welcome-image" />
                 </div>
               </Col>
               <Col lg={6}>
@@ -364,18 +439,13 @@ class Homepage extends Component {
                   <p className="welcome-label">WELCOME TO</p>
                   <h2 className="welcome-title">West River Funeral Directors LLC</h2>
                   <p className="welcome-text">
-                    Welcome to our website. We provide individualized funeral services designed to meet
-                    the needs of each family. Our staff of dedicated professionals is available to assist you
-                    in making funeral service arrangements. From casket choices to funeral flowers, we will
-                    guide you through all aspects of the funeral service.
+                    Welcome to our website. We provide individualized funeral services designed to meet the needs of each family. Our staff of dedicated professionals is available to assist you in making funeral service arrangements. From casket choices to funeral flowers, we will guide you through all aspects of the funeral service.
                   </p>
                   <p className="welcome-text">
                     We invite you to <Link to="/contact-us" className="welcome-link">contact us</Link> with your questions, 24 hours a day, 7 days a week.
                   </p>
                   <Link to="/about-us">
-                    <button className="welcome-cta-btn">
-                      LEARN MORE
-                    </button>
+                    <button className="welcome-cta-btn">LEARN MORE</button>
                   </Link>
                 </div>
               </Col>
@@ -389,14 +459,7 @@ class Homepage extends Component {
             <Row className="g-0">
               <Col md={6} lg={6} className="service-grid-item">
                 <Link to="/pre-arrangements" className="service-card-link">
-                  <div
-                    className="service-card"
-                    style={{
-                      backgroundImage: `url(	https://s3.amazonaws.com/CFSV2/stockimages/28865-people-3120717.jpg)`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center'
-                    }}
-                  >
+                  <div className="service-card" style={{ backgroundImage: `url(https://s3.amazonaws.com/CFSV2/stockimages/28865-people-3120717.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
                     <div className="service-card-overlay"></div>
                     <div className="service-card-content">
                       <h3 className="service-card-title">Pre-Plan</h3>
@@ -404,17 +467,9 @@ class Homepage extends Component {
                   </div>
                 </Link>
               </Col>
-
               <Col md={6} lg={6} className="service-grid-item">
                 <Link to="/flowers" className="service-card-link">
-                  <div
-                    className="service-card"
-                    style={{
-                      backgroundImage: `url(https://s3.amazonaws.com/CFSV2/stockimages/804104-Send-Flowers-8.jpg)`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center'
-                    }}
-                  >
+                  <div className="service-card" style={{ backgroundImage: `url(https://s3.amazonaws.com/CFSV2/stockimages/804104-Send-Flowers-8.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
                     <div className="service-card-overlay"></div>
                     <div className="service-card-content">
                       <h3 className="service-card-title">Send Flowers</h3>
@@ -422,18 +477,11 @@ class Homepage extends Component {
                   </div>
                 </Link>
               </Col>
-              </Row>
-              <Row className="g-0 mt-4" >
+            </Row>
+            <Row className="g-0 mt-4">
               <Col md={6} lg={6} className="service-grid-item">
                 <Link to="/grief-support" className="service-card-link">
-                  <div
-                    className="service-card"
-                    style={{
-                      backgroundImage: `url(https://s3.amazonaws.com/CFSV2/stockimages/170757-mother-daughter-hug.jpg)`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center'
-                    }}
-                  >
+                  <div className="service-card" style={{ backgroundImage: `url(https://s3.amazonaws.com/CFSV2/stockimages/170757-mother-daughter-hug.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
                     <div className="service-card-overlay"></div>
                     <div className="service-card-content">
                       <h3 className="service-card-title">Grief Support</h3>
@@ -441,17 +489,9 @@ class Homepage extends Component {
                   </div>
                 </Link>
               </Col>
-
               <Col md={6} lg={6} className="service-grid-item">
                 <Link to="/faqs" className="service-card-link">
-                  <div
-                    className="service-card"
-                    style={{
-                      backgroundImage: `url(https://s3.amazonaws.com/CFSV2/stockimages/383488-Notebook-4.png)`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center'
-                    }}
-                  >
+                  <div className="service-card" style={{ backgroundImage: `url(https://s3.amazonaws.com/CFSV2/stockimages/383488-Notebook-4.png)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
                     <div className="service-card-overlay"></div>
                     <div className="service-card-content">
                       <h3 className="service-card-title">F.A.Q.</h3>
@@ -470,7 +510,6 @@ class Homepage extends Component {
               <h2 className="testimonials-title">What Our Families are Saying...</h2>
               <p className="testimonials-subtitle">TESTIMONIALS</p>
             </div>
-
             <Row>
               <Col lg={8} className="mx-auto">
                 <div className="testimonial-card">
@@ -479,9 +518,7 @@ class Homepage extends Component {
                   </p>
                   <div className="text-center mt-4">
                     <Link to="/testimonials">
-                      <button className="testimonial-btn">
-                        Click to enter your testimonial »
-                      </button>
+                      <button className="testimonial-btn">Click to enter your testimonial »</button>
                     </Link>
                   </div>
                 </div>
@@ -496,11 +533,7 @@ class Homepage extends Component {
             <div className="text-center">
               <h3 className="google-reviews-title">See Our Google Reviews</h3>
               <div className="qr-code-wrapper mt-4">
-                <img
-                  src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://g.page/r/YOUR_GOOGLE_REVIEW_LINK"
-                  alt="QR Code for Google Reviews"
-                  className="qr-code-image"
-                />
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://g.page/r/YOUR_GOOGLE_REVIEW_LINK" alt="QR Code for Google Reviews" className="qr-code-image" />
               </div>
             </div>
           </Container>
@@ -554,14 +587,93 @@ class Homepage extends Component {
           <Container>
             <div className="text-center">
               <Link to="/our-services">
-                <button className="view-services-btn">
-                  VIEW SERVICES
-                </button>
+                <button className="view-services-btn">VIEW SERVICES</button>
               </Link>
             </div>
           </Container>
         </div>
-         <ImmediateNeedPopup />
+
+        <ImmediateNeedPopup />
+
+        <style>{`
+          /* Custom Tribute Slider Styles */
+          .tribute-custom-slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+          }
+
+          .tribute-slider-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+          }
+
+          .tribute-slider-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            border-radius: 8px;
+          }
+
+          .tribute-slider-image.active {
+            opacity: 1;
+            z-index: 1;
+          }
+
+          .tribute-slider-pagination {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 4px;
+            z-index: 10;
+          }
+
+          .tribute-pagination-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: white;
+            opacity: 0.7;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+          }
+
+          .tribute-pagination-dot:hover {
+            opacity: 0.9;
+          }
+
+          .tribute-pagination-dot.active {
+            opacity: 1;
+            background: white;
+          }
+
+          .tribute-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: #f0f0f0;
+          }
+
+          .tribute-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+          }
+        `}</style>
       </div>
     );
   }

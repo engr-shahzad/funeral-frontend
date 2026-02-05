@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# Block private & auth pages
+Disallow: /admin
+Disallow: /login
+Disallow: /register
+Disallow: /dashboard
+Disallow: /product-dashboard
+Disallow: /add-product
+Disallow: /add-obituary
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /auth
+Disallow: /support
+Disallow: /order
+Disallow: /order/success
+
+# Sitemap
+Sitemap: https://westriverfd.com/sitemap.xml

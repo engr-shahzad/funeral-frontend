@@ -18,7 +18,7 @@ class ProductDashboard extends Component {
             }
         };
 
-        this.API_BASE_URL = 'http://localhost:3000/api/product';
+        this.API_BASE_URL = 'https://funeralbackend.onrender.com/api/product';
     }
 
     componentDidMount() {
