@@ -229,7 +229,7 @@ class ObituaryPage extends Component {
             return;
         }
 
-        fetch('http://localhost:3000/api//condolences', {
+        fetch('https://funeralbackend.onrender.com/api/condolences', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
