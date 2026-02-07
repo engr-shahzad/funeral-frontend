@@ -160,7 +160,7 @@ class ObituaryPage extends Component {
     fetchObituaryData = (slug) => {
         this.setState({ loading: true, error: null });
 
-        const baseURL = 'https://funeralbackend.onrender.com/api';
+        const baseURL = 'http://localhost:3000/api';
 
         fetch(`${baseURL}/obituaries/${slug}`)
             .then(obituaryResponse => {
@@ -229,7 +229,7 @@ class ObituaryPage extends Component {
             return;
         }
 
-        fetch('https://funeralbackend.onrender.com/api/condolences', {
+        fetch('http://localhost:3000/api//condolences', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -532,9 +532,14 @@ class ObituaryPage extends Component {
                                         <div className="service-box">
                                             <div className="service-icon"><Calendar size={20} /></div>
                                             <div className="service-info">
-                                                <h4>Visitation</h4>
-                                                <p>{obituaryData.visitationTime || 'Time Pending'}</p>
-                                                <p className="service-location">{obituaryData.visitationLocation || 'Location Pending'}</p>
+                                                <h4>{obituaryData.serviceType}</h4>
+                                                <p> Date: 
+  {obituaryData.serviceDate
+    ? obituaryData.serviceDate.split('T')[0]
+    : 'Date Pending'}
+</p>
+                                                {/* <p>{obituaryData.serviceTime || 'Time Pending'}</p> */}
+                                                <p className="service-location"> Location: {obituaryData.serviceLocation || 'Location Pending'}</p>
                                             </div>
                                         </div>
                                         <div className="service-box">
