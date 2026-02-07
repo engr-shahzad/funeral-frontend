@@ -160,7 +160,7 @@ class ObituaryPage extends Component {
     fetchObituaryData = (slug) => {
         this.setState({ loading: true, error: null });
 
-        const baseURL = 'http://localhost:3000/api';
+        const baseURL = 'https://funeralbackend.onrender.com/api';
 
         fetch(`${baseURL}/obituaries/${slug}`)
             .then(obituaryResponse => {
