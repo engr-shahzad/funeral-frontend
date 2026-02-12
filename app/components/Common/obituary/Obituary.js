@@ -532,9 +532,14 @@ class ObituaryPage extends Component {
                                         <div className="service-box">
                                             <div className="service-icon"><Calendar size={20} /></div>
                                             <div className="service-info">
-                                                <h4>Visitation</h4>
-                                                <p>{obituaryData.visitationTime || 'Time Pending'}</p>
-                                                <p className="service-location">{obituaryData.visitationLocation || 'Location Pending'}</p>
+                                                <h4>{obituaryData.serviceType}</h4>
+                                                <p> Date: 
+  {obituaryData.serviceDate
+    ? obituaryData.serviceDate.split('T')[0]
+    : 'Date Pending'}
+</p>
+                                                {/* <p>{obituaryData.serviceTime || 'Time Pending'}</p> */}
+                                                <p className="service-location"> Location: {obituaryData.serviceLocation || 'Location Pending'}</p>
                                             </div>
                                         </div>
                                         <div className="service-box">

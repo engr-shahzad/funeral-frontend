@@ -87,7 +87,13 @@ class Navigation extends React.PureComponent {
                   <Col md='6' className='text-left d-none d-md-block'>
                     <span className='top-bar-contact' style={{color:'white'}}>
                       <i className='fa fa-phone' style={{ marginRight: '8px' }} />
+                      <a 
+            href="tel:1-605-787-3940" 
+            className="phone-link"
+            style={{ color: 'white', textDecoration: 'none' }}
+          >
                       For Immediate Support: 1-605-787-3940
+                      </a>
                     </span>
                   </Col>
                   <Col md='6' className='text-right d-none d-md-block'>
@@ -95,7 +101,7 @@ class Navigation extends React.PureComponent {
                       <a href='https://www.google.com/maps' className='top-bar-icon' aria-label='Google'><i className='fa fa-google' /></a>
                       <a href='contact-us' className='top-bar-icon' aria-label='Email'><i className='fa fa-envelope' /></a>
                       <a href='#' className='top-bar-icon' aria-label='Print'><i className='fa fa-print' /></a>
-                      <a href='https://facebook.com' className='top-bar-icon' aria-label='Facebook'><i className='fa fa-facebook' /></a>
+                      <a href='https://www.facebook.com/share/18CvPojzE2/' className='top-bar-icon' aria-label='Facebook'><i className='fa fa-facebook' /></a>
                     </div>
                   </Col>
                   <Col xs='12' className='text-center d-block d-md-none py-2'>

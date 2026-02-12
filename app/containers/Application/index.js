@@ -117,6 +117,8 @@ class Application extends React.PureComponent {
                 <Route path="/grief-support" component={GriefSupport} />
                 <Route path="/funeral-etiquette" component={FuneralEtiquette} />
                 <Route path="/social-security" component={SocialSecurityBenefits} />
+            
+
                 <Route path="/veterans" component={VeteransOverview} />
                 <Route path="/veterans-headstones" component={VeteransHeadstones} />
                 <Route path="/veterans-burial-flags" component={VeteransBurialFlags} />

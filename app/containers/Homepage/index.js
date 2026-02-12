@@ -468,7 +468,7 @@ class Homepage extends Component {
                 </Link>
               </Col>
               <Col md={6} lg={6} className="service-grid-item">
-                <Link to="/flowers" className="service-card-link">
+                <Link to="/send-flowers" className="service-card-link">
                   <div className="service-card" style={{ backgroundImage: `url(https://s3.amazonaws.com/CFSV2/stockimages/804104-Send-Flowers-8.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
                     <div className="service-card-overlay"></div>
                     <div className="service-card-content">

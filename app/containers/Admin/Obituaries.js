@@ -1,5 +1,5 @@
 /**
- * Admin Obituaries Management - Updated with Multiple Image URLs, Background Image, and Music
+ * Admin Obituaries Management - Updated with Cloudinary File Upload
  */
 
 import React, { useState, useEffect } from 'react';
@@ -71,14 +71,19 @@ const ObituariesAdmin = () => {
     isPublished: true
   });
   const [saving, setSaving] = useState(false);
-  // State for adding photo URLs
-  const [newPhotoUrl, setNewPhotoUrl] = useState('');
-  // ✅ NEW: State for background image
-  const [backgroundImageUrl, setBackgroundImageUrl] = useState('');
-  // ✅ NEW: State for music (link or file)
-  const [musicUrl, setMusicUrl] = useState('');
+  
+  // ✅ NEW: State for file uploads
+  const [photoFiles, setPhotoFiles] = useState([]);
+  const [backgroundImageFile, setBackgroundImageFile] = useState(null);
   const [musicFile, setMusicFile] = useState(null);
+  
+  // State for URL inputs (optional alternative to file upload)
+  const [newPhotoUrl, setNewPhotoUrl] = useState('');
+  const [backgroundImageUrl, setBackgroundImageUrl] = useState('');
+  const [musicUrl, setMusicUrl] = useState('');
   const [musicInputType, setMusicInputType] = useState('link'); // 'link' or 'file'
+  const [photoInputType, setPhotoInputType] = useState('file'); // 'link' or 'file'
+  const [backgroundInputType, setBackgroundInputType] = useState('file'); // 'link' or 'file'
 
   useEffect(() => {
     fetchObituaries();
@@ -114,6 +119,17 @@ const ObituariesAdmin = () => {
     }));
   };
 
+  // ✅ Handle photo file selection (multiple)
+  const handlePhotoFilesChange = (e) => {
+    const files = Array.from(e.target.files);
+    setPhotoFiles(prev => [...prev, ...files]);
+  };
+
+  // ✅ Remove photo file
+  const removePhotoFile = (index) => {
+    setPhotoFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
   // Add photo URL to the list
   const addPhotoUrl = () => {
     if (newPhotoUrl.trim()) {
@@ -133,7 +149,15 @@ const ObituariesAdmin = () => {
     }));
   };
 
-  // ✅ NEW: Add background image URL
+  // ✅ Handle background image file
+  const handleBackgroundImageFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setBackgroundImageFile(file);
+    }
+  };
+
+  // Add background image URL
   const addBackgroundImage = () => {
     if (backgroundImageUrl.trim()) {
       setFormData(prev => ({
@@ -143,16 +167,25 @@ const ObituariesAdmin = () => {
     }
   };
 
-  // ✅ NEW: Remove background image
+  // Remove background image
   const removeBackgroundImage = () => {
     setFormData(prev => ({
       ...prev,
       backgroundImage: ''
     }));
     setBackgroundImageUrl('');
+    setBackgroundImageFile(null);
   };
 
-  // ✅ NEW: Add music (link or file)
+  // ✅ Handle music file
+  const handleMusicFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setMusicFile(file);
+    }
+  };
+
+  // Add music link
   const addMusic = () => {
     if (musicInputType === 'link' && musicUrl.trim()) {
       setFormData(prev => ({
@@ -163,7 +196,7 @@ const ObituariesAdmin = () => {
     }
   };
 
-  // ✅ NEW: Remove music
+  // Remove music
   const removeMusic = () => {
     setFormData(prev => ({
       ...prev,
@@ -193,11 +226,15 @@ const ObituariesAdmin = () => {
       serviceLocation: '',
       isPublished: true
     });
+    setPhotoFiles([]);
+    setBackgroundImageFile(null);
+    setMusicFile(null);
     setNewPhotoUrl('');
     setBackgroundImageUrl('');
     setMusicUrl('');
-    setMusicFile(null);
     setMusicInputType('link');
+    setPhotoInputType('file');
+    setBackgroundInputType('file');
     setShowModal(true);
   };
 
@@ -220,44 +257,97 @@ const ObituariesAdmin = () => {
       serviceLocation: obituary.serviceLocation || '',
       isPublished: obituary.isPublished !== false
     });
+    setPhotoFiles([]);
+    setBackgroundImageFile(null);
+    setMusicFile(null);
     setNewPhotoUrl('');
     setBackgroundImageUrl(obituary.backgroundImage || '');
     setMusicUrl(obituary.musicType === 'link' ? obituary.music : '');
-    setMusicFile(null);
     setMusicInputType(obituary.musicType === 'upload' ? 'file' : 'link');
+    setPhotoInputType('file');
+    setBackgroundInputType('file');
     setShowModal(true);
   };
 
+  // ✅ UPDATED: Submit with FormData for file uploads
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
-
+  
     try {
-      const payload = {
-        ...formData,
-        birthDate: formData.birthDate || null,
-        deathDate: formData.deathDate || null,
-        serviceDate: formData.serviceDate || null
-      };
-
-      // Handle music file upload separately if needed
+      const formDataToSend = new FormData();
+  
+      // Add text fields
+      Object.keys(formData).forEach(key => {
+        if (key !== 'photos' && key !== 'backgroundImage' && key !== 'music') {
+          const value = formData[key];
+          if (value !== null && value !== undefined && value !== '') {
+            formDataToSend.append(key, value);
+          }
+        }
+      });
+  
+      // ✅ DEBUG: Check what's in photoFiles and formData.photos
+      console.log('========== FRONTEND DEBUG ==========');
+      console.log('photoFiles (new uploads):', photoFiles);
+      console.log('photoFiles length:', photoFiles.length);
+      console.log('formData.photos (existing):', formData.photos);
+      console.log('formData.photos length:', formData.photos?.length || 0);
+      console.log('====================================');
+  
+      // ✅ Add photo files
+      if (photoFiles.length > 0) {
+        photoFiles.forEach((file, index) => {
+          formDataToSend.append('photos', file);
+          console.log(`Adding photo file ${index + 1}:`, file.name);
+        });
+      }
+  
+      // ✅ Add existing photos as JSON
+      if (formData.photos && formData.photos.length > 0) {
+        formDataToSend.append('existingPhotos', JSON.stringify(formData.photos));
+        console.log('Adding existingPhotos:', formData.photos);
+      }
+  
+      // Add background image file
+      if (backgroundImageFile) {
+        formDataToSend.append('backgroundImage', backgroundImageFile);
+      } else if (formData.backgroundImage && backgroundInputType === 'link') {
+        formDataToSend.append('backgroundImage', formData.backgroundImage);
+      }
+  
+      // Add music file or link
       if (musicFile) {
-        // You'll need to implement file upload logic here
-        // For now, we're just handling URLs
-        console.log('Music file upload not yet implemented:', musicFile);
+        formDataToSend.append('music', musicFile);
+      } else if (formData.music && musicInputType === 'link') {
+        formDataToSend.append('musicLink', formData.music);
       }
-
+  
+      console.log('========== FORM DATA TO SEND ==========');
+      for (let pair of formDataToSend.entries()) {
+        console.log(pair[0] + ':', pair[1]);
+      }
+      console.log('=======================================');
+  
       if (editingObituary) {
-        await axios.put(`${API_URL}/obituaries/${editingObituary._id}`, payload);
+        await axios.put(`${API_URL}/obituaries/${editingObituary._id}`, formDataToSend, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
       } else {
-        await axios.post(`${API_URL}/obituaries`, payload);
+        await axios.post(`${API_URL}/obituaries`, formDataToSend, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
       }
-
+  
       setShowModal(false);
       fetchObituaries();
     } catch (error) {
       console.error('Error saving obituary:', error);
-      alert('Error saving obituary. Please try again.');
+      alert('Error saving obituary: ' + (error.response?.data?.message || error.message));
     } finally {
       setSaving(false);
     }
@@ -558,135 +648,352 @@ const ObituariesAdmin = () => {
                     />
                   </div>
 
-                  {/* Photo URL Input Section */}
+{/* ✅ FIXED: Photo Upload Section with Multiple File Support */}
+<div className="form-group">
+  <label>Photos (Multiple)</label>
+  
+  {/* Toggle between file and URL */}
+  <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+    <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+      <input
+        type="radio"
+        name="photoInputType"
+        value="file"
+        checked={photoInputType === 'file'}
+        onChange={() => setPhotoInputType('file')}
+      />
+      <span>Upload Files</span>
+    </label>
+    <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+      <input
+        type="radio"
+        name="photoInputType"
+        value="link"
+        checked={photoInputType === 'link'}
+        onChange={() => setPhotoInputType('link')}
+      />
+      <span>Add URL</span>
+    </label>
+  </div>
+
+  {/* ✅ FIXED: File upload - Always enabled for multiple selection */}
+  {photoInputType === 'file' && (
+    <div style={{ marginBottom: '10px' }}>
+      <input
+        type="file"
+        accept="image/*"
+        multiple
+        onChange={handlePhotoFilesChange}
+        key={photoFiles.length} // Reset input after each selection
+      />
+      <small style={{ display: 'block', color: '#666', marginTop: '5px' }}>
+        Select multiple images (JPG, PNG, GIF, WEBP) - You can add more files after each selection
+      </small>
+    </div>
+  )}
+
+  {/* URL input */}
+  {photoInputType === 'link' && (
+    <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
+      <input
+        type="url"
+        placeholder="Enter image URL (https://...)"
+        value={newPhotoUrl}
+        onChange={(e) => setNewPhotoUrl(e.target.value)}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            addPhotoUrl();
+          }
+        }}
+        style={{ flex: 1 }}
+      />
+      <button
+        type="button"
+        onClick={addPhotoUrl}
+        className="btn-admin btn-sm btn-primary"
+        style={{ whiteSpace: 'nowrap' }}
+      >
+        <i className="fa fa-plus" /> Add
+      </button>
+    </div>
+  )}
+  
+  {/* ✅ Show ALL selected files (new uploads) */}
+  {photoFiles.length > 0 && (
+    <div style={{ marginBottom: '10px' }}>
+      <small style={{ color: '#666', display: 'block', marginBottom: '8px' }}>
+        📤 New Files to Upload ({photoFiles.length}):
+      </small>
+      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        {photoFiles.map((file, index) => (
+          <div key={index} style={{ position: 'relative', width: '100px', height: '100px' }}>
+            <img 
+              src={URL.createObjectURL(file)} 
+              alt="" 
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'cover', 
+                borderRadius: '4px',
+                border: '2px solid #3b82f6' // Blue border for new files
+              }}
+            />
+            <div style={{
+              position: 'absolute',
+              bottom: '4px',
+              left: '4px',
+              right: '4px',
+              background: 'rgba(0,0,0,0.7)',
+              color: 'white',
+              fontSize: '10px',
+              padding: '2px 4px',
+              borderRadius: '2px',
+              textAlign: 'center',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
+            }}>
+              {file.name}
+            </div>
+            <button
+              type="button"
+              onClick={() => removePhotoFile(index)}
+              style={{
+                position: 'absolute',
+                top: '-8px',
+                right: '-8px',
+                background: '#ef4444',
+                color: 'white',
+                border: 'none',
+                borderRadius: '50%',
+                width: '24px',
+                height: '24px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+              }}
+              title="Remove this file"
+            >
+              ×
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+  
+  {/* ✅ Show existing photo URLs from database */}
+  {formData.photos && formData.photos.length > 0 && (
+    <div>
+      <small style={{ color: '#666', display: 'block', marginBottom: '8px' }}>
+        💾 Existing Photos in Database ({formData.photos.length}):
+      </small>
+      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        {formData.photos.map((photo, index) => (
+          <div key={index} style={{ position: 'relative', width: '100px', height: '100px' }}>
+            <img 
+              src={photo} 
+              alt="" 
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'cover', 
+                borderRadius: '4px',
+                border: '2px solid #10b981' // Green border for existing photos
+              }}
+              onError={(e) => {
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'flex';
+              }}
+            />
+            <div style={{
+              display: 'none',
+              width: '100%',
+              height: '100%',
+              background: '#f3f4f6',
+              borderRadius: '4px',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '12px',
+              color: '#9ca3af',
+              textAlign: 'center',
+              padding: '5px'
+            }}>
+              Invalid URL
+            </div>
+            <button
+              type="button"
+              onClick={() => removePhoto(index)}
+              style={{
+                position: 'absolute',
+                top: '-8px',
+                right: '-8px',
+                background: '#ef4444',
+                color: 'white',
+                border: 'none',
+                borderRadius: '50%',
+                width: '24px',
+                height: '24px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+              }}
+              title="Remove from database"
+            >
+              ×
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {/* ✅ Total count summary */}
+  {(photoFiles.length > 0 || formData.photos.length > 0) && (
+    <div style={{
+      marginTop: '10px',
+      padding: '8px 12px',
+      background: '#f0f9ff',
+      border: '1px solid #bfdbfe',
+      borderRadius: '4px',
+      fontSize: '13px',
+      color: '#1e40af'
+    }}>
+      <strong>Total Photos:</strong> {photoFiles.length} new + {formData.photos.length} existing = <strong>{photoFiles.length + formData.photos.length}</strong> images
+    </div>
+  )}
+</div>
+
+                  {/* ✅ Background Image Upload Section */}
                   <div className="form-group">
-                    <label>Photo URLs</label>
-                    <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
-                      <input
-                        type="url"
-                        placeholder="Enter image URL (https://...)"
-                        value={newPhotoUrl}
-                        onChange={(e) => setNewPhotoUrl(e.target.value)}
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter') {
-                            e.preventDefault();
-                            addPhotoUrl();
-                          }
-                        }}
-                        style={{ flex: 1 }}
-                      />
-                      <button
-                        type="button"
-                        onClick={addPhotoUrl}
-                        className="btn-admin btn-sm btn-primary"
-                        style={{ whiteSpace: 'nowrap' }}
-                      >
-                        <i className="fa fa-plus" /> Add
-                      </button>
-                    </div>
+                    <label>Background Image (Optional)</label>
                     
-                    {/* Show added photos */}
-                    {formData.photos && formData.photos.length > 0 && (
+                    {/* Toggle between file and URL */}
+                    <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+                        <input
+                          type="radio"
+                          name="backgroundInputType"
+                          value="file"
+                          checked={backgroundInputType === 'file'}
+                          onChange={() => setBackgroundInputType('file')}
+                        />
+                        <span>Upload File</span>
+                      </label>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+                        <input
+                          type="radio"
+                          name="backgroundInputType"
+                          value="link"
+                          checked={backgroundInputType === 'link'}
+                          onChange={() => setBackgroundInputType('link')}
+                        />
+                        <span>Add URL</span>
+                      </label>
+                    </div>
+
+                    {/* File upload */}
+                    {backgroundInputType === 'file' && (
+                      <div style={{ marginBottom: '10px' }}>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleBackgroundImageFileChange}
+                          disabled={!!formData.backgroundImage || !!backgroundImageFile}
+                        />
+                        <small style={{ display: 'block', color: '#666', marginTop: '5px' }}>
+                          Select background image (JPG, PNG, GIF, WEBP)
+                        </small>
+                      </div>
+                    )}
+
+                    {/* URL input */}
+                    {backgroundInputType === 'link' && (
+                      <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
+                        <input
+                          type="url"
+                          placeholder="Enter background image URL (https://...)"
+                          value={backgroundImageUrl}
+                          onChange={(e) => setBackgroundImageUrl(e.target.value)}
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              addBackgroundImage();
+                            }
+                          }}
+                          style={{ flex: 1 }}
+                          disabled={!!formData.backgroundImage}
+                        />
+                        <button
+                          type="button"
+                          onClick={addBackgroundImage}
+                          className="btn-admin btn-sm btn-primary"
+                          style={{ whiteSpace: 'nowrap' }}
+                          disabled={!!formData.backgroundImage}
+                        >
+                          <i className="fa fa-plus" /> Add
+                        </button>
+                      </div>
+                    )}
+                    
+                    {/* Show selected file */}
+                    {backgroundImageFile && (
                       <div>
                         <small style={{ color: '#666', display: 'block', marginBottom: '8px' }}>
-                          Added Photos ({formData.photos.length}):
+                          Selected File:
                         </small>
-                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                          {formData.photos.map((photo, index) => (
-                            <div key={index} style={{ position: 'relative', width: '100px', height: '100px' }}>
-                              <img 
-                                src={photo} 
-                                alt="" 
-                                style={{ 
-                                  width: '100%', 
-                                  height: '100%', 
-                                  objectFit: 'cover', 
-                                  borderRadius: '4px',
-                                  border: '2px solid #e5e7eb'
-                                }}
-                                onError={(e) => {
-                                  e.target.style.display = 'none';
-                                  e.target.nextSibling.style.display = 'flex';
-                                }}
-                              />
-                              <div style={{
-                                display: 'none',
-                                width: '100%',
-                                height: '100%',
-                                background: '#f3f4f6',
-                                borderRadius: '4px',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '12px',
-                                color: '#9ca3af',
-                                textAlign: 'center',
-                                padding: '5px'
-                              }}>
-                                Invalid URL
-                              </div>
-                              <button
-                                type="button"
-                                onClick={() => removePhoto(index)}
-                                style={{
-                                  position: 'absolute',
-                                  top: '-8px',
-                                  right: '-8px',
-                                  background: '#ef4444',
-                                  color: 'white',
-                                  border: 'none',
-                                  borderRadius: '50%',
-                                  width: '24px',
-                                  height: '24px',
-                                  cursor: 'pointer',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  fontSize: '14px',
-                                  fontWeight: 'bold',
-                                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
-                                }}
-                                title="Remove photo"
-                              >
-                                ×
-                              </button>
-                            </div>
-                          ))}
+                        <div style={{ position: 'relative', width: '100%', maxWidth: '300px', height: '150px' }}>
+                          <img 
+                            src={URL.createObjectURL(backgroundImageFile)} 
+                            alt="Background" 
+                            style={{ 
+                              width: '100%', 
+                              height: '100%', 
+                              objectFit: 'cover', 
+                              borderRadius: '4px',
+                              border: '2px solid #e5e7eb'
+                            }}
+                          />
+                          <button
+                            type="button"
+                            onClick={removeBackgroundImage}
+                            style={{
+                              position: 'absolute',
+                              top: '-8px',
+                              right: '-8px',
+                              background: '#ef4444',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '50%',
+                              width: '24px',
+                              height: '24px',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '14px',
+                              fontWeight: 'bold',
+                              boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                            }}
+                            title="Remove background image"
+                          >
+                            ×
+                          </button>
                         </div>
                       </div>
                     )}
-                  </div>
 
-                  {/* ✅ NEW: Background Image URL Section */}
-                  <div className="form-group">
-                    <label>Background Image URL (Optional)</label>
-                    <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
-                      <input
-                        type="url"
-                        placeholder="Enter background image URL (https://...)"
-                        value={backgroundImageUrl}
-                        onChange={(e) => setBackgroundImageUrl(e.target.value)}
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter') {
-                            e.preventDefault();
-                            addBackgroundImage();
-                          }
-                        }}
-                        style={{ flex: 1 }}
-                        disabled={!!formData.backgroundImage}
-                      />
-                      <button
-                        type="button"
-                        onClick={addBackgroundImage}
-                        className="btn-admin btn-sm btn-primary"
-                        style={{ whiteSpace: 'nowrap' }}
-                        disabled={!!formData.backgroundImage}
-                      >
-                        <i className="fa fa-plus" /> Add
-                      </button>
-                    </div>
-                    
                     {/* Show background image preview */}
-                    {formData.backgroundImage && (
+                    {formData.backgroundImage && !backgroundImageFile && (
                       <div>
                         <small style={{ color: '#666', display: 'block', marginBottom: '8px' }}>
                           Background Image:
@@ -752,12 +1059,22 @@ const ObituariesAdmin = () => {
                     )}
                   </div>
 
-                  {/* ✅ NEW: Music Section */}
+                  {/* ✅ Music Section with File Upload */}
                   <div className="form-group">
                     <label>Music (Optional)</label>
                     
                     {/* Music type selector */}
                     <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+                        <input
+                          type="radio"
+                          name="musicInputType"
+                          value="file"
+                          checked={musicInputType === 'file'}
+                          onChange={() => setMusicInputType('file')}
+                        />
+                        <span>Upload MP3 File</span>
+                      </label>
                       <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
                         <input
                           type="radio"
@@ -768,17 +1085,22 @@ const ObituariesAdmin = () => {
                         />
                         <span>Music Link</span>
                       </label>
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
-                        <input
-                          type="radio"
-                          name="musicInputType"
-                          value="file"
-                          checked={musicInputType === 'file'}
-                          onChange={() => setMusicInputType('file')}
-                        />
-                        <span>Upload File (MP3)</span>
-                      </label>
                     </div>
+
+                    {/* Music File Upload */}
+                    {musicInputType === 'file' && (
+                      <div style={{ marginBottom: '10px' }}>
+                        <input
+                          type="file"
+                          accept="audio/mp3,audio/mpeg,audio/wav,audio/ogg"
+                          onChange={handleMusicFileChange}
+                          disabled={!!formData.music && !musicFile}
+                        />
+                        <small style={{ display: 'block', color: '#666', marginTop: '5px' }}>
+                          Only MP3, WAV, OGG files are supported (max 10MB)
+                        </small>
+                      </div>
+                    )}
 
                     {/* Music Link Input */}
                     {musicInputType === 'link' && (
@@ -808,34 +1130,54 @@ const ObituariesAdmin = () => {
                         </button>
                       </div>
                     )}
-
-                    {/* Music File Input */}
-                    {musicInputType === 'file' && (
-                      <div style={{ marginBottom: '10px' }}>
-                        <input
-                          type="file"
-                          accept="audio/mp3,audio/mpeg"
-                          onChange={(e) => {
-                            const file = e.target.files[0];
-                            if (file) {
-                              setMusicFile(file);
-                              setFormData(prev => ({
-                                ...prev,
-                                music: file.name,
-                                musicType: 'upload'
-                              }));
-                            }
-                          }}
-                          disabled={!!formData.music && !musicFile}
-                        />
-                        <small style={{ display: 'block', color: '#666', marginTop: '5px' }}>
-                          Only MP3 files are supported
+                    
+                    {/* Show music file */}
+                    {musicFile && (
+                      <div>
+                        <small style={{ color: '#666', display: 'block', marginBottom: '8px' }}>
+                          Selected Music File:
                         </small>
+                        <div style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: '10px', 
+                          padding: '10px', 
+                          background: '#f3f4f6', 
+                          borderRadius: '4px',
+                          border: '1px solid #e5e7eb'
+                        }}>
+                          <i className="fa fa-music" style={{ color: '#6366f1', fontSize: '20px' }} />
+                          <div style={{ flex: 1 }}>
+                            <div style={{ fontSize: '14px', fontWeight: '500' }}>
+                              {musicFile.name}
+                            </div>
+                            <div style={{ fontSize: '12px', color: '#666' }}>
+                              {(musicFile.size / 1024 / 1024).toFixed(2)} MB
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={removeMusic}
+                            style={{
+                              background: '#ef4444',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '4px',
+                              padding: '5px 10px',
+                              cursor: 'pointer',
+                              fontSize: '12px',
+                              fontWeight: 'bold'
+                            }}
+                            title="Remove music"
+                          >
+                            Remove
+                          </button>
+                        </div>
                       </div>
                     )}
-                    
+
                     {/* Show added music */}
-                    {formData.music && (
+                    {formData.music && !musicFile && (
                       <div>
                         <small style={{ color: '#666', display: 'block', marginBottom: '8px' }}>
                           Added Music:
