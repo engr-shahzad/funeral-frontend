@@ -281,13 +281,21 @@
    =============================== */
 
 /* Drawers - Base positioning */
+/* Outer wrapper - poora screen cover kare as backdrop */
 .mini-cart-open,
 .mini-menu-open {
     position: fixed;
     top: 0;
-    right: 0;
+    left: 0;
+    width: 100vw;      /* ← full width */
     height: 100vh;
     z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.5);  /* ← visible dark backdrop */
+}
+
+.hidden-mini-cart,
+.hidden-mini-menu {
+    display: none;  /* ← bilkul hide karo */
 }
 
 .hidden-mini-cart,

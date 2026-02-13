@@ -75,24 +75,24 @@ class Navigation extends React.PureComponent {
 
     return (
       <header className={`header fixed-mobile-header ${isScrolled ? 'scrolled' : ''}`}>
-       <div className="h-2" style={{ backgroundColor: '#1a2928' }}></div>
+        <div className="h-2" style={{ backgroundColor: '#1a2928' }}></div>
+
         {/* Top bar - Hidden on scroll */}
         {!isScrolled && (
           <div>
             <div className="h-2" style={{ backgroundColor: '#1a2928' }}></div>
             <div className='header-top-bar h-12 text-white'>
-            
               <Container>
                 <Row className='align-items-center'>
                   <Col md='6' className='text-left d-none d-md-block'>
-                    <span className='top-bar-contact' style={{color:'white'}}>
+                    <span className='top-bar-contact' style={{ color: 'white' }}>
                       <i className='fa fa-phone' style={{ marginRight: '8px' }} />
-                      <a 
-            href="tel:1-605-787-3940" 
-            className="phone-link"
-            style={{ color: 'white', textDecoration: 'none' }}
-          >
-                      For Immediate Support: 1-605-787-3940
+                      <a
+                        href="tel:1-605-787-3940"
+                        className="phone-link"
+                        style={{ color: 'white', textDecoration: 'none' }}
+                      >
+                        For Immediate Support: 1-605-787-3940
                       </a>
                     </span>
                   </Col>
@@ -116,7 +116,7 @@ class Navigation extends React.PureComponent {
 
         {/* Main navigation */}
         <div className='header-main-nav'>
-          <Container className='desktop-nav'> 
+          <Container className='desktop-nav'>
             <Row className='align-items-center'>
               {/* Left Navigation */}
               <Col md='5' className='d-none d-md-block'>
@@ -197,16 +197,17 @@ class Navigation extends React.PureComponent {
             </Row>
           </Container>
         </div>
-         {!isScrolled && (
+
+        {!isScrolled && (
           <div style={{ backgroundColor: 'white', height: '2px' }}></div>
-         )}
-        
+        )}
+
         {/* Mobile Navigation Bar */}
         <div className='mobile-nav d-block d-md-none'>
           <Container>
             <Row className="align-items-center py-2">
               {/* Menu - 25% */}
-              <Col xs={3} className="d-flex justify-content-start" style={{color:'black'}}>
+              <Col xs={3} className="d-flex justify-content-start" style={{ color: 'black' }}>
                 <Button
                   borderless
                   variant="empty"
@@ -227,20 +228,41 @@ class Navigation extends React.PureComponent {
                 <CartIcon cartItems={cartItems} onClick={toggleCart} />
               </Col>
             </Row>
-
           </Container>
         </div>
 
-        {/* Drawer Overlays */}
-        <div className={isCartOpen ? 'mini-cart-open' : 'hidden-mini-cart'}>
-          <div className='mini-cart'><Cart /></div>
-          <div className='drawer-backdrop' onClick={toggleCart} />
+        {/* =============================================
+            DRAWER OVERLAYS
+            Outer div = backdrop (click closes drawer)
+            Inner div = drawer content (click stays open)
+            ============================================= */}
+
+        {/* Cart Drawer */}
+        <div
+          className={isCartOpen ? 'mini-cart-open' : 'hidden-mini-cart'}
+          onClick={toggleCart}
+        >
+          <div
+            className='mini-cart'
+            onClick={e => e.stopPropagation()}
+          >
+            <Cart />
+          </div>
         </div>
 
-        <div className={isMenuOpen ? 'mini-menu-open' : 'hidden-mini-menu'}>
-          <div className='mini-menu'><Menu /></div>
-          <div className='drawer-backdrop' onClick={toggleMenu} />
+        {/* Menu Drawer */}
+        <div
+          className={isMenuOpen ? 'mini-menu-open' : 'hidden-mini-menu'}
+          onClick={toggleMenu}
+        >
+          <div
+            className='mini-menu'
+            onClick={e => e.stopPropagation()}
+          >
+            <Menu />
+          </div>
         </div>
+
       </header>
     );
   }
