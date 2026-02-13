@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_URL } from '../../constants';
-import './HomepageSettings.css';
+import './Homepagesettings.css';
 
 const HomepageSettings = () => {
   const [loading, setLoading] = useState(true);
