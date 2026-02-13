@@ -29,6 +29,7 @@
     "react-bootstrap-table-next": "^3.1.5",
     "react-bootstrap-table2-toolkit": "^2.0.1",
     "react-dom": "^16.8.6",
+    "react-helmet": "^6.1.0",
     "react-multi-carousel": "^2.5.5",
     "react-notification-system-redux": "^2.0.0",
     "react-paginate": "^8.1.3",

@@ -1,131 +1,48 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import { API_URL } from '../../constants';
 import './Blogpage.css';
 
 class BlogPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      blog: {
-        id: 1,
-        title: 'Understanding React Class Components',
-        author: 'Sarah Johnson',
-        date: 'January 15, 2025',
-        readTime: '8 min read',
-        category: 'React',
-        image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=1200&h=600&fit=crop',
-        content: [
-          {
-            type: 'paragraph',
-            text: 'React class components have been a cornerstone of React development for years. While function components with hooks have become increasingly popular, understanding class components remains essential for maintaining legacy codebases and grasping React\'s fundamental concepts.'
-          },
-          {
-            type: 'heading',
-            text: 'What Are Class Components?'
-          },
-          {
-            type: 'paragraph',
-            text: 'Class components are ES6 classes that extend React.Component. They provide a way to create components with more features than simple function components, including state management and lifecycle methods.'
-          },
-          {
-            type: 'code',
-            language: 'javascript',
-            text: `class Welcome extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      count: 0
-    };
-  }
-
-  render() {
-    return <h1>Hello, {this.props.name}</h1>;
-  }
-}`
-          },
-          {
-            type: 'heading',
-            text: 'Key Features of Class Components'
-          },
-          {
-            type: 'paragraph',
-            text: 'Class components offer several powerful features that make them suitable for complex application logic:'
-          },
-          {
-            type: 'list',
-            items: [
-              'State Management: Built-in state handling through this.state and this.setState()',
-              'Lifecycle Methods: Access to componentDidMount, componentDidUpdate, and componentWillUnmount',
-              'Error Boundaries: Ability to catch JavaScript errors in child component tree',
-              'Context API: Full support for React Context for prop drilling solutions'
-            ]
-          },
-          {
-            type: 'heading',
-            text: 'Lifecycle Methods Explained'
-          },
-          {
-            type: 'paragraph',
-            text: 'Lifecycle methods allow you to run code at specific points in a component\'s life. The mounting phase includes constructor(), render(), and componentDidMount(). The updating phase includes shouldComponentUpdate(), render(), and componentDidUpdate(). Finally, the unmounting phase includes componentWillUnmount().'
-          },
-          {
-            type: 'heading',
-            text: 'State Management Best Practices'
-          },
-          {
-            type: 'paragraph',
-            text: 'When working with state in class components, always use this.setState() to update state. Never modify this.state directly. Remember that setState() is asynchronous, so use the callback form when you need to update state based on previous state values.'
-          },
-          {
-            type: 'code',
-            language: 'javascript',
-            text: `// Correct way to update state based on previous state
-this.setState((prevState) => ({
-  count: prevState.count + 1
-}));`
-          },
-          {
-            type: 'heading',
-            text: 'Conclusion'
-          },
-          {
-            type: 'paragraph',
-            text: 'While React continues to evolve with hooks and function components, class components remain a fundamental part of React. Understanding them provides valuable insights into React\'s architecture and helps you maintain existing applications effectively. Whether you\'re working with legacy code or building new features, mastering class components is a valuable skill in your React toolkit.'
-          }
-        ],
-        tags: ['React', 'JavaScript', 'Web Development', 'Frontend', 'Programming'],
-        relatedPosts: [
-          {
-            id: 2,
-            title: 'Advanced CSS Techniques',
-            category: 'CSS',
-            image: 'https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?w=400&h=250&fit=crop'
-          },
-          {
-            id: 3,
-            title: 'State Management Patterns',
-            category: 'React',
-            image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=250&fit=crop'
-          },
-          {
-            id: 4,
-            title: 'Component Architecture',
-            category: 'Architecture',
-            image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=250&fit=crop'
-          }
-        ]
-      },
+      blog: null,
+      loading: true,
+      error: null,
       showTableOfContents: true
     };
   }
 
   componentDidMount() {
     window.scrollTo(0, 0);
-    // Get blog ID from URL params
-    const { id } = this.props.match.params;
-    // Here you can fetch blog data based on ID
-    // For now, using static data
+    this.fetchBlog();
   }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.match.params.id !== this.props.match.params.id) {
+      window.scrollTo(0, 0);
+      this.fetchBlog();
+    }
+  }
+
+  fetchBlog = async () => {
+    try {
+      this.setState({ loading: true, error: null });
+      const { id } = this.props.match.params;
+      const response = await fetch(`${API_URL}/blogs/${id}`);
+      if (response.ok) {
+        const data = await response.json();
+        this.setState({ blog: data, loading: false });
+      } else {
+        this.setState({ error: 'Blog post not found', loading: false });
+      }
+    } catch (error) {
+      console.error('Error fetching blog:', error);
+      this.setState({ error: 'Failed to load blog post', loading: false });
+    }
+  };
 
   navigateToHome = () => {
     this.props.history.push('/blogs');
@@ -148,6 +65,12 @@ this.setState((prevState) => ({
     }
   }
 
+  formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  }
+
   renderContent = (item, index) => {
     switch (item.type) {
       case 'paragraph':
@@ -156,14 +79,14 @@ this.setState((prevState) => ({
             {item.text}
           </p>
         );
-      
+
       case 'heading':
         return (
           <h2 key={index} id={`section-${index}`} className="content-heading">
             {item.text}
           </h2>
         );
-      
+
       case 'code':
         return (
           <div key={index} className="code-block">
@@ -173,34 +96,77 @@ this.setState((prevState) => ({
             <pre><code>{item.text}</code></pre>
           </div>
         );
-      
+
       case 'list':
         return (
           <ul key={index} className="content-list">
-            {item.items.map((listItem, i) => (
+            {(item.items || []).map((listItem, i) => (
               <li key={i}>{listItem}</li>
             ))}
           </ul>
         );
-      
+
+      case 'image':
+        return (
+          <div key={index} className="content-image">
+            <img src={item.url} alt={item.alt || ''} style={{ maxWidth: '100%', borderRadius: '8px' }} />
+          </div>
+        );
+
       default:
         return null;
     }
   }
 
   render() {
-    const { blog, showTableOfContents } = this.state;
-    const headings = blog.content.filter(item => item.type === 'heading');
+    const { blog, loading, error, showTableOfContents } = this.state;
+
+    if (loading) {
+      return (
+        <div className="blog-page-container" style={{ textAlign: 'center', padding: '80px 20px' }}>
+          <div className="spinner-border text-primary" role="status" />
+          <p style={{ marginTop: '12px', color: '#6b7280' }}>Loading article...</p>
+        </div>
+      );
+    }
+
+    if (error || !blog) {
+      return (
+        <div className="blog-page-container" style={{ textAlign: 'center', padding: '80px 20px' }}>
+          <h2>{error || 'Blog post not found'}</h2>
+          <button onClick={this.navigateToHome} style={{ marginTop: '16px', padding: '10px 24px', border: '1px solid #d1d5db', borderRadius: '6px', background: 'white', cursor: 'pointer' }}>
+            Back to Blog
+          </button>
+        </div>
+      );
+    }
+
+    const headings = (blog.content || []).filter(item => item.type === 'heading');
+    const seo = blog.seo || {};
 
     return (
       <div className="blog-page-container">
+        {/* SEO Meta Tags */}
+        <Helmet>
+          <title>{seo.metaTitle || blog.title}</title>
+          {(seo.metaDescription || blog.excerpt) && <meta name="description" content={seo.metaDescription || blog.excerpt} />}
+          {seo.metaKeywords && <meta name="keywords" content={seo.metaKeywords} />}
+          <meta property="og:title" content={seo.ogTitle || seo.metaTitle || blog.title} />
+          <meta property="og:description" content={seo.ogDescription || seo.metaDescription || blog.excerpt} />
+          {(seo.ogImage || blog.image) && <meta property="og:image" content={seo.ogImage || blog.image} />}
+          <meta property="og:type" content="article" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={seo.twitterTitle || seo.metaTitle || blog.title} />
+          {(seo.twitterDescription || seo.metaDescription || blog.excerpt) && <meta name="twitter:description" content={seo.twitterDescription || seo.metaDescription || blog.excerpt} />}
+        </Helmet>
+
         <nav className="blog-nav">
           <div className="nav-content">
             <button className="back-btn" onClick={this.navigateToHome}>
               <span className="arrow-left">←</span>
               Back to Articles
             </button>
-            <h3 className="nav-title">Enterprise Blog</h3>
+            <h3 className="nav-title">Blog</h3>
           </div>
         </nav>
 
@@ -210,91 +176,97 @@ this.setState((prevState) => ({
               <div className="breadcrumb">
                 <span onClick={this.navigateToHome} className="breadcrumb-link">Home</span>
                 <span className="breadcrumb-separator">/</span>
-                <span className="breadcrumb-current">{blog.category}</span>
+                <span className="breadcrumb-current">{blog.category || 'Blog'}</span>
               </div>
 
               <h1 className="article-title">{blog.title}</h1>
 
               <div className="article-meta">
                 <div className="author-section">
-                  <div className="author-avatar">{blog.author.charAt(0)}</div>
-                  <div className="author-details">
-                    <span className="author-name">{blog.author}</span>
+                  {blog.author && (
+                    <>
+                      <div className="author-avatar">{blog.author.charAt(0)}</div>
+                      <div className="author-details">
+                        <span className="author-name">{blog.author}</span>
+                        <div className="meta-info">
+                          <span className="publish-date">{this.formatDate(blog.createdAt)}</span>
+                          {blog.readTime && (
+                            <>
+                              <span className="meta-separator">•</span>
+                              <span className="read-time">{blog.readTime}</span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  {!blog.author && (
                     <div className="meta-info">
-                      <span className="publish-date">{blog.date}</span>
-                      <span className="meta-separator">•</span>
-                      <span className="read-time">{blog.readTime}</span>
+                      <span className="publish-date">{this.formatDate(blog.createdAt)}</span>
+                      {blog.readTime && (
+                        <>
+                          <span className="meta-separator">•</span>
+                          <span className="read-time">{blog.readTime}</span>
+                        </>
+                      )}
                     </div>
-                  </div>
+                  )}
                 </div>
-                <span className="category-badge">{blog.category}</span>
+                {blog.category && <span className="category-badge">{blog.category}</span>}
               </div>
             </div>
 
-            <div className="featured-image-wrapper">
-              <img src={blog.image} alt={blog.title} className="featured-image" />
-            </div>
+            {blog.image && (
+              <div className="featured-image-wrapper">
+                <img src={blog.image} alt={blog.title} className="featured-image" />
+              </div>
+            )}
           </header>
 
           <div className="article-body">
-            <aside className={`table-of-contents ${showTableOfContents ? 'visible' : 'hidden'}`}>
-              <div className="toc-header">
-                <h3>Table of Contents</h3>
-                <button className="toc-toggle" onClick={this.toggleTableOfContents}>
-                  {showTableOfContents ? '−' : '+'}
-                </button>
-              </div>
-              {showTableOfContents && (
-                <ul className="toc-list">
-                  {headings.map((heading, index) => (
-                    <li 
-                      key={index} 
-                      className="toc-item"
-                      onClick={() => this.scrollToSection(blog.content.indexOf(heading))}
-                    >
-                      {heading.text}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </aside>
+            {headings.length > 0 && (
+              <aside className={`table-of-contents ${showTableOfContents ? 'visible' : 'hidden'}`}>
+                <div className="toc-header">
+                  <h3>Table of Contents</h3>
+                  <button className="toc-toggle" onClick={this.toggleTableOfContents}>
+                    {showTableOfContents ? '−' : '+'}
+                  </button>
+                </div>
+                {showTableOfContents && (
+                  <ul className="toc-list">
+                    {headings.map((heading, index) => (
+                      <li
+                        key={index}
+                        className="toc-item"
+                        onClick={() => this.scrollToSection(blog.content.indexOf(heading))}
+                      >
+                        {heading.text}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </aside>
+            )}
 
             <div className="article-content">
-              {blog.content.map((item, index) => this.renderContent(item, index))}
+              {(blog.content || []).map((item, index) => this.renderContent(item, index))}
 
-              <div className="tags-section">
-                <h4 className="tags-title">Tags:</h4>
-                <div className="tags-container">
-                  {blog.tags.map((tag, index) => (
-                    <span key={index} className="tag">{tag}</span>
-                  ))}
+              {blog.tags && blog.tags.length > 0 && (
+                <div className="tags-section">
+                  <h4 className="tags-title">Tags:</h4>
+                  <div className="tags-container">
+                    {blog.tags.map((tag, index) => (
+                      <span key={index} className="tag">{tag}</span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </article>
 
-        <section className="related-posts">
-          <h2 className="related-title">Related Articles</h2>
-          <div className="related-grid">
-            {blog.relatedPosts.map(post => (
-              <div 
-                key={post.id} 
-                className="related-card"
-                onClick={() => this.navigateToBlog(post.id)}
-              >
-                <img src={post.image} alt={post.title} className="related-image" />
-                <div className="related-content">
-                  <span className="related-category">{post.category}</span>
-                  <h3 className="related-post-title">{post.title}</h3>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
         <footer className="article-footer">
-          <p>&copy; 2025 Enterprise Blog. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} West River Funeral Directors. All rights reserved.</p>
         </footer>
       </div>
     );

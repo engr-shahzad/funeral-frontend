@@ -11,6 +11,8 @@ import CondolencesAdmin from './Condolences';
 import UsersAdmin from './Users';
 import OrdersAdmin from './Orders';
 import Dashboard from './Dashboard';
+import HomepageSettingsAdmin from './Homepagesettings';
+import BlogsAdmin from './Blogs';
 
 import './styles.scss';
 
@@ -20,6 +22,8 @@ const Admin = () => {
 
   const menuItems = [
     { path: '/admin', label: 'Dashboard', icon: 'icon-speedometer', exact: true },
+    { path: '/admin/homepage', label: 'Homepage', icon: 'icon-home' },
+    { path: '/admin/blogs', label: 'Blogs', icon: 'icon-pencil' },
     { path: '/admin/products', label: 'Products', icon: 'icon-basket' },
     { path: '/admin/obituaries', label: 'Obituaries', icon: 'icon-book-open' },
     { path: '/admin/condolences', label: 'Condolences', icon: 'icon-heart' },
@@ -68,6 +72,8 @@ const Admin = () => {
       <main className="admin-content">
         <Switch>
           <Route exact path="/admin" component={Dashboard} />
+          <Route path="/admin/homepage" component={HomepageSettingsAdmin} />
+          <Route path="/admin/blogs" component={BlogsAdmin} />
           <Route path="/admin/products" component={ProductsAdmin} />
           <Route path="/admin/obituaries" component={ObituariesAdmin} />
           <Route path="/admin/condolences" component={CondolencesAdmin} />

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Helmet } from 'react-helmet';
 import { Container, Row, Col, Button, Input } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Search, MapPin, Phone, Mail } from 'lucide-react';
 
 import actions from '../../actions';
+import { API_URL } from '../../constants';
 import banners from './banners.json';
 import CarouselSlider from '../../components/Common/CarouselSlider';
 import { responsiveOneItemCarousel } from '../../components/Common/CarouselSlider/utils';
@@ -106,13 +108,29 @@ class Homepage extends Component {
       searchQuery: '',
       tributes: [],
       loading: true,
-      error: null
+      error: null,
+      settings: null
     };
   }
 
   componentDidMount() {
     this.fetchRecentTributes();
+    this.fetchHomepageSettings();
   }
+
+  fetchHomepageSettings = async () => {
+    try {
+      const response = await fetch(`${API_URL}/homepage-settings`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data) {
+          this.setState({ settings: data });
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching homepage settings:', error);
+    }
+  };
 
   fetchRecentTributes = async () => {
     try {
@@ -264,23 +282,51 @@ class Homepage extends Component {
   };
 
   render() {
-    const { currentIndex, searchQuery, tributes, loading, error } = this.state;
+    const { currentIndex, searchQuery, tributes, loading, error, settings } = this.state;
     const itemsPerPage = 6;
     const maxIndex = Math.max(0, tributes.length - itemsPerPage);
     const visibleTributes = tributes.slice(currentIndex, currentIndex + itemsPerPage);
-    const slides = [
+
+    // Default slides fallback
+    const defaultSlides = [
       {
         image: 'https://s3.amazonaws.com/CFSV2/obituaries/galleries/12123/1663011/68b14f5742047.png',
-        title: 'Celebrate Life'
+        title: 'Celebrate Life',
+        ctaText: 'OUR SERVICES',
+        ctaLink: '/our-services'
       },
       {
         image: '/images/banners/banner2.jpeg?w=1600',
-        title: 'Celebrate Life'
+        title: 'Celebrate Life',
+        ctaText: 'OUR SERVICES',
+        ctaLink: '/our-services'
       }
     ];
 
+    const slides = (settings?.heroBanner?.slides?.length > 0 && settings.heroBanner.slides[0].image)
+      ? settings.heroBanner.slides
+      : defaultSlides;
+
+    // SEO settings
+    const seo = settings?.seo || {};
+
     return (
       <div className='homepage'>
+        {/* SEO Meta Tags */}
+        <Helmet>
+          {seo.metaTitle && <title>{seo.metaTitle}</title>}
+          {seo.metaDescription && <meta name="description" content={seo.metaDescription} />}
+          {seo.metaKeywords && <meta name="keywords" content={seo.metaKeywords} />}
+          {(seo.ogTitle || seo.metaTitle) && <meta property="og:title" content={seo.ogTitle || seo.metaTitle} />}
+          {(seo.ogDescription || seo.metaDescription) && <meta property="og:description" content={seo.ogDescription || seo.metaDescription} />}
+          {seo.ogImage && <meta property="og:image" content={seo.ogImage} />}
+          <meta property="og:type" content="website" />
+          {seo.twitterCard && <meta name="twitter:card" content={seo.twitterCard} />}
+          {(seo.twitterTitle || seo.metaTitle) && <meta name="twitter:title" content={seo.twitterTitle || seo.metaTitle} />}
+          {(seo.twitterDescription || seo.metaDescription) && <meta name="twitter:description" content={seo.twitterDescription || seo.metaDescription} />}
+          {seo.twitterImage && <meta name="twitter:image" content={seo.twitterImage} />}
+        </Helmet>
+
         {/* Hero Banner Section */}
         <div className="hero-banner-section">
           <Swiper autoplay={{ delay: 4000 }} loop pagination={{ clickable: true }}>
@@ -299,9 +345,9 @@ class Homepage extends Component {
                   <div className="hero-overlay" />
                   <div className="hero-content">
                     <div className="hero-text-wrapper">
-                      <h1 className="hero-title">{slide.title}</h1>
-                      <Link to="/our-services">
-                        <button className="hero-cta-button">OUR SERVICES</button>
+                      <h1 className="hero-title">{slide.title || 'Celebrate Life'}</h1>
+                      <Link to={slide.ctaLink || '/our-services'}>
+                        <button className="hero-cta-button">{slide.ctaText || 'OUR SERVICES'}</button>
                       </Link>
                     </div>
                   </div>
@@ -424,101 +470,102 @@ class Homepage extends Component {
           </Container>
         </Container>
 
-        {/* Rest of the sections remain the same... */}
         {/* Welcome Section */}
+        {(settings?.welcomeSection?.enabled !== false) && (
         <div className="welcome-section">
           <Container style={{ maxWidth: '1400px' }}>
             <Row className="align-items-center">
               <Col lg={6} className="mb-4 mb-lg-0">
                 <div className="welcome-image-wrapper">
-                  <img src="https://s3.amazonaws.com/CFSV2/siteimages/wvr/321486-img.jpg" alt="West River Funeral Directors" className="img-fluid welcome-image" />
+                  <img src={settings?.welcomeSection?.image || "https://s3.amazonaws.com/CFSV2/siteimages/wvr/321486-img.jpg"} alt={settings?.welcomeSection?.title || "West River Funeral Directors"} className="img-fluid welcome-image" />
                 </div>
               </Col>
               <Col lg={6}>
                 <div className="welcome-content">
-                  <p className="welcome-label">WELCOME TO</p>
-                  <h2 className="welcome-title">West River Funeral Directors LLC</h2>
+                  <p className="welcome-label">{settings?.welcomeSection?.label || 'WELCOME TO'}</p>
+                  <h2 className="welcome-title">{settings?.welcomeSection?.title || 'West River Funeral Directors LLC'}</h2>
                   <p className="welcome-text">
-                    Welcome to our website. We provide individualized funeral services designed to meet the needs of each family. Our staff of dedicated professionals is available to assist you in making funeral service arrangements. From casket choices to funeral flowers, we will guide you through all aspects of the funeral service.
+                    {settings?.welcomeSection?.description || 'Welcome to our website. We provide individualized funeral services designed to meet the needs of each family. Our staff of dedicated professionals is available to assist you in making funeral service arrangements. From casket choices to funeral flowers, we will guide you through all aspects of the funeral service.'}
                   </p>
-                  <p className="welcome-text">
-                    We invite you to <Link to="/contact-us" className="welcome-link">contact us</Link> with your questions, 24 hours a day, 7 days a week.
-                  </p>
-                  <Link to="/about-us">
-                    <button className="welcome-cta-btn">LEARN MORE</button>
+                  {!settings?.welcomeSection?.description && (
+                    <p className="welcome-text">
+                      We invite you to <Link to="/contact-us" className="welcome-link">contact us</Link> with your questions, 24 hours a day, 7 days a week.
+                    </p>
+                  )}
+                  <Link to={settings?.welcomeSection?.ctaLink || '/about-us'}>
+                    <button className="welcome-cta-btn">{settings?.welcomeSection?.ctaText || 'LEARN MORE'}</button>
                   </Link>
                 </div>
               </Col>
             </Row>
           </Container>
         </div>
+        )}
 
         {/* Services Grid Section */}
-        <div className="services-grid-section">
-          <Container fluid style={{ padding: 0 }}>
-            <Row className="g-0">
-              <Col md={6} lg={6} className="service-grid-item">
-                <Link to="/pre-arrangements" className="service-card-link">
-                  <div className="service-card" style={{ backgroundImage: `url(https://s3.amazonaws.com/CFSV2/stockimages/28865-people-3120717.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
-                    <div className="service-card-overlay"></div>
-                    <div className="service-card-content">
-                      <h3 className="service-card-title">Pre-Plan</h3>
-                    </div>
-                  </div>
-                </Link>
-              </Col>
-              <Col md={6} lg={6} className="service-grid-item">
-                <Link to="/send-flowers" className="service-card-link">
-                  <div className="service-card" style={{ backgroundImage: `url(https://s3.amazonaws.com/CFSV2/stockimages/804104-Send-Flowers-8.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
-                    <div className="service-card-overlay"></div>
-                    <div className="service-card-content">
-                      <h3 className="service-card-title">Send Flowers</h3>
-                    </div>
-                  </div>
-                </Link>
-              </Col>
-            </Row>
-            <Row className="g-0 mt-4">
-              <Col md={6} lg={6} className="service-grid-item">
-                <Link to="/grief-support" className="service-card-link">
-                  <div className="service-card" style={{ backgroundImage: `url(https://s3.amazonaws.com/CFSV2/stockimages/170757-mother-daughter-hug.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
-                    <div className="service-card-overlay"></div>
-                    <div className="service-card-content">
-                      <h3 className="service-card-title">Grief Support</h3>
-                    </div>
-                  </div>
-                </Link>
-              </Col>
-              <Col md={6} lg={6} className="service-grid-item">
-                <Link to="/faqs" className="service-card-link">
-                  <div className="service-card" style={{ backgroundImage: `url(https://s3.amazonaws.com/CFSV2/stockimages/383488-Notebook-4.png)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
-                    <div className="service-card-overlay"></div>
-                    <div className="service-card-content">
-                      <h3 className="service-card-title">F.A.Q.</h3>
-                    </div>
-                  </div>
-                </Link>
-              </Col>
-            </Row>
-          </Container>
-        </div>
+        {(settings?.servicesGrid?.enabled !== false) && (() => {
+          const defaultServices = [
+            { title: 'Pre-Plan', image: 'https://s3.amazonaws.com/CFSV2/stockimages/28865-people-3120717.jpg', link: '/pre-arrangements' },
+            { title: 'Send Flowers', image: 'https://s3.amazonaws.com/CFSV2/stockimages/804104-Send-Flowers-8.jpg', link: '/send-flowers' },
+            { title: 'Grief Support', image: 'https://s3.amazonaws.com/CFSV2/stockimages/170757-mother-daughter-hug.jpg', link: '/grief-support' },
+            { title: 'F.A.Q.', image: 'https://s3.amazonaws.com/CFSV2/stockimages/383488-Notebook-4.png', link: '/faqs' }
+          ];
+          const services = (settings?.servicesGrid?.services?.length > 0 && settings.servicesGrid.services[0].title)
+            ? settings.servicesGrid.services
+            : defaultServices;
+          return (
+            <div className="services-grid-section">
+              <Container fluid style={{ padding: 0 }}>
+                <Row className="g-0">
+                  {services.slice(0, 2).map((svc, i) => (
+                    <Col key={i} md={6} lg={6} className="service-grid-item">
+                      <Link to={svc.link || '#'} className="service-card-link">
+                        <div className="service-card" style={{ backgroundImage: `url(${svc.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                          <div className="service-card-overlay"></div>
+                          <div className="service-card-content">
+                            <h3 className="service-card-title">{svc.title}</h3>
+                          </div>
+                        </div>
+                      </Link>
+                    </Col>
+                  ))}
+                </Row>
+                <Row className="g-0 mt-4">
+                  {services.slice(2, 4).map((svc, i) => (
+                    <Col key={i} md={6} lg={6} className="service-grid-item">
+                      <Link to={svc.link || '#'} className="service-card-link">
+                        <div className="service-card" style={{ backgroundImage: `url(${svc.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                          <div className="service-card-overlay"></div>
+                          <div className="service-card-content">
+                            <h3 className="service-card-title">{svc.title}</h3>
+                          </div>
+                        </div>
+                      </Link>
+                    </Col>
+                  ))}
+                </Row>
+              </Container>
+            </div>
+          );
+        })()}
 
         {/* Testimonials Section */}
+        {(settings?.testimonials?.enabled !== false) && (
         <div className="testimonials-section">
           <Container style={{ maxWidth: '1200px' }}>
             <div className="testimonials-header text-center mb-5">
-              <h2 className="testimonials-title">What Our Families are Saying...</h2>
-              <p className="testimonials-subtitle">TESTIMONIALS</p>
+              <h2 className="testimonials-title">{settings?.testimonials?.title || 'What Our Families are Saying...'}</h2>
+              <p className="testimonials-subtitle">{settings?.testimonials?.subtitle || 'TESTIMONIALS'}</p>
             </div>
             <Row>
               <Col lg={8} className="mx-auto">
                 <div className="testimonial-card">
                   <p className="testimonial-text">
-                    "We are always impressed in hearing from the families that we serve. Please take a moment to let us know how we are doing by sharing your experience via our testimonials link. We very much appreciate your feedback."
+                    {settings?.testimonials?.text || '"We are always impressed in hearing from the families that we serve. Please take a moment to let us know how we are doing by sharing your experience via our testimonials link. We very much appreciate your feedback."'}
                   </p>
                   <div className="text-center mt-4">
-                    <Link to="/testimonials">
-                      <button className="testimonial-btn">Click to enter your testimonial »</button>
+                    <Link to={settings?.testimonials?.ctaLink || '/testimonials'}>
+                      <button className="testimonial-btn">{settings?.testimonials?.ctaText || 'Click to enter your testimonial »'}</button>
                     </Link>
                   </div>
                 </div>
@@ -526,61 +573,75 @@ class Homepage extends Component {
             </Row>
           </Container>
         </div>
+        )}
 
         {/* Google Reviews Section */}
+        {(settings?.googleReviews?.enabled !== false) && (
         <div className="google-reviews-section">
           <Container style={{ maxWidth: '800px' }}>
             <div className="text-center">
-              <h3 className="google-reviews-title">See Our Google Reviews</h3>
+              <h3 className="google-reviews-title">{settings?.googleReviews?.title || 'See Our Google Reviews'}</h3>
               <div className="qr-code-wrapper mt-4">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://g.page/r/YOUR_GOOGLE_REVIEW_LINK" alt="QR Code for Google Reviews" className="qr-code-image" />
+                <img src={settings?.googleReviews?.qrCodeUrl || "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://g.page/r/YOUR_GOOGLE_REVIEW_LINK"} alt="QR Code for Google Reviews" className="qr-code-image" />
               </div>
             </div>
           </Container>
         </div>
+        )}
 
         {/* Location Section */}
-        <div className="location-section">
-          <Container fluid style={{ padding: 0 }}>
-            <Row className="g-0">
-              <Col lg={6}>
-                <div className="location-info">
-                  <h3 className="location-title">Our Location</h3>
-                  <div className="location-details">
-                    <div className="location-detail-item">
-                      <MapPin size={20} />
-                      <div>
-                        <p className="mb-0"><strong>West River Funeral Directors LLC</strong></p>
-                        <p className="mb-0">420 East Saint Patrick St. Ste 106</p>
-                        <p className="mb-0">Rapid City, SD 57701</p>
+        {(settings?.location?.enabled !== false) && (() => {
+          const loc = settings?.location || {};
+          const businessName = loc.businessName || 'West River Funeral Directors LLC';
+          const address = loc.address || '420 East Saint Patrick St. Ste 106';
+          const cityStateZip = `${loc.city || 'Rapid City'}, ${loc.state || 'SD'} ${loc.zip || '57701'}`;
+          const phone = loc.phone || '1-605-787-3940';
+          const fax = loc.fax || '1-605-854-5202';
+          const mapUrl = loc.mapEmbedUrl || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2866.7432352779197!2d-103.2094104!3d44.0680104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x877d43ef63b356ed%3A0xae3a396c4423ff90!2sWest%20River%20Funeral%20Directors%2C%20Funeral%20Home%20%26%20Cremation%20Services!5e0!3m2!1sen!2sus!4v1768864728088!5m2!1sen!2sus';
+          return (
+            <div className="location-section">
+              <Container fluid style={{ padding: 0 }}>
+                <Row className="g-0">
+                  <Col lg={6}>
+                    <div className="location-info">
+                      <h3 className="location-title">{loc.title || 'Our Location'}</h3>
+                      <div className="location-details">
+                        <div className="location-detail-item">
+                          <MapPin size={20} />
+                          <div>
+                            <p className="mb-0"><strong>{businessName}</strong></p>
+                            <p className="mb-0">{address}</p>
+                            <p className="mb-0">{cityStateZip}</p>
+                          </div>
+                        </div>
+                        <div className="location-detail-item">
+                          <Phone size={20} />
+                          <div>
+                            <p className="mb-0">Tel: {phone}</p>
+                            <p className="mb-0">Fax: {fax}</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div className="location-detail-item">
-                      <Phone size={20} />
-                      <div>
-                        <p className="mb-0">Tel: 1-605-787-3940</p>
-                        <p className="mb-0">Fax: 1-605-854-5202</p>
-                      </div>
+                  </Col>
+                  <Col lg={6}>
+                    <div className="location-map">
+                      <iframe
+                        src={mapUrl}
+                        width="100%"
+                        height="400"
+                        style={{ border: 0 }}
+                        allowFullScreen=""
+                        loading="lazy"
+                        title={`${businessName} Location`}
+                      ></iframe>
                     </div>
-                  </div>
-                </div>
-              </Col>
-              <Col lg={6}>
-                <div className="location-map">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2866.7432352779197!2d-103.2094104!3d44.0680104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x877d43ef63b356ed%3A0xae3a396c4423ff90!2sWest%20River%20Funeral%20Directors%2C%20Funeral%20Home%20%26%20Cremation%20Services!5e0!3m2!1sen!2sus!4v1768864728088!5m2!1sen!2sus"
-                    width="100%"
-                    height="400"
-                    style={{ border: 0 }}
-                    allowFullScreen=""
-                    loading="lazy"
-                    title="West River Funeral Directors Location"
-                  ></iframe>
-                </div>
-              </Col>
-            </Row>
-          </Container>
-        </div>
+                  </Col>
+                </Row>
+              </Container>
+            </div>
+          );
+        })()}
 
         {/* View Services CTA */}
         <div className="view-services-cta">
