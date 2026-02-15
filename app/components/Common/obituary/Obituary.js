@@ -527,7 +527,6 @@ class ObituaryPage extends Component {
                                 </div>
 
                                
-// Replace the old service section with this new code:
 
                                 {/* 3. Service Section (Redesigned to match image) */}
                                 <div className="memorial-service-wrapper">
