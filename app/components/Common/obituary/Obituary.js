@@ -526,38 +526,65 @@ class ObituaryPage extends Component {
                                     <div className="biography-text" dangerouslySetInnerHTML={{ __html: obituaryData.biography }} />
                                 </div>
 
-                                {/* 3. Service Section (Detailed) */}
-                                <div className="services-section-container">
-                                    <h3 className="services-title">Service Details</h3>
-                                    <div className="services-grid">
-                                        <div className="service-box">
-                                            <div className="service-icon"><Calendar size={20} /></div>
-                                            <div className="service-info">
-                                                <h4>{obituaryData.serviceType}</h4>
-                                                <p> Date: 
-  {obituaryData.serviceDate
-    ? obituaryData.serviceDate.split('T')[0]
-    : 'Date Pending'}
-</p>
-                                                {/* <p>{obituaryData.serviceTime || 'Time Pending'}</p> */}
-                                                <p className="service-location"> Location: {obituaryData.serviceLocation || 'Location Pending'}</p>
-                                            </div>
-                                        </div>
-                                        <div className="service-box">
-                                            <div className="service-icon"><Clock size={20} /></div>
-                                            <div className="service-info">
-                                                <h4>Funeral Service</h4>
-                                                <p>{obituaryData.serviceTime || 'Time Pending'}</p>
-                                                <p className="service-location">{obituaryData.serviceLocation || 'Location Pending'}</p>
-                                            </div>
-                                        </div>
+                               
+// Replace the old service section with this new code:
+
+                                {/* 3. Service Section (Redesigned to match image) */}
+                                <div className="memorial-service-wrapper">
+                                    {/* Burial Notice */}
+                                    <div className="burial-notice">
+                                        <p>A private burial will be held with immediate family.</p>
                                     </div>
-                                    
-                                    <div className="service-cta">
-                                        <p>Show your support by sending flowers or planting a tree.</p>
-                                        <button onClick={this.handlePlantTree} className="btns btn-tree-full">
-                                            Plant a tree in memory of {obituaryData.firstName}
-                                        </button>
+
+                                    {/* Memorial Actions */}
+                                    <div className="memorial-actions">
+                                        <p>
+                                            To <a href="#flowers" className="memorial-link">send flowers</a> to the family or{' '}
+                                            <a href="#tree" onClick={this.handlePlantTree} className="memorial-link">plant a tree</a> in memory of{' '}
+                                            {obituaryData.firstName} {obituaryData.lastName}, please{' '}
+                                            <a href="#store" className="memorial-link">visit our floral store</a>.
+                                        </p>
+                                    </div>
+
+                                    {/* Services Section */}
+                                    <div className="services-section">
+                                        <h2 className="services-heading">Services</h2>
+                                        
+                                        <div className="service-card">
+                                            <div className="service-header">
+                                                <h3 className="service-title">{obituaryData.serviceType || 'CELEBRATION OF LIFE'}</h3>
+                                                <button className="email-details-btn">
+                                                    <Mail size={16} className="email-icon" />
+                                                    Email Details
+                                                </button>
+                                            </div>
+                                            
+                                            <div className="service-details">
+                                                <div className="service-detail-item">
+                                                    <Calendar className="detail-icon" size={18} />
+                                                    <span>
+                                                        {obituaryData.serviceDate
+                                                            ? new Date(obituaryData.serviceDate).toLocaleDateString('en-US', {
+                                                                weekday: 'long',
+                                                                year: 'numeric',
+                                                                month: 'long',
+                                                                day: 'numeric'
+                                                            })
+                                                            : 'Date Pending'}
+                                                    </span>
+                                                </div>
+                                                
+                                                <div className="service-detail-item">
+                                                    <Clock className="detail-icon" size={18} />
+                                                    <span>{obituaryData.serviceTime || 'Time Pending'}</span>
+                                                </div>
+                                                
+                                                <div className="service-detail-item">
+                                                    <MapPin className="detail-icon" size={18} />
+                                                    <span>{obituaryData.serviceLocation || 'Location Pending'}</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -642,6 +669,202 @@ class ObituaryPage extends Component {
                 </div>
 
                 <style jsx>{`
+                /* Add these styles to your ObituaryPage.css file */
+
+/* Memorial Service Wrapper - Main Container */
+.memorial-service-wrapper {
+    max-width: 100%;
+    margin: 40px 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+}
+
+/* Burial Notice - Gray Box at Top */
+.burial-notice {
+    background-color: #f5f5f5;
+    padding: 20px 30px;
+    margin-bottom: 20px;
+    border-left: 4px solid #999;
+}
+
+.burial-notice p {
+    margin: 0;
+    color: #555;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* Memorial Actions - Flowers/Tree Links */
+.memorial-actions {
+    background-color: #f5f5f5;
+    padding: 20px 30px;
+    margin-bottom: 40px;
+}
+
+.memorial-actions p {
+    margin: 0;
+    color: #555;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.memorial-link {
+    color: #2c5282;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.memorial-link:hover {
+    color: #1a365d;
+}
+
+/* Services Section */
+.services-section {
+    margin-top: 50px;
+}
+
+.services-heading {
+    font-size: 32px;
+    font-weight: 400;
+        margin-left: 2rem;
+    color: #333;
+    margin-bottom: 30px;
+    font-family: Georgia, 'Times New Roman', serif;
+}
+
+/* Service Card - White Box with Border */
+.service-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Service Header - Top Section with Title and Button */
+.service-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 30px;
+    background-color: #fafafa;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.service-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    letter-spacing: 0.5px;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+/* Email Details Button */
+.email-details-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: white;
+    border: 2px solid #333;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    transition: all 0.2s ease;
+}
+
+.email-details-btn:hover {
+    background-color: #333;
+    color: white;
+}
+
+.email-details-btn .email-icon {
+    display: flex;
+    align-items: center;
+}
+
+/* Service Details - Date, Time, Location */
+.service-details {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.service-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #555;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.detail-icon {
+    color: #666;
+    flex-shrink: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .memorial-service-wrapper {
+        margin: 30px 0;
+    }
+
+    .burial-notice,
+    .memorial-actions {
+        padding: 15px 20px;
+    }
+
+    .service-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 20px;
+    }
+
+    .email-details-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .service-details {
+        padding: 20px;
+    }
+
+    .services-heading {
+        font-size: 28px;
+    }
+
+    .service-detail-item {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .burial-notice,
+    .memorial-actions {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+
+    .services-heading {
+        font-size: 24px;
+    }
+
+    .service-title {
+        font-size: 16px;
+    }
+
+    .service-details {
+        padding: 15px;
+        gap: 12px;
+    }
+}
                     /* Music Controls */
                     .music-controls {
                         display: flex;
