@@ -388,7 +388,7 @@
 
 .service-card {
     position: relative;
-    height: auto;
+    height: 400px;
     overflow: hidden;
     background-size: cover;
     background-position: center;
@@ -638,7 +638,7 @@
     }
 
     .service-card {
-        height: auto;
+        height: 350px;
     }
 
     .service-card-title {
@@ -700,7 +700,7 @@
     }
 
     .service-card {
-        height: auto;
+        height: 300px;
     }
 
     .service-card-title {
@@ -788,7 +788,7 @@
     }
 
     .service-card {
-        height: auto;
+        height: 250px;
         margin-bottom: 0;
     }
 

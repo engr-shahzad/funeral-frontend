@@ -1,5 +1,5 @@
 /**
- * Navigation.js
+ * Navigation.js - Updated with fixed phone dial functionality
  */
 import React from 'react';
 import { connect } from 'react-redux';
@@ -88,7 +88,7 @@ class Navigation extends React.PureComponent {
                     <span className='top-bar-contact' style={{ color: 'white' }}>
                       <i className='fa fa-phone' style={{ marginRight: '8px' }} />
                       <a
-                        href="tel:1-605-787-3940"
+                        href="tel:+16057873940"
                         className="phone-link"
                         style={{ color: 'white', textDecoration: 'none' }}
                       >
@@ -105,8 +105,13 @@ class Navigation extends React.PureComponent {
                     </div>
                   </Col>
                   <Col xs='12' className='text-center d-block d-md-none py-2'>
-                    <i className='fa fa-phone' />
-                    <span> For Support: 1-605-787-3940</span>
+                    <a 
+                      href="tel:+16057873940" 
+                      style={{ color: 'white', textDecoration: 'none' }}
+                    >
+                      <i className='fa fa-phone' />
+                      <span> For Support: 1-605-787-3940</span>
+                    </a>
                   </Col>
                 </Row>
               </Container>

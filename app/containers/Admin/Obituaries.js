@@ -34,6 +34,7 @@ const mapObituary = (jsonObituary) => {
     photos: jsonObituary.photos || (jsonObituary.photo ? [jsonObituary.photo] : []) || (jsonObituary.IMAGE ? [jsonObituary.IMAGE] : []),
     primaryPhoto: jsonObituary.primaryPhoto || jsonObituary.photo || jsonObituary.IMAGE || '',
     backgroundImage: jsonObituary.backgroundImage || '',
+    contentImage: jsonObituary.contentImage || '',
     music: jsonObituary.music || '',
     musicType: jsonObituary.musicType || null,
     serviceType: jsonObituary.serviceType || 'PRIVATE FAMILY SERVICE',
@@ -63,6 +64,7 @@ const ObituariesAdmin = () => {
     biography: '',
     photos: [],
     backgroundImage: '',
+    contentImage: '',
     music: '',
     musicType: null,
     serviceType: 'PRIVATE FAMILY SERVICE',
@@ -71,19 +73,22 @@ const ObituariesAdmin = () => {
     isPublished: true
   });
   const [saving, setSaving] = useState(false);
-  
+
   // ✅ NEW: State for file uploads
   const [photoFiles, setPhotoFiles] = useState([]);
   const [backgroundImageFile, setBackgroundImageFile] = useState(null);
+  const [contentImageFile, setContentImageFile] = useState(null);
   const [musicFile, setMusicFile] = useState(null);
-  
+
   // State for URL inputs (optional alternative to file upload)
   const [newPhotoUrl, setNewPhotoUrl] = useState('');
   const [backgroundImageUrl, setBackgroundImageUrl] = useState('');
+  const [contentImageUrl, setContentImageUrl] = useState('');
   const [musicUrl, setMusicUrl] = useState('');
   const [musicInputType, setMusicInputType] = useState('link'); // 'link' or 'file'
   const [photoInputType, setPhotoInputType] = useState('file'); // 'link' or 'file'
   const [backgroundInputType, setBackgroundInputType] = useState('file'); // 'link' or 'file'
+  const [contentImageInputType, setContentImageInputType] = useState('file'); // 'link' or 'file'
 
   useEffect(() => {
     fetchObituaries();
@@ -177,6 +182,34 @@ const ObituariesAdmin = () => {
     setBackgroundImageFile(null);
   };
 
+  // Handle content image file
+  const handleContentImageFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setContentImageFile(file);
+    }
+  };
+
+  // Add content image URL
+  const addContentImage = () => {
+    if (contentImageUrl.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        contentImage: contentImageUrl.trim()
+      }));
+    }
+  };
+
+  // Remove content image
+  const removeContentImage = () => {
+    setFormData(prev => ({
+      ...prev,
+      contentImage: ''
+    }));
+    setContentImageUrl('');
+    setContentImageFile(null);
+  };
+
   // ✅ Handle music file
   const handleMusicFileChange = (e) => {
     const file = e.target.files[0];
@@ -219,6 +252,7 @@ const ObituariesAdmin = () => {
       biography: '',
       photos: [],
       backgroundImage: '',
+      contentImage: '',
       music: '',
       musicType: null,
       serviceType: 'PRIVATE FAMILY SERVICE',
@@ -228,13 +262,16 @@ const ObituariesAdmin = () => {
     });
     setPhotoFiles([]);
     setBackgroundImageFile(null);
+    setContentImageFile(null);
     setMusicFile(null);
     setNewPhotoUrl('');
     setBackgroundImageUrl('');
+    setContentImageUrl('');
     setMusicUrl('');
     setMusicInputType('link');
     setPhotoInputType('file');
     setBackgroundInputType('file');
+    setContentImageInputType('file');
     setShowModal(true);
   };
 
@@ -250,6 +287,7 @@ const ObituariesAdmin = () => {
       biography: obituary.biography || '',
       photos: obituary.photos || [],
       backgroundImage: obituary.backgroundImage || '',
+      contentImage: obituary.contentImage || '',
       music: obituary.music || '',
       musicType: obituary.musicType || null,
       serviceType: obituary.serviceType || 'PRIVATE FAMILY SERVICE',
@@ -259,13 +297,16 @@ const ObituariesAdmin = () => {
     });
     setPhotoFiles([]);
     setBackgroundImageFile(null);
+    setContentImageFile(null);
     setMusicFile(null);
     setNewPhotoUrl('');
     setBackgroundImageUrl(obituary.backgroundImage || '');
+    setContentImageUrl(obituary.contentImage || '');
     setMusicUrl(obituary.musicType === 'link' ? obituary.music : '');
     setMusicInputType(obituary.musicType === 'upload' ? 'file' : 'link');
     setPhotoInputType('file');
     setBackgroundInputType('file');
+    setContentImageInputType('file');
     setShowModal(true);
   };
 
@@ -279,7 +320,7 @@ const ObituariesAdmin = () => {
   
       // Add text fields
       Object.keys(formData).forEach(key => {
-        if (key !== 'photos' && key !== 'backgroundImage' && key !== 'music') {
+        if (key !== 'photos' && key !== 'backgroundImage' && key !== 'contentImage' && key !== 'music') {
           const value = formData[key];
           if (value !== null && value !== undefined && value !== '') {
             formDataToSend.append(key, value);
@@ -307,7 +348,14 @@ const ObituariesAdmin = () => {
       } else if (formData.backgroundImage && backgroundInputType === 'link') {
         formDataToSend.append('backgroundImage', formData.backgroundImage);
       }
-  
+
+      // Add content image file
+      if (contentImageFile) {
+        formDataToSend.append('contentImage', contentImageFile);
+      } else if (formData.contentImage && contentImageInputType === 'link') {
+        formDataToSend.append('contentImage', formData.contentImage);
+      }
+
       // Add music file or link
       if (musicFile) {
         formDataToSend.append('music', musicFile);
@@ -1040,6 +1088,192 @@ const ObituariesAdmin = () => {
                               boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
                             }}
                             title="Remove background image"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Content Image Upload Section (appears in biography) */}
+                  <div className="form-group">
+                    <label>Content Image (Appears in Obituary Text - Upper Right)</label>
+
+                    {/* Toggle between file and URL */}
+                    <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+                        <input
+                          type="radio"
+                          name="contentImageInputType"
+                          value="file"
+                          checked={contentImageInputType === 'file'}
+                          onChange={() => setContentImageInputType('file')}
+                        />
+                        <span>Upload File</span>
+                      </label>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+                        <input
+                          type="radio"
+                          name="contentImageInputType"
+                          value="link"
+                          checked={contentImageInputType === 'link'}
+                          onChange={() => setContentImageInputType('link')}
+                        />
+                        <span>Add URL</span>
+                      </label>
+                    </div>
+
+                    {/* File upload */}
+                    {contentImageInputType === 'file' && (
+                      <div style={{ marginBottom: '10px' }}>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleContentImageFileChange}
+                          disabled={!!formData.contentImage || !!contentImageFile}
+                        />
+                        <small style={{ display: 'block', color: '#666', marginTop: '5px' }}>
+                          This image will float in the upper-right corner of the obituary text
+                        </small>
+                      </div>
+                    )}
+
+                    {/* URL input */}
+                    {contentImageInputType === 'link' && (
+                      <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
+                        <input
+                          type="url"
+                          placeholder="Enter content image URL (https://...)"
+                          value={contentImageUrl}
+                          onChange={(e) => setContentImageUrl(e.target.value)}
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              addContentImage();
+                            }
+                          }}
+                          style={{ flex: 1 }}
+                          disabled={!!formData.contentImage}
+                        />
+                        <button
+                          type="button"
+                          onClick={addContentImage}
+                          className="btn-admin btn-sm btn-primary"
+                          style={{ whiteSpace: 'nowrap' }}
+                          disabled={!!formData.contentImage}
+                        >
+                          <i className="fa fa-plus" /> Add
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Show selected file */}
+                    {contentImageFile && (
+                      <div>
+                        <small style={{ color: '#666', display: 'block', marginBottom: '8px' }}>
+                          Selected File:
+                        </small>
+                        <div style={{ position: 'relative', width: '200px', height: '200px' }}>
+                          <img
+                            src={URL.createObjectURL(contentImageFile)}
+                            alt="Content"
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'cover',
+                              borderRadius: '4px',
+                              border: '2px solid #e5e7eb'
+                            }}
+                          />
+                          <button
+                            type="button"
+                            onClick={removeContentImage}
+                            style={{
+                              position: 'absolute',
+                              top: '-8px',
+                              right: '-8px',
+                              background: '#ef4444',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '50%',
+                              width: '24px',
+                              height: '24px',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '14px',
+                              fontWeight: 'bold',
+                              boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                            }}
+                            title="Remove content image"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Show existing content image */}
+                    {formData.contentImage && !contentImageFile && (
+                      <div>
+                        <small style={{ color: '#666', display: 'block', marginBottom: '8px' }}>
+                          Content Image:
+                        </small>
+                        <div style={{ position: 'relative', width: '200px', height: '200px' }}>
+                          <img
+                            src={formData.contentImage}
+                            alt="Content"
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'cover',
+                              borderRadius: '4px',
+                              border: '2px solid #e5e7eb'
+                            }}
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                              e.target.nextSibling.style.display = 'flex';
+                            }}
+                          />
+                          <div style={{
+                            display: 'none',
+                            width: '100%',
+                            height: '100%',
+                            background: '#f3f4f6',
+                            borderRadius: '4px',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '12px',
+                            color: '#9ca3af',
+                            textAlign: 'center',
+                            padding: '5px'
+                          }}>
+                            Invalid URL
+                          </div>
+                          <button
+                            type="button"
+                            onClick={removeContentImage}
+                            style={{
+                              position: 'absolute',
+                              top: '-8px',
+                              right: '-8px',
+                              background: '#ef4444',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '50%',
+                              width: '24px',
+                              height: '24px',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '14px',
+                              fontWeight: 'bold',
+                              boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                            }}
+                            title="Remove content image"
                           >
                             ×
                           </button>

@@ -520,6 +520,15 @@ class ObituaryPage extends Component {
                                 {/* 2. Biography */}
                                 <div className="obituary-content">
                                     <h3 className="obituary-subtitle">Obituary</h3>
+                                    {obituaryData.contentImage && (
+                                        <div className="content-image-wrapper">
+                                            <img
+                                                src={obituaryData.contentImage}
+                                                alt={`${obituaryData.firstName} ${obituaryData.lastName}`}
+                                                className="content-image"
+                                            />
+                                        </div>
+                                    )}
                                     <div className="biography-text" dangerouslySetInnerHTML={{ __html: obituaryData.biography }} />
                                 </div>
 
@@ -546,7 +555,7 @@ class ObituaryPage extends Component {
                                     <div className="services-section">
                                         <h2 className="services-heading">Services</h2>
                                         
-                                        <div className="service-card">
+                                        <div className="service-cards">
                                             <div className="service-header">
                                                 <h3 className="service-title">{obituaryData.serviceType || 'CELEBRATION OF LIFE'}</h3>
                                                 <button className="email-details-btn">
@@ -729,7 +738,7 @@ class ObituaryPage extends Component {
 }
 
 /* Service Card - White Box with Border */
-.service-card {
+.service-cards {
     background-color: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
