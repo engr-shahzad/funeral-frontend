@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container, Row, Col, Input, Button, Spinner, Alert } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
+import { API_URL } from '../../constants';
 import './SendFlowers.css';
 
 class SendFlowers extends Component {
@@ -48,7 +49,7 @@ class SendFlowers extends Component {
       }
       
       // Use your actual API endpoint - adjust the URL as needed
-      const response = await fetch('https://funeralbackend.onrender.com/api/obituaries', {
+      const response = await fetch(`${API_URL}/obituaries`, {
         signal: this.abortController.signal
       });
       

@@ -20,7 +20,8 @@ class ProductPage extends React.PureComponent {
     this.state = {
       selectedVariant: null,
       quantity: 1,
-      openFaqIndex: null
+      openFaqIndex: null,
+      obituaryId: null
     };
   }
 
@@ -28,6 +29,14 @@ class ProductPage extends React.PureComponent {
     const identifier = this.props.match.params.slug;
     this.loadProduct(identifier);
     document.body.classList.add('product-page');
+
+    // Carry obituary context from URL query params
+    const searchParams = new URLSearchParams(window.location.search);
+    const obituaryId = searchParams.get('obituaryId');
+    if (obituaryId) {
+      this.setState({ obituaryId });
+      sessionStorage.setItem('memorial_obituaryId', obituaryId);
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -72,7 +81,7 @@ class ProductPage extends React.PureComponent {
 
   handleAddToCartWithVariant = () => {
     const { product, handleAddToCart } = this.props;
-    const { selectedVariant, quantity } = this.state;
+    const { selectedVariant, quantity, obituaryId } = this.state;
 
     if (!selectedVariant) {
       alert('Please select a variant');
@@ -88,7 +97,16 @@ class ProductPage extends React.PureComponent {
       quantity: quantity
     };
 
+    // Store obituary context in sessionStorage for checkout
+    if (obituaryId) {
+      sessionStorage.setItem('memorial_obituaryId', obituaryId);
+    }
+
     handleAddToCart(productWithPrice);
+
+    // Close the cart drawer (handleAddToCart opens it) and navigate to checkout page
+    this.props.toggleCart();
+    this.props.history.push('/checkout');
   };
 
   toggleFaq = index => {

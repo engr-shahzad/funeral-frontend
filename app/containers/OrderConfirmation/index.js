@@ -11,6 +11,7 @@ import axios from 'axios';
 import "./OrderConfirmation.css"
 import LoadingIndicator from '../../Common/LoadingIndicator';
 import Button from '../../Common/Button';
+import { API_URL } from '../../constants';
 
 const OrderConfirmation = () => {
   const { orderId } = useParams();
@@ -25,10 +26,10 @@ const OrderConfirmation = () => {
   const fetchOrderDetails = async () => {
     try {
       const response = await axios.get(
-        `https://funeralbackend.onrender.com/api/order/${orderId}`,
+        `${API_URL}/order/${orderId}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
+            Authorization: localStorage.getItem('token') || ''
           }
         }
       );

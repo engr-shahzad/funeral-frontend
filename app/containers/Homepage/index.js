@@ -136,7 +136,7 @@ class Homepage extends Component {
     try {
       this.setState({ loading: true, error: null });
 
-      const response = await fetch('https://funeralbackend.onrender.com/api/obituaries/recent', {
+      const response = await fetch(`${API_URL}/obituaries/recent`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -225,7 +225,7 @@ class Homepage extends Component {
     try {
       this.setState({ loading: true });
 
-      const response = await fetch(`https://funeralbackend.onrender.com/api/obituaries/search?q=${encodeURIComponent(searchQuery)}`, {
+      const response = await fetch(`${API_URL}/obituaries/search?q=${encodeURIComponent(searchQuery)}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -414,26 +414,19 @@ class Homepage extends Component {
                   </button>
 
                   <Row className="tribute-cards-row">
-                    {visibleTributes.map((tribute) => {
-                      const hasMultipleImages = tribute.images.length > 1 && tribute.images[0] !== 'https://via.placeholder.com/200x200?text=No+Image';
-                      
-                      return (
+                    {visibleTributes.map((tribute) => (
                         <Col key={tribute.id} xs={6} sm={4} md={4} lg={2} className="mb-4 tribute-card-col">
                           <Link to={`/obituary/${tribute.slug}`} className="text-decoration-none">
                             <div className="tribute-card text-center">
                               <div className="tribute-image-wrapper mb-2">
-                                {hasMultipleImages ? (
-                                  <TributeImageSlider images={tribute.images} name={tribute.name} />
-                                ) : (
-                                  <img
-                                    src={tribute.image}
-                                    alt={tribute.name}
-                                    className="tribute-image"
-                                    onError={(e) => {
-                                      e.target.src = 'https://via.placeholder.com/200x200?text=No+Image';
-                                    }}
-                                  />
-                                )}
+                                <img
+                                  src={tribute.image}
+                                  alt={tribute.name}
+                                  className="tribute-image"
+                                  onError={(e) => {
+                                    e.target.src = 'https://via.placeholder.com/200x200?text=No+Image';
+                                  }}
+                                />
                               </div>
                               <h3 className="tribute-name">{tribute.name}</h3>
                               <p className="tribute-date">{tribute.date}</p>
@@ -441,8 +434,7 @@ class Homepage extends Component {
                             </div>
                           </Link>
                         </Col>
-                      );
-                    })}
+                    ))}
                   </Row>
                 </div>
 

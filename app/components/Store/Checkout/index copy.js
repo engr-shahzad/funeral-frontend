@@ -15,9 +15,7 @@ import OrderSummary from './OrderSummary';
 import './CheckoutPage.css';
 
 // Get Stripe key
-const STRIPE_KEY = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || 'pk_live_51SS0ScPPeMBEYfbSjkXmPb8Z3G5hs4gSF6YsQ2VKcXGFPHpbzJ8rGfYzZqrS6JVHybJL7ukpGNdT6XLKhiX5NA7400TxG0lKAI';
-
-console.log('🔑 Stripe Key from env:', STRIPE_KEY);
+const STRIPE_KEY = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY;
 
 // Initialize Stripe OUTSIDE component - This is critical!
 const stripePromise = STRIPE_KEY ? loadStripe(STRIPE_KEY) : null;

@@ -3,6 +3,7 @@ import { Heart, Mail, TreePine, User, Calendar, Gift, Flower, MapPin, Clock } fr
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import actions from '../../actions';
+import { API_URL } from '../../constants';
 
 // ✅ Custom Gallery Slider Component
 class GallerySlider extends Component {
@@ -148,12 +149,12 @@ class ObituaryPage extends Component {
             this.setState({ loading: true, error: null });
             
             // Fetch Obituary
-            const obituaryResponse = await fetch(`https://funeralbackend.onrender.com/api/obituaries/${slug}`);
+            const obituaryResponse = await fetch(`${API_URL}/obituaries/${slug}`);
             if (!obituaryResponse.ok) throw new Error('Obituary not found');
             const obituaryData = await obituaryResponse.json();
             
             // Fetch Condolences
-            const condolencesResponse = await fetch(`https://funeralbackend.onrender.com/api/condolences/obituary/${obituaryData._id}`);
+            const condolencesResponse = await fetch(`${API_URL}/condolences/obituary/${obituaryData._id}`);
             let condolencesData = { condolences: [], count: 0, stats: {} };
             if (condolencesResponse.ok) {
                 condolencesData = await condolencesResponse.json();
@@ -198,7 +199,7 @@ class ObituaryPage extends Component {
         }
 
         try {
-            const response = await fetch('https://funeralbackend.onrender.com/api/condolences', {
+            const response = await fetch(`${API_URL}/condolences`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

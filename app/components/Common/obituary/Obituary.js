@@ -3,6 +3,7 @@ import { Heart, Mail, Camera, Video, Flame, MessageSquare, TreePine, User, Gift,
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import actions from '../../../actions';
+import { API_URL } from '../../../constants';
 import './ObituaryPage.css';
 
 // Import Swiper for Slider
@@ -160,7 +161,7 @@ class ObituaryPage extends Component {
     fetchObituaryData = (slug) => {
         this.setState({ loading: true, error: null });
 
-        const baseURL = 'https://funeralbackend.onrender.com/api';
+        const baseURL = API_URL;
 
         fetch(`${baseURL}/obituaries/${slug}`)
             .then(obituaryResponse => {
@@ -229,7 +230,7 @@ class ObituaryPage extends Component {
             return;
         }
 
-        fetch('https://funeralbackend.onrender.com/api/condolences', {
+        fetch(`${API_URL}/condolences`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

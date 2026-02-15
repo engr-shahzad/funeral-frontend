@@ -3,20 +3,49 @@
  * Shown after successful payment
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Container, Row, Col } from 'reactstrap';
+import axios from 'axios';
 import Button from '../../components/Common/Button';
+import { API_URL } from '../../constants';
 import './OrderSuccess.css';
 
 const OrderSuccess = props => {
   const { user } = props;
+  const { id: orderId } = useParams();
+  const [order, setOrder] = useState(null);
 
   useEffect(() => {
     // Clear cart from localStorage on success
     localStorage.removeItem('cart_id');
-  }, []);
+
+    // Fetch order details if orderId is available
+    if (orderId) {
+      fetchOrder(orderId);
+    }
+  }, [orderId]);
+
+  const fetchOrder = async (id) => {
+    try {
+      const token = localStorage.getItem('token') ||
+        localStorage.getItem('authToken') ||
+        localStorage.getItem('access_token');
+
+      const config = { headers: {} };
+      if (token) {
+        config.headers.Authorization = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+      }
+
+      const response = await axios.get(`${API_URL}/order/${id}`, config);
+      if (response.data?.order) {
+        setOrder(response.data.order);
+      }
+    } catch (err) {
+      console.log('Could not fetch order details:', err.message);
+    }
+  };
 
   return (
     <div className="order-success-page">
@@ -40,15 +69,29 @@ const OrderSuccess = props => {
                 </svg>
               </div>
 
-              <h1 className="success-title">Order Placed Successfully! 🎉</h1>
+              <h1 className="success-title">Order Placed Successfully!</h1>
               <p className="success-message">
                 Thank you for your purchase. Your order has been confirmed and will be processed shortly.
               </p>
 
               <div className="order-details">
+                {orderId && (
+                  <div className="detail-item">
+                    <span className="detail-label">Order ID:</span>
+                    <span className="detail-value" style={{ fontFamily: 'monospace', fontSize: '14px' }}>
+                      #{orderId.slice(-8).toUpperCase()}
+                    </span>
+                  </div>
+                )}
+                {order && order.totalWithTax && (
+                  <div className="detail-item">
+                    <span className="detail-label">Total Paid:</span>
+                    <span className="detail-value">${order.totalWithTax.toFixed(2)}</span>
+                  </div>
+                )}
                 <div className="detail-item">
-                  <span className="detail-label">Order confirmation sent to:</span>
-                  <span className="detail-value">{user?.email}</span>
+                  <span className="detail-label">Confirmation sent to:</span>
+                  <span className="detail-value">{user?.email || 'your email'}</span>
                 </div>
               </div>
 

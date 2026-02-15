@@ -35,8 +35,9 @@ class ProductsShop extends React.PureComponent {
     console.log('📋 URL Params:', { obituaryId, filterType });
 
     if (obituaryId) {
-      // Memorial products view
+      // Memorial products view - store for checkout flow
       this.setState({ obituaryId, filterType });
+      sessionStorage.setItem('memorial_obituaryId', obituaryId);
       console.log('🌳 Fetching memorial products for obituary:', obituaryId);
       this.props.fetchMemorialProducts(obituaryId, filterType || null);
     } else {
@@ -187,6 +188,7 @@ class ProductsShop extends React.PureComponent {
               products={products}
               authenticated={authenticated}
               updateWishlist={updateWishlist}
+              obituaryId={obituaryId}
             />
           )}
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container, Row, Col, Input, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { API_URL } from '../../constants';
 import './Allobituaries.css';
 
 // Custom Image Slider Component
@@ -112,7 +113,7 @@ class AllObituaries extends Component {
     try {
       this.setState({ loading: true, error: null });
 
-      const response = await fetch('https://funeralbackend.onrender.com/api/obituaries', {
+      const response = await fetch(`${API_URL}/obituaries`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

@@ -15,8 +15,7 @@ import { clearCart } from '../Cart/actions';
 import { success } from 'react-notification-system-redux';
 
 const API_URL = process.env.API_URL;
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY) || 'pk_live_51SS0ScPPeMBEYfbSjkXmPb8Z3G5hs4gSF6YsQ2VKcXGFPHpbzJ8rGfYzZqrS6JVHybJL7ukpGNdT6XLKhiX5NA7400TxG0lKAI';
-console.log('My Stripe Key is:', process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 // ==============================================
 // PAYMENT FORM
@@ -73,9 +72,12 @@ const PaymentForm = (props) => {
     };
 
     const getAuthToken = () => {
-        return localStorage.getItem('token') ||
+        const token = localStorage.getItem('token') ||
             localStorage.getItem('authToken') ||
             localStorage.getItem('access_token');
+        if (!token) return null;
+        // Token from backend already includes 'Bearer ' prefix
+        return token.startsWith('Bearer ') ? token : `Bearer ${token}`;
     };
 
     const handleSubmit = async (e) => {
@@ -124,7 +126,7 @@ const PaymentForm = (props) => {
                 };
 
                 if (token) {
-                    config.headers.Authorization = `Bearer ${token}`;
+                    config.headers.Authorization = token;
                 }
 
                 try {
@@ -357,7 +359,7 @@ const CheckoutForm = (props) => {
             };
 
             if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
+                config.headers.Authorization = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
             }
 
             // ✅ SEND COMPREHENSIVE DATA

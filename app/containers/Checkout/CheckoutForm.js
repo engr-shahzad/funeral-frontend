@@ -15,12 +15,10 @@ import { success } from 'react-notification-system-redux';
 
 // ✅ FIXED: Import clearCart directly from the cart actions
 import { clearCart } from '../Cart/actions';
-
-const API_URL = process.env.REACT_APP_API_URL || 'https://funeralbackend.onrender.com/api';
+import { API_URL } from '../../constants';
 
 // Initialize Stripe
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || 'pk_live_51SS0ScPPeMBEYfbSjkXmPb8Z3G5hs4gSF6YsQ2VKcXGFPHpbzJ8rGfYzZqrS6JVHybJL7ukpGNdT6XLKhiX5NA7400TxG0lKAI');
-console.log('My Stripe Key is:', process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 // ==============================================
 // PAYMENT FORM - Only rendered when Elements is ready
@@ -33,7 +31,8 @@ const PaymentForm = (props) => {
         setError,
         clearCart: clearCartAction,
         showSuccessNotification,
-        cartId
+        cartId,
+        orderId: initialOrderId
     } = props;
 
     const stripe = useStripe();
@@ -55,6 +54,10 @@ const PaymentForm = (props) => {
             country: 'US'
         }
     });
+
+    // Memorial/obituary context
+    const [memorialObituaryId] = useState(() => sessionStorage.getItem('memorial_obituaryId') || null);
+    const [dedicationMessage, setDedicationMessage] = useState('');
 
     useEffect(() => {
         console.log('✅ PaymentForm mounted, Stripe ready:', !!stripe);
@@ -79,9 +82,12 @@ const PaymentForm = (props) => {
     };
 
     const getAuthToken = () => {
-        return localStorage.getItem('token') ||
+        const token = localStorage.getItem('token') ||
             localStorage.getItem('authToken') ||
             localStorage.getItem('access_token');
+        if (!token) return null;
+        // Token from backend already includes 'Bearer ' prefix, return as-is
+        return token.startsWith('Bearer ') ? token : `Bearer ${token}`;
     };
 
     const handleSubmit = async (e) => {
@@ -130,24 +136,40 @@ const PaymentForm = (props) => {
                 };
 
                 if (token) {
-                    config.headers.Authorization = `Bearer ${token}`;
+                    config.headers.Authorization = token;
                 }
 
                 try {
-                    await axios.post(
+                    const confirmData = {
+                        paymentIntentId: paymentIntent.id,
+                        orderId: initialOrderId,
+                        cartId: cartId,
+                        billingDetails,
+                        shippingDetails: billingDetails
+                    };
+
+                    // Include obituary/memorial context if present
+                    if (memorialObituaryId) {
+                        confirmData.obituaryId = memorialObituaryId;
+                        confirmData.dedicationMessage = dedicationMessage || null;
+                        confirmData.customerName = billingDetails.name;
+                        confirmData.customerEmail = billingDetails.email;
+                    }
+
+                    const confirmResponse = await axios.post(
                         `${API_URL}/order/stripe/confirm-payment`,
-                        {
-                            paymentIntentId: paymentIntent.id,
-                            cartId: cartId,
-                            billingDetails,
-                            shippingDetails: billingDetails
-                        },
+                        confirmData,
                         config
                     );
 
                     console.log('✅ Order confirmed with backend');
 
-                    // ✅ FIXED: Call clearCartAction (the prop)
+                    // Get orderId from response
+                    const confirmedOrderId = confirmResponse.data?.order?._id || initialOrderId || '';
+
+                    // Clear memorial context after successful order
+                    sessionStorage.removeItem('memorial_obituaryId');
+
                     clearCartAction();
                     localStorage.removeItem('cart_id');
 
@@ -160,13 +182,15 @@ const PaymentForm = (props) => {
 
                     setTimeout(() => {
                         if (isMountedRef.current) {
-                            history.push('/order-success');
+                            const successUrl = confirmedOrderId
+                                ? `/order/success/${confirmedOrderId}`
+                                : '/order-success';
+                            history.push(successUrl);
                         }
                     }, 1000);
                 } catch (backendError) {
                     console.error('⚠️ Backend confirmation error:', backendError);
 
-                    // ✅ FIXED: Call clearCartAction (the prop)
                     clearCartAction();
                     localStorage.removeItem('cart_id');
 
@@ -294,6 +318,33 @@ const PaymentForm = (props) => {
                 </Row>
             </div>
 
+            {/* Memorial Dedication (shown when purchasing for an obituary) */}
+            {memorialObituaryId && (
+                <div className="dedication-section mb-4" style={{
+                    background: '#f0f7f0',
+                    border: '1px solid #c3e6c3',
+                    borderRadius: '8px',
+                    padding: '20px'
+                }}>
+                    <h5 className="mb-3" style={{ color: '#2d6a2d' }}>
+                        Memorial Dedication
+                    </h5>
+                    <p className="text-muted small mb-3">
+                        Your name and a tribute message will appear on the memorial's Tribute Wall.
+                    </p>
+                    <FormGroup>
+                        <Label>Dedication Message (optional)</Label>
+                        <Input
+                            type="textarea"
+                            value={dedicationMessage}
+                            onChange={(e) => setDedicationMessage(e.target.value)}
+                            placeholder="Write a personal message in memory of your loved one..."
+                            rows="3"
+                        />
+                    </FormGroup>
+                </div>
+            )}
+
             {/* Payment Element */}
             <div className="payment-section mb-4">
                 <h5 className="mb-3">Payment Information</h5>
@@ -330,6 +381,7 @@ const CheckoutForm = (props) => {
 
     const [clientSecret, setClientSecret] = useState('');
     const [cartId, setCartId] = useState('');
+    const [orderId, setOrderId] = useState('');
     const [loading, setLoading] = useState(true);
     const [initError, setInitError] = useState('');
 
@@ -357,7 +409,8 @@ const CheckoutForm = (props) => {
             };
 
             if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
+                // Token already includes 'Bearer ' prefix from backend
+                config.headers.Authorization = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
             }
 
             const requestData = {
@@ -385,7 +438,16 @@ const CheckoutForm = (props) => {
             if (response.data.success && response.data.clientSecret) {
                 console.log('🔑 Setting clientSecret:', response.data.clientSecret);
                 setClientSecret(response.data.clientSecret);
-                setCartId(storedCartId || '');
+
+                // Save cartId and orderId from backend response
+                const returnedCartId = response.data.cartId || storedCartId || '';
+                setCartId(returnedCartId);
+                if (returnedCartId) {
+                    localStorage.setItem('cart_id', returnedCartId);
+                }
+                if (response.data.orderId) {
+                    setOrderId(response.data.orderId);
+                }
             } else {
                 throw new Error('No client secret returned from server');
             }
@@ -460,6 +522,7 @@ const CheckoutForm = (props) => {
                 <PaymentForm
                     {...props}
                     cartId={cartId}
+                    orderId={orderId}
                 />
             </Elements>
         </div>

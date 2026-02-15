@@ -17,22 +17,42 @@ const OrdersAdmin = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalOrders, setTotalOrders] = useState(0);
+  const [fetchError, setFetchError] = useState('');
 
   useEffect(() => {
     fetchOrders();
   }, [currentPage]);
 
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('token') ||
+      localStorage.getItem('authToken') ||
+      localStorage.getItem('access_token');
+    if (!token) return {};
+    // Token from backend already includes 'Bearer ' prefix
+    return { Authorization: token.startsWith('Bearer ') ? token : `Bearer ${token}` };
+  };
+
   const fetchOrders = async () => {
     try {
       setLoading(true);
+      setFetchError('');
       const response = await axios.get(`${API_URL}/order`, {
-        params: { page: currentPage, limit: 20 }
+        params: { page: currentPage, limit: 20 },
+        headers: getAuthHeaders()
       });
+      console.log('Orders API response:', response.data);
       setOrders(response.data.orders || []);
       setTotalPages(response.data.totalPages || 1);
       setTotalOrders(response.data.count || 0);
     } catch (error) {
       console.error('Error fetching orders:', error);
+      const status = error.response?.status;
+      const msg = error.response?.data?.error || error.message;
+      if (status === 401) {
+        setFetchError('Authentication failed. Please login as admin first.');
+      } else {
+        setFetchError(`Failed to fetch orders: ${msg}`);
+      }
     } finally {
       setLoading(false);
     }
@@ -40,7 +60,9 @@ const OrdersAdmin = () => {
 
   const viewOrderDetails = async (order) => {
     try {
-      const response = await axios.get(`${API_URL}/order/${order._id}`);
+      const response = await axios.get(`${API_URL}/order/${order._id}`, {
+        headers: getAuthHeaders()
+      });
       setSelectedOrder(response.data.order);
       setShowDetailModal(true);
     } catch (error) {
@@ -136,6 +158,16 @@ const OrdersAdmin = () => {
           <option value="cancelled">Cancelled</option>
         </select>
       </div>
+
+      {/* Error Message */}
+      {fetchError && (
+        <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '8px', padding: '15px', marginBottom: '20px', color: '#dc2626' }}>
+          <strong>Error:</strong> {fetchError}
+          <button onClick={fetchOrders} style={{ marginLeft: '10px', padding: '4px 12px', background: '#dc2626', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+            Retry
+          </button>
+        </div>
+      )}
 
       {/* Orders Table */}
       <div className="admin-card">

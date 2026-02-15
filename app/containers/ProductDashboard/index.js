@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ProductList from './Productlist';
 import ProductForm from './Productform';
-// import './ProductDashboard.css';
+import { API_URL } from '../../constants';
 
 class ProductDashboard extends Component {
     constructor(props) {
@@ -18,7 +18,7 @@ class ProductDashboard extends Component {
             }
         };
 
-        this.API_BASE_URL = 'https://funeralbackend.onrender.com/api/product';
+        this.API_BASE_URL = `${API_URL}/product`;
     }
 
     componentDidMount() {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ObituaryList from './ObituaryList';
 import New from './NewForm';
+import { API_URL } from '../../constants';
 import './Dashboard.css';
 
 class DashboardNew extends Component {
@@ -18,7 +19,7 @@ class DashboardNew extends Component {
             }
         };
 
-        this.API_BASE_URL = 'https://funeralbackend.onrender.com/api/obituaries';
+        this.API_BASE_URL = `${API_URL}/obituaries`;
     }
 
     componentDidMount() {

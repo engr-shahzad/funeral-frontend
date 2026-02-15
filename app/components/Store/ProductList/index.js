@@ -90,6 +90,12 @@ class ProductList extends React.Component {
     }
   }
 
+  getProductLink = (product) => {
+    const { obituaryId } = this.props;
+    const base = `/product/${product.slug || product._id}`;
+    return obituaryId ? `${base}?obituaryId=${obituaryId}` : base;
+  }
+
   render() {
     const { products, updateWishlist, authenticated } = this.props;
     const { selectedVariants } = this.state;
@@ -121,7 +127,7 @@ class ProductList extends React.Component {
 
               {/* Product Image - Clickable */}
               <Link
-                to={`/product/${product.slug || product._id}`}
+                to={this.getProductLink(product)}
                 className='product-image-link'
               >
                 <div className='product-image-wrapper'>
@@ -140,7 +146,7 @@ class ProductList extends React.Component {
               {/* Product Info */}
               <div className='product-info'>
                 <Link
-                  to={`/product/${product.slug || product._id}`}
+                  to={this.getProductLink(product)}
                   className='product-name-link'
                 >
                   <h3 className='product-name'>{product.name}</h3>

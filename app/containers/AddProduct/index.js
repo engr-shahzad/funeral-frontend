@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { API_URL } from '../../constants';
 import './AddProduct.css';
 
 class AddProduct extends Component {
@@ -70,7 +71,7 @@ class AddProduct extends Component {
         formData.append('variants', JSON.stringify(variants));
         formData.append('image', image);
 
-        await axios.post('https://funeralbackend.onrender.com/api/product/add', formData, {
+        await axios.post(`${API_URL}/product/add`, formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
         });
 

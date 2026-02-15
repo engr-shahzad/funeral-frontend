@@ -45,6 +45,7 @@ import OrderSuccess from '../OrderSuccess';
 import OrderPage from '../OrderPage';
 import AuthSuccess from '../AuthSuccess';
 import AddProduct from '../AddProduct';
+import CheckoutPage from '../Checkout';
 import Footer from '../../components/Common/Footer';
 import Page404 from '../../components/Common/Page404';
 import { CART_ITEMS } from '../../constants';
@@ -140,6 +141,8 @@ class Application extends React.PureComponent {
                 <Route path="/contact" component={Contact} />
                 <Route path="/brands" component={BrandsPage} />
                 <Route path="/product/:slug" component={ProductPage} />
+                <Route path="/checkout" component={CheckoutPage} />
+                <Route exact path="/order-success" component={OrderSuccess} />
                 <Route path="/order/success/:id" component={OrderSuccess} />
                 <Route path="/order/:id" component={OrderPage} />
                 <Route path="/login" component={Login} />
