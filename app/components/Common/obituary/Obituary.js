@@ -297,7 +297,6 @@ class ObituaryPage extends Component {
                     this.setState({ isMusicPlaying: true });
                 })
                 .catch(error => {
-                    console.log('Autoplay prevented:', error);
                     // Browser might block autoplay, that's okay
                 });
         }
@@ -366,13 +365,11 @@ class ObituaryPage extends Component {
         if (!obituaryData) return <div className="loading-container"><div className="loading-text">Obituary not found</div></div>;
 
         const approvedCondolences = condolences.filter(c => c.isApproved);
-        console.log('Approved Condolences:', obituaryData);
         
         // ✅ Gallery logic with proper filtering
         const galleryImages = this.getGalleryImages(obituaryData);
         const hasMultipleImages = galleryImages.length > 1;
 
-        console.log('Gallery images:', galleryImages.length, galleryImages);
 
         return (
             <div className="obituary-page">

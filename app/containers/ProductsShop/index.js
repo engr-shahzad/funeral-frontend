@@ -25,25 +25,21 @@ class ProductsShop extends React.PureComponent {
   }
 
   componentDidMount() {
-    console.log('🛒 ProductsShop mounted');
 
     // Check if this is a memorial shop visit (from obituary page)
     const searchParams = new URLSearchParams(window.location.search);
     const obituaryId = searchParams.get('obituaryId');
     const filterType = searchParams.get('filter');
 
-    console.log('📋 URL Params:', { obituaryId, filterType });
 
     if (obituaryId) {
       // Memorial products view - store for checkout flow
       this.setState({ obituaryId, filterType });
       sessionStorage.setItem('memorial_obituaryId', obituaryId);
-      console.log('🌳 Fetching memorial products for obituary:', obituaryId);
       this.props.fetchMemorialProducts(obituaryId, filterType || null);
     } else {
       // Regular shop view
       const slug = this.props.match.params.slug;
-      console.log('🛍️ Regular shop - filtering products:', slug);
       this.props.filterProducts(slug);
     }
   }
@@ -64,7 +60,6 @@ class ProductsShop extends React.PureComponent {
     this.setState({ filterType: type });
 
     if (obituaryId) {
-      console.log(`🔄 Filtering memorial products by type: ${type}`);
       this.props.fetchMemorialProducts(obituaryId, type);
     }
   }

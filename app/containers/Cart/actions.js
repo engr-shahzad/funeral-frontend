@@ -30,7 +30,6 @@ import { toggleCart } from '../Navigation/actions';
 // Handle Add To Cart
 export const handleAddToCart = product => {
   return (dispatch, getState) => {
-    console.log('🛒 handleAddToCart called with product:', product);
 
     // Get quantity from state, default to 1 if not set
     const productShopData = getState().product.productShopData || {};
@@ -38,7 +37,6 @@ export const handleAddToCart = product => {
     const storeProduct = getState().product.storeProduct || {};
     const inventory = storeProduct.inventory || product.quantity || 100;
 
-    console.log('📊 Cart Data:', { quantity, inventory, productShopData });
 
     // Validate product has required fields
     if (!product._id || !product.name || !product.price) {
@@ -79,7 +77,6 @@ export const handleAddToCart = product => {
       taxable: product.taxable !== undefined ? product.taxable : true
     };
 
-    console.log('✅ Adding product to cart:', cartProduct);
 
     // Reset product shop form
     dispatch({
@@ -355,12 +352,10 @@ export const getCartId = () => {
 
       const products = getCartItems(cartItems);
 
-      console.log('Creating cart on backend with products:', products);
 
       // Create cart on backend
       const response = await axios.post(`${API_URL}/cart/add`, { products });
 
-      console.log('Cart created successfully:', response.data);
 
       dispatch(setCartId(response.data.cartId));
 

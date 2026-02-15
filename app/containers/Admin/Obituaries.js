@@ -288,25 +288,17 @@ const ObituariesAdmin = () => {
       });
   
       // ✅ DEBUG: Check what's in photoFiles and formData.photos
-      console.log('========== FRONTEND DEBUG ==========');
-      console.log('photoFiles (new uploads):', photoFiles);
-      console.log('photoFiles length:', photoFiles.length);
-      console.log('formData.photos (existing):', formData.photos);
-      console.log('formData.photos length:', formData.photos?.length || 0);
-      console.log('====================================');
   
       // ✅ Add photo files
       if (photoFiles.length > 0) {
         photoFiles.forEach((file, index) => {
           formDataToSend.append('photos', file);
-          console.log(`Adding photo file ${index + 1}:`, file.name);
         });
       }
   
       // ✅ Add existing photos as JSON
       if (formData.photos && formData.photos.length > 0) {
         formDataToSend.append('existingPhotos', JSON.stringify(formData.photos));
-        console.log('Adding existingPhotos:', formData.photos);
       }
   
       // Add background image file
@@ -323,11 +315,8 @@ const ObituariesAdmin = () => {
         formDataToSend.append('musicLink', formData.music);
       }
   
-      console.log('========== FORM DATA TO SEND ==========');
       for (let pair of formDataToSend.entries()) {
-        console.log(pair[0] + ':', pair[1]);
       }
-      console.log('=======================================');
   
       if (editingObituary) {
         await axios.put(`${API_URL}/obituaries/${editingObituary._id}`, formDataToSend, {

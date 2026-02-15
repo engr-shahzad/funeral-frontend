@@ -40,7 +40,6 @@ const OrdersAdmin = () => {
         params: { page: currentPage, limit: 20 },
         headers: getAuthHeaders()
       });
-      console.log('Orders API response:', response.data);
       setOrders(response.data.orders || []);
       setTotalPages(response.data.totalPages || 1);
       setTotalOrders(response.data.count || 0);

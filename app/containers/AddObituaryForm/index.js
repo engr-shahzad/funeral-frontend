@@ -104,9 +104,7 @@ class AddObituaryForm extends Component {
             }
 
             // Debug: Log what we're sending
-            console.log('Form Data being sent:');
             for (let pair of submitData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
             }
 
             const response = await fetch(`${API_URL}/obituaries`, {
@@ -116,7 +114,6 @@ class AddObituaryForm extends Component {
             });
 
             const data = await response.json();
-            console.log('Server response:', data);
 
             if (!response.ok) {
                 throw new Error(data.error || data.message || 'Failed to create obituary');

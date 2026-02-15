@@ -135,7 +135,6 @@ const CheckoutPage = ({ cartId, amount, products }) => {
             setLoading(true);
             setError('');
 
-            console.log('Creating payment intent...', { cartId, amount });
 
             const response = await fetch('api/order/stripe/create-payment-intent', {
                 method: 'POST',
@@ -152,7 +151,6 @@ const CheckoutPage = ({ cartId, amount, products }) => {
 
             const data = await response.json();
 
-            console.log('Payment intent response:', data);
 
             if (data.success && data.clientSecret) {
                 setClientSecret(data.clientSecret);
@@ -169,7 +167,6 @@ const CheckoutPage = ({ cartId, amount, products }) => {
     };
 
     const handlePaymentSuccess = (order) => {
-        console.log('Payment successful!', order);
         // Redirect to success page
         window.location.href = `/order/success/${order._id}`;
     };

@@ -133,7 +133,6 @@ class ObituaryPage extends Component {
     componentDidMount() {
         const slug = this.getSlugFromUrl();
         if (slug) {
-            console.log("slug", slug);
             this.fetchObituaryData(slug);
         }
     }
@@ -159,7 +158,6 @@ class ObituaryPage extends Component {
             if (condolencesResponse.ok) {
                 condolencesData = await condolencesResponse.json();
             }
-            console.log("con", condolencesResponse);
 
             this.setState({
                 obituaryData,
@@ -210,9 +208,7 @@ class ObituaryPage extends Component {
                     type: 'message'
                 }),
             });
-            console.log("resp", response);
             if (response.ok) {
-                console.log('Condolence posted successfully');
                 this.fetchObituaryData(this.getSlugFromUrl());
                 this.setState({ newCondolence: '', condolenceName: '', condolenceEmail: '' });
                 alert('Condolence posted successfully! It will be visible after approval.');
@@ -271,7 +267,6 @@ class ObituaryPage extends Component {
         if (error || !obituaryData) return <div className="min-h-screen flex items-center justify-center text-red-500">Error loading obituary.</div>;
 
         const approvedCondolences = condolences.filter(c => c.isApproved);
-        console.log(approvedCondolences);
         
         // Dynamic Cover Image logic
         const coverImage = obituaryData.backgroundImage || obituaryData.photo || 'https://images.unsplash.com/photo-1441260038675-7329ab4cc264?w=1200';
@@ -280,7 +275,6 @@ class ObituaryPage extends Component {
         const galleryImages = this.getGalleryImages(obituaryData);
         const hasMultipleImages = galleryImages.length > 1;
 
-        console.log('Gallery images:', galleryImages.length, galleryImages);
 
         return (
             <div className="min-h-screen bg-gray-50 font-sans">

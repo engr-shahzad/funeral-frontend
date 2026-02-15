@@ -82,7 +82,6 @@ class SendFlowers extends Component {
     } catch (error) {
       // Ignore abort errors (happens when component unmounts)
       if (error.name === 'AbortError') {
-        console.log('Fetch aborted');
         return;
       }
       

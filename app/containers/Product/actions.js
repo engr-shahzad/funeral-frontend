@@ -139,13 +139,11 @@ export const fetchMemorialProducts = (obituaryId = null, type = null) => {
         params.type = type; // 'tree', 'flower', or 'gift'
       }
 
-      console.log('🌳 Fetching memorial products with params:', params);
 
       const response = await axios.get(`${API_URL}/product/list/memorial`, {
         params
       });
 
-      console.log('✅ Memorial products fetched:', response.data);
 
       dispatch({
         type: FETCH_STORE_PRODUCTS,
@@ -154,7 +152,6 @@ export const fetchMemorialProducts = (obituaryId = null, type = null) => {
 
       // Store obituary context if provided
       if (response.data.obituaryContext) {
-        console.log('📋 Obituary Context:', response.data.obituaryContext);
       }
 
       return response.data;
@@ -181,7 +178,6 @@ export const fetchStoreProduct = (identifier, useId = false) => {
         ? `${API_URL}/product/item/id/${identifier}` // MongoDB ObjectId
         : `${API_URL}/product/item/${identifier}`; // Slug
 
-      console.log(`📦 Fetching product from: ${endpoint}`);
 
       const response = await axios.get(endpoint);
 

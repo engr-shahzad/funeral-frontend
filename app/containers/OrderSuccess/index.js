@@ -43,7 +43,6 @@ const OrderSuccess = props => {
         setOrder(response.data.order);
       }
     } catch (err) {
-      console.log('Could not fetch order details:', err.message);
     }
   };
 

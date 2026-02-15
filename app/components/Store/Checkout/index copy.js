@@ -37,7 +37,6 @@ const CheckoutPage = props => {
             try {
                 const stripe = await stripePromise;
                 if (stripe) {
-                    console.log('✅ Stripe loaded successfully:', stripe);
                     setStripeLoaded(true);
                 } else {
                     console.error('❌ Stripe failed to load');

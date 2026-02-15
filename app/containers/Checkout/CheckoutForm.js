@@ -60,8 +60,6 @@ const PaymentForm = (props) => {
     const [dedicationMessage, setDedicationMessage] = useState('');
 
     useEffect(() => {
-        console.log('✅ PaymentForm mounted, Stripe ready:', !!stripe);
-        console.log('✅ Elements ready:', !!elements);
 
         return () => {
             isMountedRef.current = false;
@@ -94,7 +92,6 @@ const PaymentForm = (props) => {
         e.preventDefault();
 
         if (!stripe || !elements) {
-            console.log('⚠️ Stripe or Elements not ready');
             return;
         }
 
@@ -102,7 +99,6 @@ const PaymentForm = (props) => {
         setError('');
 
         try {
-            console.log('💳 Confirming payment with Stripe...');
 
             const { error: stripeError, paymentIntent } = await stripe.confirmPayment({
                 elements,
@@ -127,7 +123,6 @@ const PaymentForm = (props) => {
                 return;
             }
 
-            console.log('✅ Payment confirmed:', paymentIntent);
 
             if (paymentIntent && paymentIntent.status === 'succeeded') {
                 const token = getAuthToken();
@@ -162,7 +157,6 @@ const PaymentForm = (props) => {
                         config
                     );
 
-                    console.log('✅ Order confirmed with backend');
 
                     // Get orderId from response
                     const confirmedOrderId = confirmResponse.data?.order?._id || initialOrderId || '';
@@ -386,7 +380,6 @@ const CheckoutForm = (props) => {
     const [initError, setInitError] = useState('');
 
     useEffect(() => {
-        console.log('🔵 CheckoutForm mounted, creating payment intent...');
         createPaymentIntent();
     }, []);
 
@@ -400,9 +393,6 @@ const CheckoutForm = (props) => {
                 localStorage.getItem('authToken') ||
                 localStorage.getItem('access_token');
 
-            console.log('📤 Creating payment intent...');
-            console.log('Cart ID:', storedCartId);
-            console.log('Token exists:', !!token);
 
             const config = {
                 headers: { 'Content-Type': 'application/json' }
@@ -425,7 +415,6 @@ const CheckoutForm = (props) => {
                 }))
             };
 
-            console.log('📦 Request data:', requestData);
 
             const response = await axios.post(
                 `${API_URL}/order/stripe/create-payment-intent`,
@@ -433,10 +422,8 @@ const CheckoutForm = (props) => {
                 config
             );
 
-            console.log('✅ Payment intent created:', response.data);
 
             if (response.data.success && response.data.clientSecret) {
-                console.log('🔑 Setting clientSecret:', response.data.clientSecret);
                 setClientSecret(response.data.clientSecret);
 
                 // Save cartId and orderId from backend response
@@ -467,7 +454,6 @@ const CheckoutForm = (props) => {
 
     // Show loading state
     if (loading) {
-        console.log('⏳ Showing loading state...');
         return (
             <div className="text-center py-5">
                 <Spinner color="primary" style={{ width: '3rem', height: '3rem' }} />
@@ -478,7 +464,6 @@ const CheckoutForm = (props) => {
 
     // Show error state
     if (initError || !clientSecret) {
-        console.log('❌ Showing error state:', initError);
         return (
             <div className="alert alert-danger">
                 <h5>⚠️ Payment Initialization Failed</h5>
@@ -494,8 +479,6 @@ const CheckoutForm = (props) => {
     }
 
     // CRITICAL: Only render Elements when we have clientSecret
-    console.log('✅ clientSecret exists, rendering Elements wrapper');
-    console.log('🔑 clientSecret:', clientSecret);
 
     const elementsOptions = {
         clientSecret: clientSecret,
@@ -510,7 +493,6 @@ const CheckoutForm = (props) => {
         }
     };
 
-    console.log('🎨 Elements options:', elementsOptions);
 
     return (
         <div className="checkout-form-wrapper">

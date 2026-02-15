@@ -70,7 +70,6 @@ class ProductList extends React.Component {
     const { handleAddToCart } = this.props;
     const { selectedVariants } = this.state;
 
-    console.log('🛒 ProductList - Adding to cart:', product);
 
     if (handleAddToCart) {
       const selectedVariant = selectedVariants[productIndex];

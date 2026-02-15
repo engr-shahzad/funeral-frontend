@@ -84,7 +84,6 @@ const PaymentForm = (props) => {
         e.preventDefault();
 
         if (!stripe || !elements) {
-            console.log('⚠️ Stripe or Elements not ready');
             return;
         }
 
@@ -92,7 +91,6 @@ const PaymentForm = (props) => {
         setError('');
 
         try {
-            console.log('💳 Confirming payment with Stripe...');
 
             const { error: stripeError, paymentIntent } = await stripe.confirmPayment({
                 elements,
@@ -117,7 +115,6 @@ const PaymentForm = (props) => {
                 return;
             }
 
-            console.log('✅ Payment confirmed:', paymentIntent);
 
             if (paymentIntent && paymentIntent.status === 'succeeded') {
                 const token = getAuthToken();
@@ -142,7 +139,6 @@ const PaymentForm = (props) => {
                         config
                     );
 
-                    console.log('✅ Order confirmed with backend');
 
                     // Clear cart and localStorage
                     if (clearCartAction && typeof clearCartAction === 'function') {
@@ -331,7 +327,6 @@ const CheckoutForm = (props) => {
     const [initError, setInitError] = useState('');
 
     useEffect(() => {
-        console.log('🔵 CheckoutForm mounted, creating payment intent...');
         createPaymentIntent();
     }, []);
 
@@ -349,10 +344,6 @@ const CheckoutForm = (props) => {
                 localStorage.getItem('authToken') ||
                 localStorage.getItem('access_token');
 
-            console.log('📤 Creating payment intent...');
-            console.log('   Cart ID from storage:', storedCartId || 'NONE');
-            console.log('   Token exists:', !!token);
-            console.log('   Cart items:', cartItems.length);
 
             const config = {
                 headers: { 'Content-Type': 'application/json' }
@@ -375,11 +366,6 @@ const CheckoutForm = (props) => {
                 }))
             };
 
-            console.log('📦 Request data:', {
-                hasCartId: !!requestData.cartId,
-                productCount: requestData.products.length,
-                amount: requestData.amount
-            });
 
             const response = await axios.post(
                 `${API_URL}/order/stripe/create-payment-intent`,
@@ -387,24 +373,16 @@ const CheckoutForm = (props) => {
                 config
             );
 
-            console.log('✅ Payment intent created:', {
-                success: response.data.success,
-                hasClientSecret: !!response.data.clientSecret,
-                cartId: response.data.cartId,
-                orderId: response.data.orderId
-            });
 
             // ✅ SAVE CART ID FROM BACKEND RESPONSE
             if (response.data.cartId) {
                 localStorage.setItem('cart_id', response.data.cartId);
-                console.log('✅ Cart ID saved to localStorage:', response.data.cartId);
             }
 
             if (response.data.success && response.data.clientSecret) {
                 setClientSecret(response.data.clientSecret);
                 setCartId(response.data.cartId || storedCartId || '');
                 setOrderId(response.data.orderId || '');
-                console.log('✅ State updated, payment form will render');
             } else {
                 throw new Error('No client secret returned from server');
             }
