@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight, Search, MapPin, Phone, Mail } from 'lucide-r
 
 import actions from '../../actions';
 import { API_URL } from '../../constants';
+
 import banners from './banners.json';
 import CarouselSlider from '../../components/Common/CarouselSlider';
 import { responsiveOneItemCarousel } from '../../components/Common/CarouselSlider/utils';
@@ -493,6 +494,39 @@ class Homepage extends Component {
           </Container>
         </div>
         )}
+{/* Welcome Section Alternate */}
+
+  <div className="welcome-section">
+    <Container style={{ maxWidth: '1400px' }}>
+      <Row className="align-items-center">
+        <Col lg={6} className="mb-4 mb-lg-0">
+          <div className="welcome-content">
+            <p className="welcome-label">Our Service</p>
+            <h2 className="welcome-title">Funeral & Cremation Services in Rapid City
+            </h2>
+            <p className="welcome-text">
+            West River Funeral Directors offers complete funeral home services for families in Rapid City, SD. Each service is planned with care, clarity, and respect for personal, cultural, and religious preferences.
+
+            </p>
+         
+              <p className="welcome-text">
+               Our services include traditional funerals, memorial services, graveside services, and cremation options. Families receive guidance through every step, from initial arrangements to final remembrance, without pressure or confusion.
+
+              </p>
+       
+            <Link to={settings?.welcomeSection?.ctaLink || '/about-us'}>
+              <button className="welcome-cta-btn">{settings?.welcomeSection?.ctaText || 'LEARN MORE'}</button>
+            </Link>
+          </div>
+        </Col>
+        <Col lg={6}>
+          <div className="welcome-image-wrapper">
+            <img src="https://s3.amazonaws.com/CFSV2/stockimages/190258-general10.jpg" className="img-fluid welcome-image" />
+          </div>
+        </Col>
+      </Row>
+    </Container>
+  </div>
 
         {/* Services Grid Section */}
         {(settings?.servicesGrid?.enabled !== false) && (() => {
