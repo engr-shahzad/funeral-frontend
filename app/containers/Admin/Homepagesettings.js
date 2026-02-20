@@ -93,7 +93,10 @@ const HomepageSettings = () => {
       title: '',
       qrCodeUrl: '',
       reviewLink: ''
-    }
+    },
+
+    // Custom Sections
+    customSections: []
   });
 
   useEffect(() => {
@@ -178,6 +181,89 @@ const HomepageSettings = () => {
     }));
   };
 
+  // ---- Custom Sections helpers ----
+  const defaultCustomSection = () => ({
+    enabled: true,
+    order: settings.customSections.length,
+    placement: 'afterHeroSection',
+    layout: 'textOnly',
+    label: '',
+    heading: '',
+    headingSize: 'h2',
+    text: '',
+    contentAlignment: 'left',
+    backgroundColor: '#ffffff',
+    textColor: '#333333',
+    paddingSize: 'medium',
+    marginTop: 0,
+    marginBottom: 0,
+    image: '',
+    backgroundImage: '',
+    overlayOpacity: 0.4,
+    ctaText: '',
+    ctaLink: '',
+    ctaStyle: 'primary'
+  });
+
+  const PLACEMENT_OPTIONS = [
+    { value: 'afterHeroBanner',    label: 'After Hero Banner (Slider)' },
+    { value: 'afterTributes',      label: 'After Recent Tributes' },
+    { value: 'afterWelcome',       label: 'After Welcome Section' },
+    { value: 'afterHeroSection',   label: 'After Hero Info Section' },
+    { value: 'afterServicesGrid',  label: 'After Services Grid' },
+    { value: 'afterTestimonials',  label: 'After Testimonials' },
+    { value: 'afterGoogleReviews', label: 'After Google Reviews' },
+    { value: 'afterLocation',      label: 'After Location / Before Footer' },
+  ];
+
+  const addCustomSection = () => {
+    setSettings(prev => ({
+      ...prev,
+      customSections: [...(prev.customSections || []), defaultCustomSection()]
+    }));
+  };
+
+  const removeCustomSection = (index) => {
+    setSettings(prev => ({
+      ...prev,
+      customSections: prev.customSections.filter((_, i) => i !== index)
+    }));
+  };
+
+  const moveCustomSection = (index, direction) => {
+    setSettings(prev => {
+      const arr = [...prev.customSections];
+      const target = index + direction;
+      if (target < 0 || target >= arr.length) return prev;
+      [arr[index], arr[target]] = [arr[target], arr[index]];
+      return { ...prev, customSections: arr };
+    });
+  };
+
+  const handleCustomSectionChange = (index, field, value) => {
+    setSettings(prev => {
+      const updated = [...prev.customSections];
+      updated[index] = { ...updated[index], [field]: value };
+      return { ...prev, customSections: updated };
+    });
+  };
+
+  // Rich text formatting via execCommand
+  const execFormat = (sectionIndex, command, value = null) => {
+    document.execCommand(command, false, value);
+  };
+
+  const insertLink = (index) => {
+    const url = window.prompt('Enter URL (e.g. /about-us or https://example.com):');
+    if (url) {
+      document.execCommand('createLink', false, url);
+    }
+  };
+
+  const removeLink = () => {
+    document.execCommand('unlink', false, null);
+  };
+
   if (loading) {
     return (
       <div className="admin-loading">
@@ -238,11 +324,17 @@ const HomepageSettings = () => {
         >
           Testimonials
         </button>
-        <button 
+        <button
           className={`tab-btn ${activeTab === 'location' ? 'active' : ''}`}
           onClick={() => setActiveTab('location')}
         >
           Location
+        </button>
+        <button
+          className={`tab-btn ${activeTab === 'customSections' ? 'active' : ''}`}
+          onClick={() => setActiveTab('customSections')}
+        >
+          Custom Sections
         </button>
       </div>
 
@@ -794,6 +886,418 @@ const HomepageSettings = () => {
                   <small>Get this from Google Maps → Share → Embed a map</small>
                 </div>
               </>
+            )}
+          </div>
+        )}
+
+        {/* Custom Sections Tab */}
+        {activeTab === 'customSections' && (
+          <div className="admin-card">
+            <div className="section-header">
+              <div>
+                <h2>Custom Sections</h2>
+                <p className="section-desc">Add custom content sections to your homepage. Each section can have a background image, side image layout, and rich text content with alignment controls.</p>
+              </div>
+              <button className="btn-admin btn-secondary" onClick={addCustomSection}>
+                + Add Section
+              </button>
+            </div>
+
+            {(!settings.customSections || settings.customSections.length === 0) && (
+              <div className="empty-state">
+                <p>No custom sections yet. Click "+ Add Section" to create your first section.</p>
+              </div>
+            )}
+
+            {(settings.customSections || []).map((section, index) => (
+              <div key={index} className={`custom-section-editor ${!section.enabled ? 'section-disabled' : ''}`}>
+                {/* Section Header */}
+                <div className="custom-section-header">
+                  <div className="custom-section-title">
+                    <span className="section-badge">Section {index + 1}</span>
+                    <span className="section-layout-badge">{section.layout}</span>
+                    <span className={`section-status-badge ${section.enabled ? 'active' : 'inactive'}`}>
+                      {section.enabled ? 'Visible' : 'Hidden'}
+                    </span>
+                  </div>
+                  <div className="custom-section-actions">
+                    <button
+                      className="btn-admin btn-icon"
+                      onClick={() => moveCustomSection(index, -1)}
+                      disabled={index === 0}
+                      title="Move Up"
+                    >↑</button>
+                    <button
+                      className="btn-admin btn-icon"
+                      onClick={() => moveCustomSection(index, 1)}
+                      disabled={index === (settings.customSections.length - 1)}
+                      title="Move Down"
+                    >↓</button>
+                    <button
+                      className="btn-admin btn-danger btn-sm"
+                      onClick={() => removeCustomSection(index)}
+                    >Remove</button>
+                  </div>
+                </div>
+
+                {/* Enable/Disable toggle */}
+                <div className="form-group-toggle">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={section.enabled}
+                      onChange={(e) => handleCustomSectionChange(index, 'enabled', e.target.checked)}
+                    />
+                    Show this section on homepage
+                  </label>
+                </div>
+
+                {/* Placement */}
+                <div className="form-group">
+                  <label>Placement — where should this section appear?</label>
+                  <select
+                    className="form-control"
+                    value={section.placement || 'afterHeroSection'}
+                    onChange={(e) => handleCustomSectionChange(index, 'placement', e.target.value)}
+                  >
+                    {PLACEMENT_OPTIONS.map(opt => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Layout Selector */}
+                <div className="form-group">
+                  <label>Layout</label>
+                  <div className="layout-selector">
+                    {[
+                      { value: 'textOnly', label: 'Text Only', desc: 'Full width text block' },
+                      { value: 'imageLeft', label: 'Image Left', desc: 'Image on left, text on right' },
+                      { value: 'imageRight', label: 'Image Right', desc: 'Text on left, image on right' },
+                      { value: 'imageBg', label: 'Background Image', desc: 'Full-width background image with text overlay' }
+                    ].map(opt => (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        className={`layout-option ${section.layout === opt.value ? 'selected' : ''}`}
+                        onClick={() => handleCustomSectionChange(index, 'layout', opt.value)}
+                      >
+                        <span className="layout-option-label">{opt.label}</span>
+                        <span className="layout-option-desc">{opt.desc}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="form-row two-col">
+                  {/* Content Alignment */}
+                  <div className="form-group">
+                    <label>Content Alignment</label>
+                    <div className="alignment-buttons">
+                      {['left', 'center', 'right'].map(align => (
+                        <button
+                          key={align}
+                          type="button"
+                          className={`align-btn ${section.contentAlignment === align ? 'selected' : ''}`}
+                          onClick={() => handleCustomSectionChange(index, 'contentAlignment', align)}
+                          title={align.charAt(0).toUpperCase() + align.slice(1)}
+                        >
+                          {align === 'left' && '≡ Left'}
+                          {align === 'center' && '≡ Center'}
+                          {align === 'right' && '≡ Right'}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Padding Size */}
+                  <div className="form-group">
+                    <label>Section Padding (top &amp; bottom inside)</label>
+                    <select
+                      className="form-control"
+                      value={section.paddingSize}
+                      onChange={(e) => handleCustomSectionChange(index, 'paddingSize', e.target.value)}
+                    >
+                      <option value="small">Small (20px)</option>
+                      <option value="medium">Medium (60px)</option>
+                      <option value="large">Large (100px)</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Margin */}
+                <div className="form-row two-col">
+                  <div className="form-group">
+                    <label>Margin Top (px) — space above section: {section.marginTop || 0}px</label>
+                    <input
+                      type="range"
+                      className="form-range"
+                      min="0" max="200" step="4"
+                      value={section.marginTop || 0}
+                      onChange={(e) => handleCustomSectionChange(index, 'marginTop', parseInt(e.target.value))}
+                    />
+                    <div className="range-value-display">
+                      <input
+                        type="number"
+                        className="form-control form-control-sm"
+                        value={section.marginTop || 0}
+                        min="0" max="200"
+                        onChange={(e) => handleCustomSectionChange(index, 'marginTop', parseInt(e.target.value) || 0)}
+                        style={{ width: '80px' }}
+                      />
+                      <span>px</span>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label>Margin Bottom (px) — space below section: {section.marginBottom || 0}px</label>
+                    <input
+                      type="range"
+                      className="form-range"
+                      min="0" max="200" step="4"
+                      value={section.marginBottom || 0}
+                      onChange={(e) => handleCustomSectionChange(index, 'marginBottom', parseInt(e.target.value))}
+                    />
+                    <div className="range-value-display">
+                      <input
+                        type="number"
+                        className="form-control form-control-sm"
+                        value={section.marginBottom || 0}
+                        min="0" max="200"
+                        onChange={(e) => handleCustomSectionChange(index, 'marginBottom', parseInt(e.target.value) || 0)}
+                        style={{ width: '80px' }}
+                      />
+                      <span>px</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ---- Content Fields ---- */}
+                <div className="form-section-divider">Content</div>
+
+                <div className="form-group">
+                  <label>Label (small text above heading)</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={section.label}
+                    onChange={(e) => handleCustomSectionChange(index, 'label', e.target.value)}
+                    placeholder="e.g. OUR SERVICES"
+                  />
+                </div>
+
+                <div className="form-row two-col">
+                  <div className="form-group">
+                    <label>Heading</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={section.heading}
+                      onChange={(e) => handleCustomSectionChange(index, 'heading', e.target.value)}
+                      placeholder="Section heading text"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Heading Tag</label>
+                    <select
+                      className="form-control"
+                      value={section.headingSize}
+                      onChange={(e) => handleCustomSectionChange(index, 'headingSize', e.target.value)}
+                    >
+                      <option value="h1">H1 — Page Title</option>
+                      <option value="h2">H2 — Section Title</option>
+                      <option value="h3">H3 — Subsection</option>
+                      <option value="h4">H4 — Small heading</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Rich Text Editor */}
+                <div className="form-group">
+                  <label>Text Content</label>
+                  <div className="rich-text-editor">
+                    <div className="rich-text-toolbar">
+                      <button type="button" className="rte-btn" onClick={() => execFormat(index, 'bold')} title="Bold"><b>B</b></button>
+                      <button type="button" className="rte-btn" onClick={() => execFormat(index, 'italic')} title="Italic"><i>I</i></button>
+                      <button type="button" className="rte-btn" onClick={() => execFormat(index, 'underline')} title="Underline"><u>U</u></button>
+                      <span className="rte-divider" />
+                      <button type="button" className="rte-btn" onClick={() => execFormat(index, 'justifyLeft')} title="Align Left">L</button>
+                      <button type="button" className="rte-btn" onClick={() => execFormat(index, 'justifyCenter')} title="Align Center">C</button>
+                      <button type="button" className="rte-btn" onClick={() => execFormat(index, 'justifyRight')} title="Align Right">R</button>
+                      <button type="button" className="rte-btn" onClick={() => execFormat(index, 'justifyFull')} title="Justify">J</button>
+                      <span className="rte-divider" />
+                      <button type="button" className="rte-btn" onClick={() => execFormat(index, 'insertUnorderedList')} title="Bullet list">• List</button>
+                      <button type="button" className="rte-btn" onClick={() => execFormat(index, 'insertOrderedList')} title="Numbered list">1. List</button>
+                      <span className="rte-divider" />
+                      <button type="button" className="rte-btn rte-btn-link" onClick={() => insertLink(index)} title="Insert Link">🔗 Link</button>
+                      <button type="button" className="rte-btn" onClick={() => removeLink()} title="Remove Link">✂ Unlink</button>
+                      <span className="rte-divider" />
+                      <select
+                        className="rte-select"
+                        onChange={(e) => execFormat(index, 'formatBlock', e.target.value)}
+                        defaultValue=""
+                        title="Paragraph style"
+                      >
+                        <option value="" disabled>Style</option>
+                        <option value="p">Paragraph</option>
+                        <option value="h2">Heading 2</option>
+                        <option value="h3">Heading 3</option>
+                        <option value="h4">Heading 4</option>
+                        <option value="blockquote">Blockquote</option>
+                      </select>
+                    </div>
+                    <div
+                      className="rich-text-body"
+                      contentEditable
+                      suppressContentEditableWarning
+                      dangerouslySetInnerHTML={{ __html: section.text }}
+                      onBlur={(e) => handleCustomSectionChange(index, 'text', e.target.innerHTML)}
+                      data-placeholder="Type your content here..."
+                    />
+                  </div>
+                </div>
+
+                {/* ---- Image Fields ---- */}
+                {(section.layout === 'imageLeft' || section.layout === 'imageRight') && (
+                  <>
+                    <div className="form-section-divider">Side Image</div>
+                    <div className="form-group">
+                      <label>Image URL</label>
+                      <input
+                        type="url"
+                        className="form-control"
+                        value={section.image}
+                        onChange={(e) => handleCustomSectionChange(index, 'image', e.target.value)}
+                        placeholder="https://example.com/image.jpg"
+                      />
+                      {section.image && (
+                        <div className="img-preview-sm">
+                          <img src={section.image} alt="preview" />
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
+
+                {section.layout === 'imageBg' && (
+                  <>
+                    <div className="form-section-divider">Background Image</div>
+                    <div className="form-group">
+                      <label>Background Image URL</label>
+                      <input
+                        type="url"
+                        className="form-control"
+                        value={section.backgroundImage}
+                        onChange={(e) => handleCustomSectionChange(index, 'backgroundImage', e.target.value)}
+                        placeholder="https://example.com/bg-image.jpg"
+                      />
+                      {section.backgroundImage && (
+                        <div className="img-preview-sm">
+                          <img src={section.backgroundImage} alt="bg preview" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="form-group">
+                      <label>Overlay Opacity (0 = none, 1 = full dark): {section.overlayOpacity}</label>
+                      <input
+                        type="range"
+                        className="form-range"
+                        min="0" max="1" step="0.05"
+                        value={section.overlayOpacity}
+                        onChange={(e) => handleCustomSectionChange(index, 'overlayOpacity', parseFloat(e.target.value))}
+                      />
+                    </div>
+                  </>
+                )}
+
+                {/* ---- Style Settings ---- */}
+                <div className="form-section-divider">Style</div>
+                <div className="form-row three-col">
+                  <div className="form-group">
+                    <label>Background Color</label>
+                    <div className="color-input-wrapper">
+                      <input
+                        type="color"
+                        className="form-control-color"
+                        value={section.backgroundColor}
+                        onChange={(e) => handleCustomSectionChange(index, 'backgroundColor', e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        className="form-control color-hex"
+                        value={section.backgroundColor}
+                        onChange={(e) => handleCustomSectionChange(index, 'backgroundColor', e.target.value)}
+                        placeholder="#ffffff"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Text Color</label>
+                    <div className="color-input-wrapper">
+                      <input
+                        type="color"
+                        className="form-control-color"
+                        value={section.textColor}
+                        onChange={(e) => handleCustomSectionChange(index, 'textColor', e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        className="form-control color-hex"
+                        value={section.textColor}
+                        onChange={(e) => handleCustomSectionChange(index, 'textColor', e.target.value)}
+                        placeholder="#333333"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* ---- CTA Button ---- */}
+                <div className="form-section-divider">CTA Button (Optional)</div>
+                <div className="form-row three-col">
+                  <div className="form-group">
+                    <label>Button Text</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={section.ctaText}
+                      onChange={(e) => handleCustomSectionChange(index, 'ctaText', e.target.value)}
+                      placeholder="LEARN MORE"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Button Link</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={section.ctaLink}
+                      onChange={(e) => handleCustomSectionChange(index, 'ctaLink', e.target.value)}
+                      placeholder="/about-us"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Button Style</label>
+                    <select
+                      className="form-control"
+                      value={section.ctaStyle}
+                      onChange={(e) => handleCustomSectionChange(index, 'ctaStyle', e.target.value)}
+                    >
+                      <option value="primary">Primary (Filled)</option>
+                      <option value="secondary">Secondary (Grey)</option>
+                      <option value="outline">Outline (Border only)</option>
+                      <option value="ghost">Ghost (Light on dark)</option>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+            ))}
+
+            {(settings.customSections || []).length > 0 && (
+              <div className="add-section-bottom">
+                <button className="btn-admin btn-secondary" onClick={addCustomSection}>
+                  + Add Another Section
+                </button>
+              </div>
             )}
           </div>
         )}

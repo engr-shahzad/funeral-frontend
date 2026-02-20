@@ -282,6 +282,102 @@ class Homepage extends Component {
     }
   };
 
+  renderCustomSections(placement) {
+    const { settings } = this.state;
+    const sections = (settings?.customSections || [])
+      .filter(sec => sec.enabled !== false && (sec.placement || 'afterHeroSection') === placement);
+
+    if (sections.length === 0) return null;
+
+    return sections.map((sec, i) => {
+      const paddingMap = { small: '20px 0', medium: '60px 0', large: '100px 0' };
+      const padding = paddingMap[sec.paddingSize] || '60px 0';
+      const textAlign = sec.contentAlignment || 'left';
+      const HeadingTag = sec.headingSize || 'h2';
+      const outerStyle = {
+        marginTop: sec.marginTop ? `${sec.marginTop}px` : undefined,
+        marginBottom: sec.marginBottom ? `${sec.marginBottom}px` : undefined
+      };
+      const ctaBtnStyle = {
+        primary:   'welcome-cta-btn',
+        secondary: 'tributes-action-btn',
+        outline:   'hero-cta-button',
+        ghost:     'hero-cta-button'
+      }[sec.ctaStyle] || 'welcome-cta-btn';
+
+      if (sec.layout === 'imageBg') {
+        return (
+          <div key={`${placement}-${i}`} style={outerStyle}>
+            <div style={{
+              position: 'relative',
+              backgroundImage: sec.backgroundImage ? `url(${sec.backgroundImage})` : undefined,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundColor: sec.backgroundColor || '#1a1a1a',
+              padding,
+              color: sec.textColor || '#ffffff'
+            }}>
+              {sec.backgroundImage && (
+                <div style={{ position: 'absolute', inset: 0, backgroundColor: `rgba(0,0,0,${sec.overlayOpacity ?? 0.4})` }} />
+              )}
+              <Container style={{ maxWidth: '1000px', position: 'relative', zIndex: 1, textAlign }}>
+                {sec.label && <p className="welcome-label" style={{ color: sec.textColor || '#ccc' }}>{sec.label}</p>}
+                {sec.heading && <HeadingTag className="welcome-title" style={{ color: sec.textColor || '#fff' }}>{sec.heading}</HeadingTag>}
+                {sec.text && <div className="welcome-text" style={{ color: sec.textColor || '#eee' }} dangerouslySetInnerHTML={{ __html: sec.text }} />}
+                {sec.ctaText && sec.ctaLink && (
+                  <Link to={sec.ctaLink}><button className={ctaBtnStyle} style={{ marginTop: '16px' }}>{sec.ctaText}</button></Link>
+                )}
+              </Container>
+            </div>
+          </div>
+        );
+      }
+
+      if (sec.layout === 'imageLeft' || sec.layout === 'imageRight') {
+        const imgCol = (
+          <Col lg={6} className="mb-4 mb-lg-0">
+            {sec.image && <div className="welcome-image-wrapper"><img src={sec.image} alt={sec.heading || 'section'} className="img-fluid welcome-image" /></div>}
+          </Col>
+        );
+        const textCol = (
+          <Col lg={6}>
+            <div className="welcome-content" style={{ textAlign, color: sec.textColor || '#333' }}>
+              {sec.label && <p className="welcome-label">{sec.label}</p>}
+              {sec.heading && <HeadingTag className="welcome-title">{sec.heading}</HeadingTag>}
+              {sec.text && <div className="welcome-text" dangerouslySetInnerHTML={{ __html: sec.text }} />}
+              {sec.ctaText && sec.ctaLink && (
+                <Link to={sec.ctaLink}><button className={ctaBtnStyle} style={{ marginTop: '12px' }}>{sec.ctaText}</button></Link>
+              )}
+            </div>
+          </Col>
+        );
+        return (
+          <div key={`${placement}-${i}`} className="welcome-section" style={{ backgroundColor: sec.backgroundColor || '#fff', padding, ...outerStyle }}>
+            <Container style={{ maxWidth: '1400px' }}>
+              <Row className="align-items-center">
+                {sec.layout === 'imageLeft' ? <>{imgCol}{textCol}</> : <>{textCol}{imgCol}</>}
+              </Row>
+            </Container>
+          </div>
+        );
+      }
+
+      // textOnly
+      return (
+        <div key={`${placement}-${i}`} style={{ backgroundColor: sec.backgroundColor || '#fff', padding, color: sec.textColor || '#333', ...outerStyle }}>
+          <Container style={{ maxWidth: '1000px', textAlign }}>
+            {sec.label && <p className="welcome-label">{sec.label}</p>}
+            {sec.heading && <HeadingTag className="welcome-title">{sec.heading}</HeadingTag>}
+            {sec.text && <div className="welcome-text" dangerouslySetInnerHTML={{ __html: sec.text }} />}
+            {sec.ctaText && sec.ctaLink && (
+              <Link to={sec.ctaLink}><button className={ctaBtnStyle} style={{ marginTop: '12px' }}>{sec.ctaText}</button></Link>
+            )}
+          </Container>
+        </div>
+      );
+    });
+  }
+
   render() {
     const { currentIndex, searchQuery, tributes, loading, error, settings } = this.state;
     const itemsPerPage = 6;
@@ -346,7 +442,7 @@ class Homepage extends Component {
                   <div className="hero-overlay" />
                   <div className="hero-content">
                     <div className="hero-text-wrapper">
-                      <h1 className="hero-title">{slide.title || 'Celebrate Life'}</h1>
+                      <h2 className="hero-title">{slide.title || 'Celebrate Life'}</h2>
                       <Link to={slide.ctaLink || '/our-services'}>
                         <button className="hero-cta-button">{slide.ctaText || 'OUR SERVICES'}</button>
                       </Link>
@@ -357,6 +453,7 @@ class Homepage extends Component {
             ))}
           </Swiper>
         </div>
+        {this.renderCustomSections('afterHeroBanner')}
 
         {/* Recent Tributes Section */}
         <Container fluid className="tributes-section-wrapper">
@@ -462,6 +559,7 @@ class Homepage extends Component {
             )}
           </Container>
         </Container>
+        {this.renderCustomSections('afterTributes')}
 
         {/* Welcome Section */}
         {(settings?.welcomeSection?.enabled !== false) && (
@@ -494,6 +592,7 @@ class Homepage extends Component {
           </Container>
         </div>
         )}
+        {this.renderCustomSections('afterWelcome')}
 {/* Welcome Section Alternate */}
 
   <div className="welcome-section">
@@ -608,6 +707,8 @@ class Homepage extends Component {
     </div>
   </div>
 </section>
+        {this.renderCustomSections('afterHeroSection')}
+
         {/* Services Grid Section */}
         {(settings?.servicesGrid?.enabled !== false) && (() => {
           const defaultServices = [
@@ -654,6 +755,7 @@ class Homepage extends Component {
             </div>
           );
         })()}
+        {this.renderCustomSections('afterServicesGrid')}
 
         {/* Testimonials Section */}
         {(settings?.testimonials?.enabled !== false) && (
@@ -680,6 +782,7 @@ class Homepage extends Component {
           </Container>
         </div>
         )}
+        {this.renderCustomSections('afterTestimonials')}
 
         {/* Google Reviews Section */}
         {(settings?.googleReviews?.enabled !== false) && (
@@ -694,6 +797,7 @@ class Homepage extends Component {
           </Container>
         </div>
         )}
+        {this.renderCustomSections('afterGoogleReviews')}
 
         {/* Location Section */}
         {(settings?.location?.enabled !== false) && (() => {
@@ -748,6 +852,7 @@ class Homepage extends Component {
             </div>
           );
         })()}
+        {this.renderCustomSections('afterLocation')}
 
         {/* View Services CTA */}
         <div className="view-services-cta">
