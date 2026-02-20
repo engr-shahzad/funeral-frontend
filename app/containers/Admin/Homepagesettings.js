@@ -108,7 +108,12 @@ const HomepageSettings = () => {
       setLoading(true);
       const response = await axios.get(`${API_URL}/homepage-settings`);
       if (response.data) {
-        setSettings(response.data);
+        // Merge with defaults so new fields (like customSections) always exist
+        setSettings(prev => ({
+          ...prev,
+          ...response.data,
+          customSections: Array.isArray(response.data.customSections) ? response.data.customSections : []
+        }));
       }
     } catch (error) {
       console.error('Error fetching homepage settings:', error);
@@ -184,7 +189,7 @@ const HomepageSettings = () => {
   // ---- Custom Sections helpers ----
   const defaultCustomSection = () => ({
     enabled: true,
-    order: settings.customSections.length,
+    order: (settings.customSections || []).length,
     placement: 'afterHeroSection',
     layout: 'textOnly',
     label: '',
