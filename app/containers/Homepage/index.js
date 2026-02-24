@@ -26,7 +26,9 @@ import './Home.css';
 class TributeImageSlider extends Component {
   constructor(props) {
     super(props);
-    this.state = { currentIndex: 0 };
+    this.state = {
+      currentIndex: 0
+    };
     this.autoplayInterval = null;
   }
 
@@ -66,34 +68,34 @@ class TributeImageSlider extends Component {
   render() {
     const { images, name } = this.props;
     const { currentIndex } = this.state;
+
     return (
-      <div className="tribute-image-slider">
-        <div className="tribute-slides-wrapper" style={{ display: 'flex', transition: 'transform 0.5s ease', transform: `translateX(-${currentIndex * 100}%)` }}>
+      <div className="tribute-custom-slider">
+        <div className="tribute-slider-container">
           {images.map((img, idx) => (
             <img
               key={idx}
               src={img}
-              alt={`${name} - photo ${idx + 1}`}
-              className="tribute-slide-img"
+              alt={`${name} ${idx + 1}`}
+              className={`tribute-slider-image ${idx === currentIndex ? 'active' : ''}`}
               onError={(e) => {
                 e.target.src = 'https://via.placeholder.com/200x200?text=No+Image';
               }}
             />
           ))}
         </div>
+
         {/* Pagination Dots */}
-        {images.length > 1 && (
-          <div className="tribute-dots">
-            {images.map((_, idx) => (
-              <button
-                key={idx}
-                className={`tribute-dot${idx === currentIndex ? ' active' : ''}`}
-                onClick={() => this.goToSlide(idx)}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
-          </div>
-        )}
+        <div className="tribute-slider-pagination">
+          {images.map((_, idx) => (
+            <button
+              key={idx}
+              className={`tribute-pagination-dot ${idx === currentIndex ? 'active' : ''}`}
+              onClick={() => this.goToSlide(idx)}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
       </div>
     );
   }
@@ -134,15 +136,22 @@ class Homepage extends Component {
   fetchRecentTributes = async () => {
     try {
       this.setState({ loading: true, error: null });
+
       const response = await fetch(`${API_URL}/obituaries/recent`, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
+
       if (!response.ok) {
         throw new Error('Failed to fetch tributes');
       }
+
       const data = await response.json();
+
       const formattedTributes = data.map(obituary => {
+        // ✅ Handle photos array properly with filtering
         let images = [];
         if (obituary.photos && Array.isArray(obituary.photos) && obituary.photos.length > 0) {
           images = obituary.photos.filter(photo => photo && typeof photo === 'string' && photo.trim() !== '');
@@ -151,9 +160,12 @@ class Homepage extends Component {
         } else if (obituary.IMAGE && typeof obituary.IMAGE === 'string' && obituary.IMAGE.trim() !== '') {
           images = [obituary.IMAGE];
         }
+
+        // Default to placeholder if no images
         if (images.length === 0) {
           images = ['https://via.placeholder.com/200x200?text=No+Image'];
         }
+
         return {
           id: obituary._id,
           name: `${obituary.firstName || obituary.FIRST || ''} ${obituary.lastName || obituary.LAST || ''}`.toUpperCase().trim(),
@@ -164,10 +176,18 @@ class Homepage extends Component {
           slug: obituary.slug || obituary._id
         };
       });
-      this.setState({ tributes: formattedTributes, loading: false });
+
+      this.setState({
+        tributes: formattedTributes,
+        loading: false
+      });
+
     } catch (error) {
       console.error('Error fetching tributes:', error);
-      this.setState({ error: error.message, loading: false });
+      this.setState({
+        error: error.message,
+        loading: false
+      });
     }
   };
 
@@ -202,16 +222,23 @@ class Homepage extends Component {
       this.fetchRecentTributes();
       return;
     }
+
     try {
       this.setState({ loading: true });
+
       const response = await fetch(`${API_URL}/obituaries/search?q=${encodeURIComponent(searchQuery)}`, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
+
       if (!response.ok) {
         throw new Error('Search failed');
       }
+
       const data = await response.json();
+
       const formattedTributes = data.map(obituary => {
         let images = [];
         if (obituary.photos && Array.isArray(obituary.photos) && obituary.photos.length > 0) {
@@ -221,9 +248,11 @@ class Homepage extends Component {
         } else if (obituary.IMAGE && typeof obituary.IMAGE === 'string' && obituary.IMAGE.trim() !== '') {
           images = [obituary.IMAGE];
         }
+
         if (images.length === 0) {
           images = ['https://via.placeholder.com/200x200?text=No+Image'];
         }
+
         return {
           id: obituary._id,
           name: `${obituary.firstName || obituary.FIRST || ''} ${obituary.lastName || obituary.LAST || ''}`.toUpperCase().trim(),
@@ -234,7 +263,13 @@ class Homepage extends Component {
           slug: obituary.slug || obituary._id
         };
       });
-      this.setState({ tributes: formattedTributes, loading: false, currentIndex: 0 });
+
+      this.setState({
+        tributes: formattedTributes,
+        loading: false,
+        currentIndex: 0
+      });
+
     } catch (error) {
       console.error('Error searching tributes:', error);
       this.setState({ loading: false });
@@ -264,26 +299,35 @@ class Homepage extends Component {
         marginBottom: sec.marginBottom ? `${sec.marginBottom}px` : undefined
       };
       const ctaBtnStyle = {
-        primary: 'welcome-cta-btn',
+        primary:   'welcome-cta-btn',
         secondary: 'tributes-action-btn',
-        outline: 'hero-cta-button',
-        ghost: 'hero-cta-button'
+        outline:   'hero-cta-button',
+        ghost:     'hero-cta-button'
       }[sec.ctaStyle] || 'welcome-cta-btn';
 
       if (sec.layout === 'imageBg') {
         return (
-          <div key={i} className="custom-section custom-section--imagebg" style={{ ...outerStyle, padding, position: 'relative', overflow: 'hidden', textAlign }}>
-            {sec.backgroundImage && (
-              <div className="custom-section-bg" style={{ backgroundImage: `url(${sec.backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'absolute', inset: 0, zIndex: 0 }} />
-            )}
-            <div className="custom-section-overlay" style={{ position: 'absolute', inset: 0, background: sec.overlayColor || 'rgba(0,0,0,0.45)', zIndex: 1 }} />
-            <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-              {sec.label && <div className="custom-section-label" style={{ color: sec.labelColor || '#ccc' }}>{sec.label}</div>}
-              {sec.heading && <HeadingTag className="custom-section-heading" style={{ color: sec.headingColor || '#fff' }}>{sec.heading}</HeadingTag>}
-              {sec.text && <div className="custom-section-text" style={{ color: sec.textColor || '#eee' }} dangerouslySetInnerHTML={{ __html: sec.text }} />}
-              {sec.ctaText && sec.ctaLink && (
-                <Link to={sec.ctaLink} className={ctaBtnStyle}>{sec.ctaText}</Link>
+          <div key={`${placement}-${i}`} style={outerStyle}>
+            <div style={{
+              position: 'relative',
+              backgroundImage: sec.backgroundImage ? `url(${sec.backgroundImage})` : undefined,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundColor: sec.backgroundColor || '#1a1a1a',
+              padding,
+              color: sec.textColor || '#ffffff'
+            }}>
+              {sec.backgroundImage && (
+                <div style={{ position: 'absolute', inset: 0, backgroundColor: `rgba(0,0,0,${sec.overlayOpacity ?? 0.4})` }} />
               )}
+              <Container style={{ maxWidth: '1000px', position: 'relative', zIndex: 1, textAlign }}>
+                {sec.label && <p className="welcome-label" style={{ color: sec.textColor || '#ccc' }}>{sec.label}</p>}
+                {sec.heading && <HeadingTag className="welcome-title" style={{ color: sec.textColor || '#fff' }}>{sec.heading}</HeadingTag>}
+                {sec.text && <div className="welcome-text" style={{ color: sec.textColor || '#eee' }} dangerouslySetInnerHTML={{ __html: sec.text }} />}
+                {sec.ctaText && sec.ctaLink && (
+                  <Link to={sec.ctaLink}><button className={ctaBtnStyle} style={{ marginTop: '16px' }}>{sec.ctaText}</button></Link>
+                )}
+              </Container>
             </div>
           </div>
         );
@@ -291,23 +335,25 @@ class Homepage extends Component {
 
       if (sec.layout === 'imageLeft' || sec.layout === 'imageRight') {
         const imgCol = (
-          <Col md={6} className="custom-section-img-col">
-            {sec.image && <div className="custom-section-img" style={{ backgroundImage: `url(${sec.image})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '300px' }} />}
+          <Col lg={6} className="mb-4 mb-lg-0">
+            {sec.image && <div className="welcome-image-wrapper"><img src={sec.image} alt={sec.heading || 'section'} className="img-fluid welcome-image" /></div>}
           </Col>
         );
         const textCol = (
-          <Col md={6} className="custom-section-text-col" style={{ textAlign }}>
-            {sec.label && <div className="custom-section-label" style={{ color: sec.labelColor || '#888' }}>{sec.label}</div>}
-            {sec.heading && <HeadingTag className="custom-section-heading" style={{ color: sec.headingColor || '#222' }}>{sec.heading}</HeadingTag>}
-            {sec.text && <div className="custom-section-text" style={{ color: sec.textColor || '#555' }} dangerouslySetInnerHTML={{ __html: sec.text }} />}
-            {sec.ctaText && sec.ctaLink && (
-              <Link to={sec.ctaLink} className={ctaBtnStyle}>{sec.ctaText}</Link>
-            )}
+          <Col lg={6}>
+            <div className="welcome-content" style={{ textAlign, color: sec.textColor || '#333' }}>
+              {sec.label && <p className="welcome-label">{sec.label}</p>}
+              {sec.heading && <HeadingTag className="welcome-title">{sec.heading}</HeadingTag>}
+              {sec.text && <div className="welcome-text" dangerouslySetInnerHTML={{ __html: sec.text }} />}
+              {sec.ctaText && sec.ctaLink && (
+                <Link to={sec.ctaLink}><button className={ctaBtnStyle} style={{ marginTop: '12px' }}>{sec.ctaText}</button></Link>
+              )}
+            </div>
           </Col>
         );
         return (
-          <div key={i} className="custom-section custom-section--image-side" style={{ ...outerStyle, padding, background: sec.backgroundColor || 'transparent' }}>
-            <Container>
+          <div key={`${placement}-${i}`} className="welcome-section" style={{ backgroundColor: sec.backgroundColor || '#fff', padding, ...outerStyle }}>
+            <Container style={{ maxWidth: '1400px' }}>
               <Row className="align-items-center">
                 {sec.layout === 'imageLeft' ? <>{imgCol}{textCol}</> : <>{textCol}{imgCol}</>}
               </Row>
@@ -318,13 +364,13 @@ class Homepage extends Component {
 
       // textOnly
       return (
-        <div key={i} className="custom-section custom-section--text" style={{ ...outerStyle, padding, background: sec.backgroundColor || 'transparent', textAlign }}>
-          <Container>
-            {sec.label && <div className="custom-section-label" style={{ color: sec.labelColor || '#888' }}>{sec.label}</div>}
-            {sec.heading && <HeadingTag className="custom-section-heading" style={{ color: sec.headingColor || '#222' }}>{sec.heading}</HeadingTag>}
-            {sec.text && <div className="custom-section-text" style={{ color: sec.textColor || '#555' }} dangerouslySetInnerHTML={{ __html: sec.text }} />}
+        <div key={`${placement}-${i}`} style={{ backgroundColor: sec.backgroundColor || '#fff', padding, color: sec.textColor || '#333', ...outerStyle }}>
+          <Container style={{ maxWidth: '1000px', textAlign }}>
+            {sec.label && <p className="welcome-label">{sec.label}</p>}
+            {sec.heading && <HeadingTag className="welcome-title">{sec.heading}</HeadingTag>}
+            {sec.text && <div className="welcome-text" dangerouslySetInnerHTML={{ __html: sec.text }} />}
             {sec.ctaText && sec.ctaLink && (
-              <Link to={sec.ctaLink} className={ctaBtnStyle}>{sec.ctaText}</Link>
+              <Link to={sec.ctaLink}><button className={ctaBtnStyle} style={{ marginTop: '12px' }}>{sec.ctaText}</button></Link>
             )}
           </Container>
         </div>
@@ -338,14 +384,27 @@ class Homepage extends Component {
     const maxIndex = Math.max(0, tributes.length - itemsPerPage);
     const visibleTributes = tributes.slice(currentIndex, currentIndex + itemsPerPage);
 
+    // Default slides fallback
     const defaultSlides = [
-      { image: 'https://s3.amazonaws.com/CFSV2/obituaries/galleries/12123/1663011/68b14f5742047.png', title: 'Celebrate Life', ctaText: 'OUR SERVICES', ctaLink: '/our-services' },
-      { image: '/images/banners/banner2.jpeg?w=1600', title: 'Celebrate Life', ctaText: 'OUR SERVICES', ctaLink: '/our-services' }
+      {
+        image: 'https://s3.amazonaws.com/CFSV2/obituaries/galleries/12123/1663011/68b14f5742047.png',
+        title: 'Celebrate Life',
+        ctaText: 'OUR SERVICES',
+        ctaLink: '/our-services'
+      },
+      {
+        image: '/images/banners/banner2.jpeg?w=1600',
+        title: 'Celebrate Life',
+        ctaText: 'OUR SERVICES',
+        ctaLink: '/our-services'
+      }
     ];
+
     const slides = (settings?.heroBanner?.slides?.length > 0 && settings.heroBanner.slides[0].image)
       ? settings.heroBanner.slides
       : defaultSlides;
 
+    // SEO settings
     const seo = settings?.seo || {};
 
     return (
@@ -358,6 +417,7 @@ class Homepage extends Component {
           {(seo.ogTitle || seo.metaTitle) && <meta property="og:title" content={seo.ogTitle || seo.metaTitle} />}
           {(seo.ogDescription || seo.metaDescription) && <meta property="og:description" content={seo.ogDescription || seo.metaDescription} />}
           {seo.ogImage && <meta property="og:image" content={seo.ogImage} />}
+          <meta property="og:type" content="website" />
           {seo.twitterCard && <meta name="twitter:card" content={seo.twitterCard} />}
           {(seo.twitterTitle || seo.metaTitle) && <meta name="twitter:title" content={seo.twitterTitle || seo.metaTitle} />}
           {(seo.twitterDescription || seo.metaDescription) && <meta name="twitter:description" content={seo.twitterDescription || seo.metaDescription} />}
@@ -365,25 +425,26 @@ class Homepage extends Component {
         </Helmet>
 
         {/* Hero Banner Section */}
-        <div className="hero-banner-swiper">
-          <Swiper
-            spaceBetween={0}
-            slidesPerView={1}
-            autoplay={{ delay: 5000, disableOnInteraction: false }}
-            pagination={{ clickable: true }}
-            loop={slides.length > 1}
-          >
+        <div className="hero-banner-section">
+          <Swiper autoplay={{ delay: 4000 }} loop pagination={{ clickable: true }}>
             {slides.map((slide, index) => (
               <SwiperSlide key={index}>
                 <div
-                  className="hero-slide"
-                  style={{ backgroundImage: `url(${slide.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+                  className="hero-slide-bg"
+                  style={{
+                    backgroundImage: `url(${slide.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    height: '750px',
+                    position: 'relative'
+                  }}
                 >
-                  <div className="hero-slide-overlay">
-                    <div className="hero-slide-content">
-                      <h1 className="hero-slide-title">{slide.title || 'Celebrate Life'}</h1>
-                      <Link to={slide.ctaLink || '/our-services'} className="hero-cta-button">
-                        {slide.ctaText || 'OUR SERVICES'}
+                  <div className="hero-overlay" />
+                  <div className="hero-content">
+                    <div className="hero-text-wrapper">
+                      <h2 className="hero-title">{slide.title || 'Celebrate Life'}</h2>
+                      <Link to={slide.ctaLink || '/our-services'}>
+                        <button className="hero-cta-button">{slide.ctaText || 'OUR SERVICES'}</button>
                       </Link>
                     </div>
                   </div>
@@ -392,127 +453,260 @@ class Homepage extends Component {
             ))}
           </Swiper>
         </div>
-
         {this.renderCustomSections('afterHeroBanner')}
 
         {/* Recent Tributes Section */}
-        <div className="tributes-section">
-          <div className="tributes-header">
-            <h2 className="tributes-title">Recent Tributes</h2>
-            <div className="tributes-search">
-              <Input
-                type="text"
-                placeholder="Search tributes..."
-                value={searchQuery}
-                onChange={this.handleSearchChange}
-                onKeyPress={this.handleSearchKeyPress}
-                className="tribute-search-input"
-              />
-              <Button className="tribute-search-btn" onClick={this.handleSearch}>
-                <Search size={18} />
-              </Button>
-            </div>
-          </div>
+        <Container fluid className="tributes-section-wrapper">
+          <Container style={{ maxWidth: '1400px' }}>
+            <Row className="tributes-header mb-4 pb-3">
+              <Col lg={6} className="d-flex align-items-center mb-3 mb-lg-0">
+                <h2 className="tributes-title mb-0">Recent Tributes</h2>
+              </Col>
+              <Col lg={6} className="d-flex justify-content-lg-end align-items-center">
+                <div className="search-wrapper position-relative">
+                  <Input
+                    type="text"
+                    placeholder="Obituary search..."
+                    value={searchQuery}
+                    onChange={this.handleSearchChange}
+                    onKeyPress={this.handleSearchKeyPress}
+                    className="search-input rounded-pill"
+                  />
+                  <Search className="search-icon position-absolute" size={18} onClick={this.handleSearch} />
+                </div>
+              </Col>
+            </Row>
 
-          {loading && (
-            <div className="tributes-loading">
-              <div className="loading-spinner" />
-              <p>Loading tributes...</p>
-            </div>
-          )}
+            {loading && (
+              <Row>
+                <Col className="text-center py-5">
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                  <p className="mt-3">Loading tributes...</p>
+                </Col>
+              </Row>
+            )}
 
-          {error && (
-            <div className="tributes-error">
-              <h3>Error</h3>
-              <p>{error}</p>
-              <Button onClick={this.fetchRecentTributes}>Try Again</Button>
-            </div>
-          )}
+            {error && (
+              <Row>
+                <Col>
+                  <div className="alert alert-danger" role="alert">
+                    <h4 className="alert-heading">Error</h4>
+                    <p>{error}</p>
+                    <button color="primary" onClick={this.fetchRecentTributes}>Try Again</button>
+                  </div>
+                </Col>
+              </Row>
+            )}
 
-          {!loading && !error && tributes.length > 0 && (
-            <div className="tributes-content">
-              <button
-                className="tributes-nav-btn prev"
-                onClick={this.handlePrevious}
-                disabled={currentIndex === 0}
-              >
-                <ChevronLeft size={24} />
-              </button>
+            {!loading && !error && tributes.length > 0 && (
+              <div className="tributes-carousel-wrapper">
+                <div className="tributes-carousel position-relative">
+                  <button className="carousel-nav-btn carousel-nav-prev" onClick={this.handlePrevious} disabled={currentIndex === 0}>
+                    <ChevronLeft size={24} />
+                  </button>
 
-              <div className="tributes-grid">
-                {visibleTributes.map((tribute) => (
-                  <Link to={`/obituaries/${tribute.slug}`} key={tribute.id} className="tribute-card">
-                    <div className="tribute-img-wrapper">
-                      {tribute.images.length > 1 ? (
-                        <TributeImageSlider images={tribute.images} name={tribute.name} />
-                      ) : (
-                        <img
-                          src={tribute.image}
-                          alt={tribute.name}
-                          className="tribute-img"
-                          onError={(e) => {
-                            e.target.src = 'https://via.placeholder.com/200x200?text=No+Image';
-                          }}
-                        />
-                      )}
-                    </div>
-                    <div className="tribute-info">
-                      <h3 className="tribute-name">{tribute.name}</h3>
-                      <p className="tribute-date">{tribute.date}</p>
-                      <p className="tribute-location">{tribute.location}</p>
-                    </div>
-                  </Link>
-                ))}
+                  <button className="carousel-nav-btn carousel-nav-next" onClick={this.handleNext} disabled={currentIndex >= maxIndex}>
+                    <ChevronRight size={24} />
+                  </button>
+
+                  <Row className="tribute-cards-row">
+                    {visibleTributes.map((tribute) => (
+                        <Col key={tribute.id} xs={6} sm={4} md={4} lg={2} className="mb-4 tribute-card-col">
+                          <Link to={`/obituary/${tribute.slug}`} className="text-decoration-none">
+                            <div className="tribute-card text-center">
+                              <div className="tribute-image-wrapper mb-2">
+                                <img
+                                  src={tribute.image}
+                                  alt={tribute.name}
+                                  className="tribute-image"
+                                  onError={(e) => {
+                                    e.target.src = 'https://via.placeholder.com/200x200?text=No+Image';
+                                  }}
+                                />
+                              </div>
+                              <h3 className="tribute-name">{tribute.name}</h3>
+                              <p className="tribute-date">{tribute.date}</p>
+                              <p className="tribute-location">{tribute.location}</p>
+                            </div>
+                          </Link>
+                        </Col>
+                    ))}
+                  </Row>
+                </div>
+
+                <Row className="mt-4">
+                  <Col className="d-flex justify-content-center flex-wrap">
+                    <Link to="/obituaries">
+                      <button className="tributes-action-btn mx-2 mb-2">VIEW ALL TRIBUTES</button>
+                    </Link>
+                    <Link to="/alerts">
+                      <button className="tributes-action-btn mx-2 mb-2">JOIN OBITUARY ALERTS</button>
+                    </Link>
+                  </Col>
+                </Row>
               </div>
+            )}
 
-              <button
-                className="tributes-nav-btn next"
-                onClick={this.handleNext}
-                disabled={currentIndex >= maxIndex}
-              >
-                <ChevronRight size={24} />
-              </button>
-
-              <div className="tributes-actions">
-                <Link to="/obituaries" className="tributes-action-btn">VIEW ALL TRIBUTES</Link>
-                <Link to="/obituary-alerts" className="tributes-action-btn">JOIN OBITUARY ALERTS</Link>
-              </div>
-            </div>
-          )}
-
-          {!loading && !error && tributes.length === 0 && (
-            <div className="tributes-empty">
-              <h3>No tributes found</h3>
-              <p>Try adjusting your search or check back later.</p>
-            </div>
-          )}
-        </div>
-
+            {!loading && !error && tributes.length === 0 && (
+              <Row>
+                <Col className="text-center py-5">
+                  <h3>No tributes found</h3>
+                  <p className="text-muted">Try adjusting your search or check back later.</p>
+                </Col>
+              </Row>
+            )}
+          </Container>
+        </Container>
         {this.renderCustomSections('afterTributes')}
 
-        {/* Welcome Section Alternate - Our Service */}
-        <div className="welcome-section-alt">
-          <Container>
-            <Row>
-              <Col md={12}>
-                <h2>Our Service</h2>
-                <h3>Funeral &amp; Cremation Services in Rapid City</h3>
-                <p>
-                  West River Funeral Directors offers complete funeral home services for families in Rapid City, SD.
-                  Each service is planned with care, clarity, and respect for personal, cultural, and religious preferences.
-                </p>
-                <p>
-                  Our services include traditional funerals, memorial services, graveside services, and cremation options.
-                  Families receive guidance through every step, from initial arrangements to final remembrance, without pressure or confusion.
-                </p>
-                <Link to="/our-services" className="welcome-cta-btn">
-                  {settings?.welcomeSection?.ctaText || 'LEARN MORE'}
-                </Link>
+        {/* Welcome Section */}
+        {(settings?.welcomeSection?.enabled !== false) && (
+        <div className="welcome-section">
+          <Container style={{ maxWidth: '1400px' }}>
+            <Row className="align-items-center">
+              <Col lg={6} className="mb-4 mb-lg-0">
+                <div className="welcome-image-wrapper">
+                  <img src={settings?.welcomeSection?.image || "https://s3.amazonaws.com/CFSV2/siteimages/wvr/321486-img.jpg"} alt={settings?.welcomeSection?.title || "West River Funeral Directors"} className="img-fluid welcome-image" />
+                </div>
+              </Col>
+              <Col lg={6}>
+                <div className="welcome-content">
+                  <p className="welcome-label">{settings?.welcomeSection?.label || 'WELCOME TO'}</p>
+                  <h2 className="welcome-title">{settings?.welcomeSection?.title || 'West River Funeral Directors LLC'}</h2>
+                  <p className="welcome-text">
+                    {settings?.welcomeSection?.description || 'Welcome to our website. We provide individualized funeral services designed to meet the needs of each family. Our staff of dedicated professionals is available to assist you in making funeral service arrangements. From casket choices to funeral flowers, we will guide you through all aspects of the funeral service.'}
+                  </p>
+                  {!settings?.welcomeSection?.description && (
+                    <p className="welcome-text">
+                      We invite you to <Link to="/contact-us" className="welcome-link">contact us</Link> with your questions, 24 hours a day, 7 days a week.
+                    </p>
+                  )}
+                  <Link to={settings?.welcomeSection?.ctaLink || '/about-us'}>
+                    <button className="welcome-cta-btn">{settings?.welcomeSection?.ctaText || 'LEARN MORE'}</button>
+                  </Link>
+                </div>
               </Col>
             </Row>
           </Container>
         </div>
+        )}
+        {this.renderCustomSections('afterWelcome')}
+{/* Welcome Section Alternate */}
 
+  <div className="welcome-section">
+    <Container style={{ maxWidth: '1400px' }}>
+      <Row className="align-items-center">
+        <Col lg={6} className="mb-4 mb-lg-0">
+          <div className="welcome-content">
+            <p className="welcome-label">Our Service</p>
+            <h2 className="welcome-title">Funeral & Cremation Services in Rapid City
+            </h2>
+            <p className="welcome-text">
+            West River Funeral Directors offers complete funeral home services for families in Rapid City, SD. Each service is planned with care, clarity, and respect for personal, cultural, and religious preferences.
+
+            </p>
+         
+              <p className="welcome-text">
+               Our services include traditional funerals, memorial services, graveside services, and cremation options. Families receive guidance through every step, from initial arrangements to final remembrance, without pressure or confusion.
+
+              </p>
+       
+            <Link to={settings?.welcomeSection?.ctaLink || '/about-us'}>
+              <button className="welcome-cta-btn">{settings?.welcomeSection?.ctaText || 'LEARN MORE'}</button>
+            </Link>
+          </div>
+        </Col>
+        <Col lg={6}>
+          <div className="welcome-image-wrapper">
+            <img src="https://s3.amazonaws.com/CFSV2/stockimages/190258-general10.jpg" className="img-fluid welcome-image" />
+          </div>
+        </Col>
+      </Row>
+    </Container>
+  </div>
+{/* Hero Section - place karo Welcome Section Alternate ke baad */}
+<section className="hero">
+  <div className="hero__bg"></div>
+  <div className="hero__floral"></div>
+  <div className="hero__vignette"></div>
+  <div className="hero__border"></div>
+  <div className="hero__corner hero__corner--tl"></div>
+  <div className="hero__corner hero__corner--tr"></div>
+  <div className="hero__corner hero__corner--bl"></div>
+  <div className="hero__corner hero__corner--br"></div>
+
+  <div className="hero__badge">
+    <div className="badge__ring">
+      <span className="badge__num">24</span>
+      <span className="badge__label">hours</span>
+    </div>
+    <span className="badge__sub">Always available</span>
+  </div>
+
+  <div className="hero__content">
+    <p className="hero__eyebrow">Rapid City, South Dakota</p>
+    <h1 className="hero__h1">
+      Funeral Home &amp; <em>Cremation Services</em><br/>in Rapid City, SD
+    </h1>
+    <div className="hero__divider"></div>
+    <p className="hero__desc">
+      West River Funeral Directors provides professional funeral and cremation services in Rapid City, South Dakota.
+      We help families with immediate arrangements, obituary listings, memorial services, and pre-planning options,
+      with caring support available 24 hours a day.
+    </p>
+  </div>
+
+  <div className="hero__bottom">
+    <h2 className="hero__h2">How can we help today?</h2>
+    <div className="hero__actions">
+      <a className="action-card" href="#">
+        <div className="action-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 0 1 9.5 9 2.5 2.5 0 0 1 12 6.5 2.5 2.5 0 0 1 14.5 9a2.5 2.5 0 0 1-2.5 2.5z"/>
+          </svg>
+        </div>
+        <span className="action-card__text">Arrange a funeral or cremation service</span>
+        <span className="action-card__arrow">›</span>
+      </a>
+
+      <a className="action-card" href="#">
+        <div className="action-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <span className="action-card__text">View recent obituaries in Rapid City</span>
+        <span className="action-card__arrow">›</span>
+      </a>
+
+      <a className="action-card" href="#">
+        <div className="action-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.64 3.39 2 2 0 0 1 3.61 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.7A16 16 0 0 0 15.3 16.09l1.06-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+        </div>
+        <span className="action-card__text">Speak with a funeral director now</span>
+        <span className="action-card__arrow">›</span>
+      </a>
+
+      <a className="action-card" href="#">
+        <div className="action-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 20h9"/>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+          </svg>
+        </div>
+        <span className="action-card__text">Plan ahead with prepaid funeral options</span>
+        <span className="action-card__arrow">›</span>
+      </a>
+    </div>
+  </div>
+</section>
         {this.renderCustomSections('afterHeroSection')}
 
         {/* Services Grid Section */}
@@ -528,59 +722,81 @@ class Homepage extends Component {
             : defaultServices;
           return (
             <div className="services-grid-section">
-              <Row className="no-gutters">
-                {services.slice(0, 2).map((svc, i) => (
-                  <Col md={6} key={i}>
-                    <Link to={svc.link} className="service-grid-item" style={{ backgroundImage: `url(${svc.image})` }}>
-                      <div className="service-grid-overlay">
-                        <h3>{svc.title}</h3>
-                      </div>
-                    </Link>
-                  </Col>
-                ))}
-              </Row>
-              <Row className="no-gutters">
-                {services.slice(2, 4).map((svc, i) => (
-                  <Col md={6} key={i}>
-                    <Link to={svc.link} className="service-grid-item" style={{ backgroundImage: `url(${svc.image})` }}>
-                      <div className="service-grid-overlay">
-                        <h3>{svc.title}</h3>
-                      </div>
-                    </Link>
-                  </Col>
-                ))}
-              </Row>
+              <Container fluid style={{ padding: 0 }}>
+                <Row className="g-0">
+                  {services.slice(0, 2).map((svc, i) => (
+                    <Col key={i} md={6} lg={6} className="service-grid-item">
+                      <Link to={svc.link || '#'} className="service-card-link">
+                        <div className="service-card" style={{ backgroundImage: `url(${svc.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                          <div className="service-card-overlay"></div>
+                          <div className="service-card-content">
+                            <h3 className="service-card-title">{svc.title}</h3>
+                          </div>
+                        </div>
+                      </Link>
+                    </Col>
+                  ))}
+                </Row>
+                <Row className="g-0 mt-4">
+                  {services.slice(2, 4).map((svc, i) => (
+                    <Col key={i} md={6} lg={6} className="service-grid-item">
+                      <Link to={svc.link || '#'} className="service-card-link">
+                        <div className="service-card" style={{ backgroundImage: `url(${svc.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                          <div className="service-card-overlay"></div>
+                          <div className="service-card-content">
+                            <h3 className="service-card-title">{svc.title}</h3>
+                          </div>
+                        </div>
+                      </Link>
+                    </Col>
+                  ))}
+                </Row>
+              </Container>
             </div>
           );
         })()}
-
         {this.renderCustomSections('afterServicesGrid')}
 
         {/* Testimonials Section */}
         {(settings?.testimonials?.enabled !== false) && (
-          <div className="testimonials-section">
-            <Container>
-              <h2>{settings?.testimonials?.title || 'What Our Families are Saying...'}</h2>
+        <div className="testimonials-section">
+          <Container style={{ maxWidth: '1200px' }}>
+            <div className="testimonials-header text-center mb-5">
+              <h2 className="testimonials-title">{settings?.testimonials?.title || 'What Our Families are Saying...'}</h2>
               <p className="testimonials-subtitle">{settings?.testimonials?.subtitle || 'TESTIMONIALS'}</p>
-              <p className="testimonials-text">{settings?.testimonials?.text || '"We are always impressed in hearing from the families that we serve. Please take a moment to let us know how we are doing by sharing your experience via our testimonials link. We very much appreciate your feedback."'}</p>
-              <Link to="/testimonials" className="welcome-cta-btn">
-                {settings?.testimonials?.ctaText || 'Click to enter your testimonial »'}
-              </Link>
-            </Container>
-          </div>
+            </div>
+            <Row>
+              <Col lg={8} className="mx-auto">
+                <div className="testimonial-card">
+                  <p className="testimonial-text">
+                    {settings?.testimonials?.text || '"We are always impressed in hearing from the families that we serve. Please take a moment to let us know how we are doing by sharing your experience via our testimonials link. We very much appreciate your feedback."'}
+                  </p>
+                  <div className="text-center mt-4">
+                    <Link to={settings?.testimonials?.ctaLink || '/testimonials'}>
+                      <button className="testimonial-btn">{settings?.testimonials?.ctaText || 'Click to enter your testimonial »'}</button>
+                    </Link>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </div>
         )}
-
         {this.renderCustomSections('afterTestimonials')}
 
         {/* Google Reviews Section */}
         {(settings?.googleReviews?.enabled !== false) && (
-          <div className="google-reviews-section">
-            <Container>
-              <h2>{settings?.googleReviews?.title || 'See Our Google Reviews'}</h2>
-            </Container>
-          </div>
+        <div className="google-reviews-section">
+          <Container style={{ maxWidth: '800px' }}>
+            <div className="text-center">
+              <h3 className="google-reviews-title">{settings?.googleReviews?.title || 'See Our Google Reviews'}</h3>
+              <div className="qr-code-wrapper mt-4">
+                <img src={settings?.googleReviews?.qrCodeUrl || "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://g.page/r/YOUR_GOOGLE_REVIEW_LINK"} alt="QR Code for Google Reviews" className="qr-code-image" />
+              </div>
+            </div>
+          </Container>
+        </div>
         )}
-
         {this.renderCustomSections('afterGoogleReviews')}
 
         {/* Location Section */}
@@ -594,39 +810,142 @@ class Homepage extends Component {
           const mapUrl = loc.mapEmbedUrl || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2866.7432352779197!2d-103.2094104!3d44.0680104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x877d43ef63b356ed%3A0xae3a396c4423ff90!2sWest%20River%20Funeral%20Directors%2C%20Funeral%20Home%20%26%20Cremation%20Services!5e0!3m2!1sen!2sus!4v1768864728088!5m2!1sen!2sus';
           return (
             <div className="location-section">
-              <Container>
-                <Row>
-                  <Col md={6}>
-                    <h2>{loc.title || 'Our Location'}</h2>
-                    <p><MapPin size={16} /> {businessName}</p>
-                    <p>{address}</p>
-                    <p>{cityStateZip}</p>
-                    <p><Phone size={16} /> Tel: {phone}</p>
-                    <p>Fax: {fax}</p>
+              <Container fluid style={{ padding: 0 }}>
+                <Row className="g-0">
+                  <Col lg={6}>
+                    <div className="location-info">
+                      <h3 className="location-title">{loc.title || 'Our Location'}</h3>
+                      <div className="location-details">
+                        <div className="location-detail-item">
+                          <MapPin size={20} />
+                          <div>
+                            <p className="mb-0"><strong>{businessName}</strong></p>
+                            <p className="mb-0">{address}</p>
+                            <p className="mb-0">{cityStateZip}</p>
+                          </div>
+                        </div>
+                        <div className="location-detail-item">
+                          <Phone size={20} />
+                          <div>
+                            <p className="mb-0">Tel: {phone}</p>
+                            <p className="mb-0">Fax: {fax}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </Col>
-                  <Col md={6}>
-                    <iframe
-                      src={mapUrl}
-                      width="100%"
-                      height="300"
-                      style={{ border: 0 }}
-                      allowFullScreen=""
-                      loading="lazy"
-                      title="Location Map"
-                    />
+                  <Col lg={6}>
+                    <div className="location-map">
+                      <iframe
+                        src={mapUrl}
+                        width="100%"
+                        height="400"
+                        style={{ border: 0 }}
+                        allowFullScreen=""
+                        loading="lazy"
+                        title={`${businessName} Location`}
+                      ></iframe>
+                    </div>
                   </Col>
                 </Row>
               </Container>
             </div>
           );
         })()}
-
         {this.renderCustomSections('afterLocation')}
 
         {/* View Services CTA */}
         <div className="view-services-cta">
-          <Link to="/our-services" className="view-services-btn">VIEW SERVICES</Link>
+          <Container>
+            <div className="text-center">
+              <Link to="/our-services">
+                <button className="view-services-btn">VIEW SERVICES</button>
+              </Link>
+            </div>
+          </Container>
         </div>
+
+        <ImmediateNeedPopup />
+
+        <style>{`
+          /* Custom Tribute Slider Styles */
+          .tribute-custom-slider {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+          }
+
+          .tribute-slider-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+          }
+
+          .tribute-slider-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            border-radius: 8px;
+          }
+
+          .tribute-slider-image.active {
+            opacity: 1;
+            z-index: 1;
+          }
+
+          .tribute-slider-pagination {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 4px;
+            z-index: 10;
+          }
+
+          .tribute-pagination-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: white;
+            opacity: 0.7;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+          }
+
+          .tribute-pagination-dot:hover {
+            opacity: 0.9;
+          }
+
+          .tribute-pagination-dot.active {
+            opacity: 1;
+            background: white;
+          }
+
+          .tribute-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: #f0f0f0;
+          }
+
+          .tribute-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+          }
+        `}</style>
       </div>
     );
   }
