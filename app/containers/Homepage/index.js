@@ -4,17 +4,22 @@ import { Helmet } from 'react-helmet';
 import { Container, Row, Col, Button, Input } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Search, MapPin, Phone, Mail } from 'lucide-react';
+
 import actions from '../../actions';
 import { API_URL } from '../../constants';
+
 import banners from './banners.json';
 import CarouselSlider from '../../components/Common/CarouselSlider';
 import { responsiveOneItemCarousel } from '../../components/Common/CarouselSlider/utils';
 import ImmediateNeedPopup from '../ImmediateNeedPopup';
 import SwiperCore, { Autoplay, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+
 import 'swiper/swiper.min.css';
 import 'swiper/components/pagination/pagination.min.css';
+
 SwiperCore.use([Autoplay, Pagination]);
+
 import './Home.css';
 
 // ✅ Custom Image Slider Component for Tributes
