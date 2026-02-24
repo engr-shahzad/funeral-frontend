@@ -14,6 +14,7 @@
     --border-color: #dee2e6;
 }
 .hero {
+   display:none
     position: relative;
     width: 100%;
     margin-bottom: 4rem;
@@ -564,6 +565,7 @@
      WELCOME SECTION
      ========================================== */
 .welcome-section {
+   display:none;
     background-color: var(--bg-light);
     padding: 4rem 0;
 }
