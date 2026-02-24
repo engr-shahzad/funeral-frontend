@@ -14,7 +14,7 @@
     --border-color: #dee2e6;
 }
 .hero {
-   display:none
+   display:none;
     position: relative;
     width: 100%;
     margin-bottom: 4rem;
