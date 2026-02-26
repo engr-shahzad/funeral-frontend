@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import actions from '../../actions';
+import { ROLES } from '../../constants';
+import LoadingIndicator from '../../components/Common/LoadingIndicator';
 
 // Layout Components
 const MainLayout = ({ children }) => (
@@ -88,17 +90,40 @@ class Application extends React.PureComponent {
   };
 
   render() {
+    const { authenticated, user, isProfileLoading } = this.props;
+
     return (
       <div className="application">
         <Notification />
 
         <Switch>
           {/* ================= ADMIN ROUTES (NO NAVIGATION/FOOTER) ================= */}
-          <Route path="/admin">
-            <AdminLayout>
-              <Admin />
-            </AdminLayout>
-          </Route>
+          <Route
+            path="/admin"
+            render={() => {
+              if (!authenticated) {
+                return <Redirect to="/login" />;
+              }
+
+              if (isProfileLoading || !user || !user.role) {
+                return (
+                  <AdminLayout>
+                    <LoadingIndicator />
+                  </AdminLayout>
+                );
+              }
+
+              if (user.role !== ROLES.Admin) {
+                return <Redirect to="/" />;
+              }
+
+              return (
+                <AdminLayout>
+                  <Admin />
+                </AdminLayout>
+              );
+            }}
+          />
 
           {/* ================= ALL OTHER ROUTES (WITH NAVIGATION/FOOTER) ================= */}
           <Route>
@@ -167,7 +192,9 @@ class Application extends React.PureComponent {
 
 const mapStateToProps = state => ({
   authenticated: state.authentication.authenticated,
-  products: state.product.storeProducts
+  products: state.product.storeProducts,
+  user: state.account.user,
+  isProfileLoading: state.account.isLoading
 });
 
 export default withRouter(connect(mapStateToProps, actions)(Application));

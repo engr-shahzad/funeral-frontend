@@ -7,11 +7,12 @@
 
 /* Header Banner */
 .obituaries-header-banner {
-  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+
+  background: linear-gradient(135deg, #355555 0%, #4a6b6b 100%);
   color: white;
   padding: 80px 0 60px;
   text-align: center;
-  margin-bottom: 50px;
+  margin-top: 50px;
 }
 
 .page-title {

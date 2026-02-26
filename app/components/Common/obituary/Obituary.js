@@ -440,24 +440,39 @@ class ObituaryPage extends Component {
                                     )}
                                 </div>
                                 <div className="obit-sharing">
-                                    <button className="btn ob-btn-social btn-facebook" onClick={shareOnFacebook}><i className="fa fa-facebook"></i></button>
-                                    <button className="btn ob-btn-social btn-twitter"><i className="fa fa-twitter"></i></button>
-                                    <a
-                                    title="Share via email"
-                                    className="btn ob-btn-social btn-email"
-                                    href={`mailto:?subject=Obituary Listing&body=Obituary posted for ${obituaryData.firstName} ${obituaryData.lastName}. See ${window.location.href}`}
-                                    >
-                                    <i className="fa fa-envelope"></i>
-                                    </a>
+    <button 
+        className="btn ob-btn-social btn-facebook" 
+        onClick={shareOnFacebook}
+        style={{backgroundColor: '#1877F2', color: 'white', border: 'none', borderRadius: '50%', width: '40px', height: '40px', fontSize: '16px', cursor: 'pointer'}}
+    >
+        <i className="fa fa-facebook"></i>
+    </button>
 
-                                    <button
-                                    title="Print"
-                                    className="btn ob-btn-social btn-print"
-                                   // onClick={() => window.print()}
-                                    >
-                                    <i className="fa fa-print"></i>
-                                    </button>
-                                </div>
+    <button 
+        className="btn ob-btn-social btn-twitter"
+        style={{backgroundColor: '#1DA1F2', color: 'white', border: 'none', borderRadius: '50%', width: '40px', height: '40px', fontSize: '16px', cursor: 'pointer'}}
+    >
+        <i className="fa fa-twitter"></i>
+    </button>
+<a
+    
+        title="Share via email"
+        className="btn ob-btn-social btn-email"
+        href={`mailto:?subject=Obituary Listing&body=Obituary posted for ${obituaryData.firstName} ${obituaryData.lastName}. See ${window.location.href}`}
+        style={{backgroundColor: '#EA4335', color: 'white', border: 'none', borderRadius: '50%', width: '40px', height: '40px', fontSize: '16px', cursor: 'pointer', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center'}}
+    >
+        <i className="fa fa-envelope"></i>
+    </a>
+
+    <button
+        title="Print"
+        className="btn ob-btn-social btn-print"
+        // onClick={() => window.print()}
+        style={{backgroundColor: '#5f6368', color: 'white', border: 'none', borderRadius: '50%', width: '40px', height: '40px', fontSize: '16px', cursor: 'pointer'}}
+    >
+        <i className="fa fa-print"></i>
+    </button>
+</div>
 
                                 <div className="button-container">
                                     <button onClick={this.handlePlantTree} className="btns btn-sympathy">Send Sympathy Gifts</button>
