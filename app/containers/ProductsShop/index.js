@@ -24,30 +24,43 @@ class ProductsShop extends React.PureComponent {
     };
   }
 
-  componentDidMount() {
+  CATEGORY_TYPE_MAP = {
+    'best-sellers':          null,
+    'memorial-trees':        'tree',
+    'designers-choice':      'flower',
+    'sympathy-plants':       'flower',
+    'vase-arrangements':     'flower',
+    'flower-baskets':        'flower',
+    'funeral-arrangements':  'flower',
+    'wreaths-sprays':        'flower',
+    'casket-sprays':         'gift',
+    'urn-wreaths':           'gift',
+    'tribute-blankets':      'gift'
+  };
 
-    // Check if this is a memorial shop visit (from obituary page)
+  // Helper - always fresh obituaryId from URL
+  getObituaryId = () => {
+    const searchParams = new URLSearchParams(window.location.search);
+    return searchParams.get('obituaryId');
+  }
+
+  componentDidMount() {
     const searchParams = new URLSearchParams(window.location.search);
     const obituaryId = searchParams.get('obituaryId');
     const filterType = searchParams.get('filter');
 
-
     if (obituaryId) {
-      // Memorial products view - store for checkout flow
       this.setState({ obituaryId, filterType });
       sessionStorage.setItem('memorial_obituaryId', obituaryId);
       this.props.fetchMemorialProducts(obituaryId, filterType || null);
     } else {
-      // Regular shop view
       const slug = this.props.match.params.slug;
       this.props.filterProducts(slug);
     }
   }
 
   componentDidUpdate(prevProps) {
-    // Handle navigation changes
-    const searchParams = new URLSearchParams(window.location.search);
-    const obituaryId = searchParams.get('obituaryId');
+    const obituaryId = this.getObituaryId();
 
     if (obituaryId !== this.state.obituaryId) {
       this.componentDidMount();
@@ -55,7 +68,8 @@ class ProductsShop extends React.PureComponent {
   }
 
   handleFilterChange = (type) => {
-    const { obituaryId } = this.state;
+    // Always read from URL - don't depend on state
+    const obituaryId = this.getObituaryId();
 
     this.setState({ filterType: type });
 
@@ -65,8 +79,18 @@ class ProductsShop extends React.PureComponent {
   }
 
   handleCategorySelect = (category) => {
+    const type = this.CATEGORY_TYPE_MAP[category] ?? null;
+    
     this.setState({ selectedCategory: category });
-    // You can add logic here to filter products by category if needed
+    
+    // Always read from URL - don't depend on state
+    const obituaryId = this.getObituaryId();
+
+    this.setState({ filterType: type });
+
+    if (obituaryId) {
+      this.props.fetchMemorialProducts(obituaryId, type);
+    }
   }
 
   render() {
@@ -76,19 +100,18 @@ class ProductsShop extends React.PureComponent {
     const displayProducts = products && products.length > 0;
     const isMemorialShop = !!obituaryId;
 
-    // Categories matching the screenshot
     const categories = [
-      { id: 'best-sellers', label: 'Best Sellers', icon: '★' },
-      { id: 'memorial-trees', label: 'Memorial Trees', icon: '🌳' },
-      { id: 'designers-choice', label: "Designer's Choice", icon: '🌺' },
-      { id: 'sympathy-plants', label: 'Sympathy Plants', icon: '🪴' },
-      { id: 'vase-arrangements', label: 'Vase Arrangements', icon: '💐' },
-      { id: 'flower-baskets', label: 'Flower Baskets', icon: '🧺' },
-      { id: 'funeral-arrangements', label: 'Funeral Arrangements', icon: '⚘' },
-      { id: 'wreaths-sprays', label: 'Wreaths and Specialty Sprays', icon: '🌿' },
-      { id: 'casket-sprays', label: 'Casket Sprays', icon: '💮' },
-      { id: 'urn-wreaths', label: 'Urn Wreaths', icon: '🏺' },
-      { id: 'tribute-blankets', label: 'Tribute Blankets', icon: '🧸' }
+      { id: 'best-sellers',         label: 'Best Sellers',                 icon: '★' },
+      { id: 'memorial-trees',       label: 'Memorial Trees',               icon: '🌳' },
+      { id: 'designers-choice',     label: "Designer's Choice",            icon: '🌺' },
+      { id: 'sympathy-plants',      label: 'Sympathy Plants',              icon: '🪴' },
+      { id: 'vase-arrangements',    label: 'Vase Arrangements',            icon: '💐' },
+      { id: 'flower-baskets',       label: 'Flower Baskets',               icon: '🧺' },
+      { id: 'funeral-arrangements', label: 'Funeral Arrangements',         icon: '⚘'  },
+      { id: 'wreaths-sprays',       label: 'Wreaths and Specialty Sprays', icon: '🌿' },
+      { id: 'casket-sprays',        label: 'Casket Sprays',                icon: '💮' },
+      { id: 'urn-wreaths',          label: 'Urn Wreaths',                  icon: '🏺' },
+      { id: 'tribute-blankets',     label: 'Tribute Blankets',             icon: '🧸' }
     ];
 
     return (
@@ -155,16 +178,16 @@ class ProductsShop extends React.PureComponent {
                   </button>
 
                   <button
-                    onClick={() => this.handleFilterChange('tree')}
-                    className={`filter-btn filter-btn-flower ${filterType === 'tree' ? 'active' : ''}`}
+                    onClick={() => this.handleFilterChange('flower')}
+                    className={`filter-btn filter-btn-flower ${filterType === 'flower' ? 'active' : ''}`}
                   >
                     <Flower size={16} />
                     Flowers
                   </button>
 
                   <button
-                    onClick={() => this.handleFilterChange('tree')}
-                    className={`filter-btn filter-btn-gift ${filterType === 'tree' ? 'active' : ''}`}
+                    onClick={() => this.handleFilterChange('gift')}
+                    className={`filter-btn filter-btn-gift ${filterType === 'gift' ? 'active' : ''}`}
                   >
                     <Gift size={16} />
                     Memorial Gifts

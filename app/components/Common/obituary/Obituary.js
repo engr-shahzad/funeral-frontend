@@ -572,7 +572,11 @@ class ObituaryPage extends Component {
                                         
                                         <div className="service-cards">
                                             <div className="service-header">
-                                                <h3 className="service-title">{obituaryData.serviceType || 'CELEBRATION OF LIFE'}</h3>
+                                            <h3 className="service-title">
+    {Array.isArray(obituaryData.serviceType) && obituaryData.serviceType.length > 0
+        ? obituaryData.serviceType.join(' • ')
+        : (obituaryData.serviceType || 'CELEBRATION OF LIFE')}
+</h3>
                                                 <button className="email-details-btn">
                                                     <Mail size={16} className="email-icon" />
                                                     Email Details
