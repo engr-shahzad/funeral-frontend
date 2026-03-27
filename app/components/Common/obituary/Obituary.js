@@ -567,49 +567,69 @@ class ObituaryPage extends Component {
                                     </div>
 
                                     {/* Services Section */}
-                                    <div className="services-section">
-                                        <h2 className="services-heading">Services</h2>
-                                        
-                                        <div className="service-cards">
-                                            <div className="service-header">
-                                            <h3 className="service-title">
-    {Array.isArray(obituaryData.serviceType) && obituaryData.serviceType.length > 0
-        ? obituaryData.serviceType.join(' • ')
-        : (obituaryData.serviceType || 'CELEBRATION OF LIFE')}
-</h3>
-                                                <button className="email-details-btn">
-                                                    <Mail size={16} className="email-icon" />
-                                                    Email Details
-                                                </button>
-                                            </div>
-                                            
-                                            <div className="service-details">
-                                                <div className="service-detail-item">
-                                                    <Calendar className="detail-icon" size={18} />
-                                                    <span>
-                                                        {obituaryData.serviceDate
-                                                            ? new Date(obituaryData.serviceDate).toLocaleDateString('en-US', {
-                                                                weekday: 'long',
-                                                                year: 'numeric',
-                                                                month: 'long',
-                                                                day: 'numeric'
-                                                            })
-                                                            : 'Date Pending'}
-                                                    </span>
-                                                </div>
-                                                
-                                                <div className="service-detail-item">
-                                                    <Clock className="detail-icon" size={18} />
-                                                    <span>{obituaryData.serviceTime || 'Time Pending'}</span>
-                                                </div>
-                                                
-                                                <div className="service-detail-item">
-                                                    <MapPin className="detail-icon" size={18} />
-                                                    <span>{obituaryData.serviceLocation || 'Location Pending'}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                {/* Services Section */}
+<div className="services-section">
+    <h2 className="services-heading">Services</h2>
+
+    {obituaryData.services && obituaryData.services.length > 0 ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            {obituaryData.services.map((service, index) => (
+                <div key={index} className="service-cards">
+
+                    {/* Service Header */}
+                    <div className="service-header">
+                        <h3 className="service-title">
+                            {service.type || 'Service'}
+                        </h3>
+                        <button className="email-details-btn">
+                            <Mail size={16} className="email-icon" />
+                            Email Details
+                        </button>
+                    </div>
+
+                    {/* Service Details */}
+                    <div className="service-details">
+                        <div className="service-detail-item">
+                            <Calendar className="detail-icon" size={18} />
+                            <span>
+                                {service.date
+                                    ? new Date(service.date).toLocaleDateString('en-US', {
+                                        weekday: 'long',
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric'
+                                    })
+                                    : 'Date Pending'}
+                            </span>
+                        </div>
+
+                        <div className="service-detail-item">
+                            <Clock className="detail-icon" size={18} />
+                            <span>{service.time || 'Time Pending'}</span>
+                        </div>
+
+                        <div className="service-detail-item">
+                            <MapPin className="detail-icon" size={18} />
+                            <span>{service.venue || 'Location Pending'}</span>
+                        </div>
+                    </div>
+
+                </div>
+            ))}
+        </div>
+    ) : (
+        <div className="service-cards">
+            <div className="service-header">
+                <h3 className="service-title">No Services Scheduled</h3>
+            </div>
+            <div className="service-details">
+                <p style={{ color: '#888', margin: 0 }}>
+                    Service details will be announced soon.
+                </p>
+            </div>
+        </div>
+    )}
+</div>
                                 </div>
 
                                 {/* 4. Tributes List (Under Services) */}

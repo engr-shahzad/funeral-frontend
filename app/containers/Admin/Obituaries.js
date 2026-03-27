@@ -37,32 +37,10 @@ const mapObituary = (jsonObituary) => {
     contentImage: jsonObituary.contentImage || '',
     music: jsonObituary.music || '',
     musicType: jsonObituary.musicType || null,
-    serviceType: jsonObituary.serviceType || [],
-    serviceTime: jsonObituary.serviceTime || '',
-    serviceDate: jsonObituary.serviceDate || null,
-    serviceLocation: jsonObituary.serviceLocation || '',
+    services: Array.isArray(jsonObituary.services) ? jsonObituary.services : [], // ✅ FIX
     isPublished: jsonObituary.isPublished !== false,
     embeddedVideo: jsonObituary.EMBEDDEDVIDEO || jsonObituary.embeddedVideo || ''
   };
-};
-// ✅ Purane uppercase values ko model ke enum se match karo
-const normalizeServiceType = (types) => {
-  const mapping = {
-      'PRIVATE FAMILY SERVICE': 'Private Family Service',
-      'PUBLIC SERVICE': 'Public Service',
-      'MEMORIAL SERVICE': 'Memorial Service',
-      'GRAVESIDE SERVICE': 'Graveside Service',
-      'CELEBRATION OF LIFE': 'Celebration of Life',
-      'FUNERAL SERVICE': 'Funeral Service',
-      'RELIGIOUS SERVICE': 'Religious Service',
-      'MILITARY SERVICE': 'Military Service',
-      'VIRTUAL SERVICE': 'Virtual Service',
-      'RECEPTION': 'Reception',
-  };
-
-  if (!types) return [];
-  const arr = Array.isArray(types) ? types : [types];
-  return arr.map(t => mapping[t] || t).filter(t => t);
 };
 const ObituariesAdmin = () => {
   const [obituaries, setObituaries] = useState([]);
@@ -86,10 +64,7 @@ const ObituariesAdmin = () => {
     contentImage: '',
     music: '',
     musicType: null,
-    serviceType: [],
-    serviceTime: '',
-    serviceDate: '',
-    serviceLocation: '',
+    services: [],
     isPublished: true
   });
   const [saving, setSaving] = useState(false);
@@ -260,41 +235,39 @@ const ObituariesAdmin = () => {
     setMusicFile(null);
   };
 
-  const openAddModal = () => {
-    setEditingObituary(null);
-    setFormData({
-      firstName: '',
-      middleName: '',
-      lastName: '',
-      birthDate: '',
-      deathDate: '',
-      location: '',
-      biography: '',
-      photos: [],
-      backgroundImage: '',
-      contentImage: '',
-      music: '',
-      musicType: null,
-      serviceType: [],
-      serviceTime: '',
-      serviceDate: '',
-      serviceLocation: '',
-      isPublished: true
-    });
-    setPhotoFiles([]);
-    setBackgroundImageFile(null);
-    setContentImageFile(null);
-    setMusicFile(null);
-    setNewPhotoUrl('');
-    setBackgroundImageUrl('');
-    setContentImageUrl('');
-    setMusicUrl('');
-    setMusicInputType('link');
-    setPhotoInputType('file');
-    setBackgroundInputType('file');
-    setContentImageInputType('file');
-    setShowModal(true);
-  };
+// ✅ NAYA — ye lagao
+const openAddModal = () => {
+  setEditingObituary(null);
+  setFormData({
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    birthDate: '',
+    deathDate: '',
+    location: '',
+    biography: '',
+    photos: [],
+    backgroundImage: '',
+    contentImage: '',
+    music: '',
+    musicType: null,
+    services: [],          // ✅ sirf yahi chahiye
+    isPublished: true
+  });
+  setPhotoFiles([]);
+  setBackgroundImageFile(null);
+  setContentImageFile(null);
+  setMusicFile(null);
+  setNewPhotoUrl('');
+  setBackgroundImageUrl('');
+  setContentImageUrl('');
+  setMusicUrl('');
+  setMusicInputType('link');
+  setPhotoInputType('file');
+  setBackgroundInputType('file');
+  setContentImageInputType('file');
+  setShowModal(true);
+};
 
   const openEditModal = (obituary) => {
     setEditingObituary(obituary);
@@ -311,10 +284,7 @@ const ObituariesAdmin = () => {
       contentImage: obituary.contentImage || '',
       music: obituary.music || '',
       musicType: obituary.musicType || null,
-      serviceType: normalizeServiceType(obituary.serviceType),
-serviceTime: obituary.serviceTime || '',
-serviceDate: obituary.serviceDate ? obituary.serviceDate.split('T')[0] : '',
-      serviceLocation: obituary.serviceLocation || '',
+      services: Array.isArray(obituary.services) ? obituary.services : [], // ✅ FIX
       isPublished: obituary.isPublished !== false
     });
     setPhotoFiles([]);
@@ -338,94 +308,75 @@ serviceDate: obituary.serviceDate ? obituary.serviceDate.split('T')[0] : '',
     setSaving(true);
 
     try {
-      const formDataToSend = new FormData();
+        const formDataToSend = new FormData();
 
-      // Add text fields
-      // Text fields loop ke andar — serviceType ko skip karo
-      Object.keys(formData).forEach(key => {
-        if (key !== 'photos' && key !== 'backgroundImage' &&
-          key !== 'contentImage' && key !== 'music' &&
-          key !== 'serviceType') {  // ✅ serviceType yahan skip karo
-          const value = formData[key];
-          if (value !== null && value !== undefined && value !== '') {
-            formDataToSend.append(key, value);
-          }
-        }
-      });
+        // Text fields
+        Object.keys(formData).forEach(key => {
+            if (key === 'photos' || key === 'backgroundImage' ||
+                key === 'contentImage' || key === 'music' ||
+                key === 'services') return;
 
-      if (formData.serviceType && formData.serviceType.length > 0) {
-        const validServiceTypes = [
-            'Funeral Service', 'Memorial Service', 'Graveside Service',
-            'Celebration of Life', 'Private Family Service', 'Public Service',
-            'Religious Service', 'Military Service', 'Virtual Service', 'Reception'
-        ];
-        formData.serviceType
-            .filter(type => validServiceTypes.includes(type))
-            .forEach(type => {
-                formDataToSend.append('serviceType', type);
+            const value = formData[key];
+            if (value !== null && value !== undefined && value !== '') {
+                formDataToSend.append(key, value);
+            }
+        });
+
+        // ✅ Services — sirf ek baar
+        formDataToSend.append('services', JSON.stringify(formData.services || []));
+
+        // Photos
+        if (photoFiles.length > 0) {
+            photoFiles.forEach((file) => {
+                formDataToSend.append('photos', file);
             });
-    }
-      // ✅ DEBUG: Check what's in photoFiles and formData.photos
+        }
 
-      // ✅ Add photo files
-      if (photoFiles.length > 0) {
-        photoFiles.forEach((file, index) => {
-          formDataToSend.append('photos', file);
-        });
-      }
+        if (formData.photos && formData.photos.length > 0) {
+            formDataToSend.append('existingPhotos', JSON.stringify(formData.photos));
+        }
 
-      // ✅ Add existing photos as JSON
-      if (formData.photos && formData.photos.length > 0) {
-        formDataToSend.append('existingPhotos', JSON.stringify(formData.photos));
-      }
+        // Background image
+        if (backgroundImageFile) {
+            formDataToSend.append('backgroundImage', backgroundImageFile);
+        } else if (formData.backgroundImage) {
+            formDataToSend.append('backgroundImage', formData.backgroundImage);
+        }
 
-      // Add background image file
-      if (backgroundImageFile) {
-        formDataToSend.append('backgroundImage', backgroundImageFile);
-      } else if (formData.backgroundImage && backgroundInputType === 'link') {
-        formDataToSend.append('backgroundImage', formData.backgroundImage);
-      }
+        // Content image
+        if (contentImageFile) {
+            formDataToSend.append('contentImage', contentImageFile);
+        } else if (formData.contentImage) {
+            formDataToSend.append('contentImage', formData.contentImage);
+        }
 
-      // Add content image file
-      if (contentImageFile) {
-        formDataToSend.append('contentImage', contentImageFile);
-      } else if (formData.contentImage && contentImageInputType === 'link') {
-        formDataToSend.append('contentImage', formData.contentImage);
-      }
+        // Music
+        if (musicFile) {
+            formDataToSend.append('music', musicFile);
+        } else if (formData.music && musicInputType === 'link') {
+            formDataToSend.append('musicLink', formData.music);
+        }
 
-      // Add music file or link
-      if (musicFile) {
-        formDataToSend.append('music', musicFile);
-      } else if (formData.music && musicInputType === 'link') {
-        formDataToSend.append('musicLink', formData.music);
-      }
+        if (editingObituary) {
+            await axios.put(`${API_URL}/obituaries/${editingObituary._id}`, formDataToSend, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+        } else {
+            await axios.post(`${API_URL}/obituaries`, formDataToSend, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+        }
 
-      for (let pair of formDataToSend.entries()) {
-      }
+        setShowModal(false);
+        fetchObituaries();
 
-      if (editingObituary) {
-        await axios.put(`${API_URL}/obituaries/${editingObituary._id}`, formDataToSend, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-      } else {
-        await axios.post(`${API_URL}/obituaries`, formDataToSend, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-      }
-
-      setShowModal(false);
-      fetchObituaries();
     } catch (error) {
-      console.error('Error saving obituary:', error);
-      alert('Error saving obituary: ' + (error.response?.data?.message || error.message));
+        console.error('Error saving obituary:', error);
+        alert('Error saving obituary: ' + (error.response?.data?.message || error.message));
     } finally {
-      setSaving(false);
+        setSaving(false);
     }
-  };
+};
 
   const confirmDelete = (obituary) => {
     setDeletingObituary(obituary);
@@ -1494,69 +1445,112 @@ serviceDate: obituary.serviceDate ? obituary.serviceDate.split('T')[0] : '',
                   </div>
 
                   <div className="form-group">
-                    <label>Service Type (Multiple Select)</label>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '6px' }}>
-                      {[
-                        'Funeral Service',
-                        'Memorial Service',
-                        'Graveside Service',
-                        'Celebration of Life',
-                        'Private Family Service',
-                        'Public Service',
-                        'Religious Service',
-                        'Military Service',
-                        'Virtual Service',
-                        'Reception'
-                      ].map(type => (
-                        <label key={type} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-                          <input
-                            type="checkbox"
-                            checked={formData.serviceType.includes(type)}
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                setFormData(prev => ({ ...prev, serviceType: [...prev.serviceType, type] }));
-                              } else {
-                                setFormData(prev => ({ ...prev, serviceType: prev.serviceType.filter(t => t !== type) }));
-                              }
-                            }}
-                          />
-                          <span>{type}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
+  <label>Services</label>
 
-                  <div className="form-row">
-  <div className="form-group">
-    <label>Service Date</label>
-    <input
-      type="date"
-      name="serviceDate"
-      value={formData.serviceDate}
-      onChange={handleInputChange}
-    />
-  </div>
-  <div className="form-group">
-    <label>Service Time</label>
-    <input
-      type="time"
-      name="serviceTime"
-      value={formData.serviceTime}
-      onChange={handleInputChange}
-    />
-  </div>
+  {formData.services.map((service, index) => (
+    <div key={index} style={{
+      border: '1px solid #e5e7eb',
+      borderRadius: '8px',
+      padding: '16px',
+      marginBottom: '12px',
+      background: '#f9fafb'
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <strong>Service {index + 1}</strong>
+        <button
+          type="button"
+          onClick={() => {
+            setFormData(prev => ({
+              ...prev,
+              services: prev.services.filter((_, i) => i !== index)
+            }));
+          }}
+          style={{
+            background: '#ef4444', color: 'white', border: 'none',
+            borderRadius: '4px', padding: '4px 10px', cursor: 'pointer'
+          }}
+        >
+          Remove
+        </button>
+      </div>
+
+      <div className="form-row" style={{ gridTemplateColumns: '1fr 1fr' }}>
+        <div className="form-group">
+          <label>Type *</label>
+          <select
+            value={service.type}
+            onChange={(e) => {
+              const updated = [...formData.services];
+              updated[index].type = e.target.value;
+              setFormData(prev => ({ ...prev, services: updated }));
+            }}
+          >
+            <option value="">Select Type</option>
+            {['Funeral Service','Memorial Service','Graveside Service',
+              'Celebration of Life','Private Family Service','Public Service',
+              'Religious Service','Military Service','Virtual Service','Reception'
+            ].map(t => <option key={t} value={t}>{t}</option>)}
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label>Date</label>
+          <input
+            type="date"
+            value={service.date ? service.date.split('T')[0] : ''}
+            onChange={(e) => {
+              const updated = [...formData.services];
+              updated[index].date = e.target.value;
+              setFormData(prev => ({ ...prev, services: updated }));
+            }}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Time</label>
+          <input
+            type="time"
+            value={service.time || ''}
+            onChange={(e) => {
+              const updated = [...formData.services];
+              updated[index].time = e.target.value;
+              setFormData(prev => ({ ...prev, services: updated }));
+            }}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Venue</label>
+          <input
+            type="text"
+            placeholder="Venue / Address"
+            value={service.venue || ''}
+            onChange={(e) => {
+              const updated = [...formData.services];
+              updated[index].venue = e.target.value;
+              setFormData(prev => ({ ...prev, services: updated }));
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  ))}
+
+  <button
+    type="button"
+    onClick={() => {
+      setFormData(prev => ({
+        ...prev,
+        services: [...prev.services, { type: '', date: '', time: '', venue: '' }]
+      }));
+    }}
+    className="btn-admin btn-sm btn-secondary"
+  >
+    <i className="fa fa-plus" /> Add Service
+  </button>
 </div>
 
-                  <div className="form-group">
-                    <label>Service Location</label>
-                    <input
-                      type="text"
-                      name="serviceLocation"
-                      value={formData.serviceLocation}
-                      onChange={handleInputChange}
-                      placeholder="Address or venue name"
-                    />
-                  </div>
+             
 
                   <label className="admin-checkbox">
                     <input
