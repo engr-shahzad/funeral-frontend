@@ -1155,9 +1155,15 @@ const updateShareMetaTags = (obituaryData) => {
 };
 
 const shareOnFacebook = (slug) => {
-    // Share the public obituary URL (what user sees in browser), e.g. https://www.westriverfd.com/obituary/<slug>
-    const obituaryUrl = `${window.location.origin}/obituary/${encodeURIComponent(slug)}`;
-    const urlToShare = encodeURIComponent(obituaryUrl);
+    // Use backend share page that renders full OG tags for Facebook:
+    // - og:title  -> name
+    // - og:description -> DOB/DOD + short obituary text
+    // - og:image -> obituary image
+    // - og:url   -> actual public obituary URL
+    const backendBase = API_URL.replace(/\/api\/?$/, '');
+    const publicObituaryUrl = `${window.location.origin}/obituary/${encodeURIComponent(slug)}`;
+    const sharePageUrl = `${backendBase}/share/obituary/${encodeURIComponent(slug)}?target=${encodeURIComponent(publicObituaryUrl)}`;
+    const urlToShare = encodeURIComponent(sharePageUrl);
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${urlToShare}`, "_blank");
 };
 
