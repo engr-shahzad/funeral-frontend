@@ -445,7 +445,7 @@ class ObituaryPage extends Component {
                                 <div className="obit-sharing">
     <button 
         className="btn ob-btn-social btn-facebook" 
-        onClick={() => shareOnFacebook(obituaryData?.slug || this.props.match.params.slug)}
+        onClick={() => shareOnFacebook(obituaryData, this.props.match.params.slug)}
         style={{backgroundColor: '#1877F2', color: 'white', border: 'none', borderRadius: '50%', width: '40px', height: '40px', fontSize: '16px', cursor: 'pointer'}}
     >
         <i className="fa fa-facebook"></i>
@@ -1154,17 +1154,37 @@ const updateShareMetaTags = (obituaryData) => {
     upsertMeta("meta[name='twitter:image']", ['name', 'twitter:image'], ogImage || '');
 };
 
-const shareOnFacebook = (slug) => {
-    // Use backend share page that renders full OG tags for Facebook:
-    // - og:title  -> name
-    // - og:description -> DOB/DOD + short obituary text
-    // - og:image -> obituary image
-    // - og:url   -> actual public obituary URL
-    const backendBase = API_URL.replace(/\/api\/?$/, '');
-    const publicObituaryUrl = `${window.location.origin}/obituary/${encodeURIComponent(slug)}`;
-    const sharePageUrl = `${backendBase}/share/obituary/${encodeURIComponent(slug)}?target=${encodeURIComponent(publicObituaryUrl)}`;
-    const urlToShare = encodeURIComponent(sharePageUrl);
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${urlToShare}`, "_blank");
+const shareOnFacebook = (obituaryData, routeSlug) => {
+    const slugOrId = obituaryData?._id || obituaryData?.slug || routeSlug;
+    if (!slugOrId) return;
+
+    // Force public domain URL only (no backend URL).
+    const publicObituaryUrl = `https://www.westriverfd.com/obituary/${encodeURIComponent(slugOrId)}`;
+    const urlToShare = encodeURIComponent(publicObituaryUrl);
+
+    const fmt = (dateValue) => {
+        if (!dateValue) return '';
+        const dt = new Date(dateValue);
+        if (Number.isNaN(dt.getTime())) return '';
+        return dt.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    };
+
+    const fullName = `${obituaryData?.firstName || ''} ${obituaryData?.middleName || ''} ${obituaryData?.lastName || ''}`
+        .replace(/\s+/g, ' ')
+        .trim();
+    const dob = fmt(obituaryData?.birthDate);
+    const dod = fmt(obituaryData?.deathDate);
+    const rawBio = obituaryData?.biography ? String(obituaryData.biography) : '';
+    const shortBio = rawBio
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, 180);
+    const quoteText = [fullName, dob && `DOB: ${dob}`, dod && `DOD: ${dod}`, shortBio].filter(Boolean).join(' | ');
+    const quote = encodeURIComponent(quoteText);
+
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${urlToShare}&quote=${quote}`, "_blank");
 };
 
 export default connect(mapStateToProps, actions)(withRouter(ObituaryPage));
