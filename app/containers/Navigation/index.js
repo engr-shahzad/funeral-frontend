@@ -68,17 +68,21 @@ class Navigation extends React.PureComponent {
 
     // Hide header on obituary detail pages
     const isObituaryPage = location.pathname.startsWith('/obituary/');
+    const isHomePage = location.pathname === '/';
+    // ✅ Only homepage can show the large header; all other pages stay shrunk
+    const shouldShowLargeHeader = isHomePage && !isScrolled;
+    const shouldShrinkHeader = !isHomePage || isScrolled;
     
     if (isObituaryPage) {
       return null; // Don't render header at all
     }
 
     return (
-      <header className={`header fixed-mobile-header ${isScrolled ? 'scrolled' : ''}`}>
+      <header className={`header fixed-mobile-header ${shouldShrinkHeader ? 'scrolled' : ''}`}>
         <div className="h-2" style={{ backgroundColor: '#1a2928' }}></div>
 
         {/* Top bar - Hidden on scroll */}
-        {!isScrolled && (
+        {shouldShowLargeHeader && (
           <div>
             <div className="h-2" style={{ backgroundColor: '#1a2928' }}></div>
             <div className='header-top-bar h-12 text-white'>
