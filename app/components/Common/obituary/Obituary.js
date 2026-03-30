@@ -1155,12 +1155,9 @@ const updateShareMetaTags = (obituaryData) => {
 };
 
 const shareOnFacebook = (slug) => {
-    // Use server-rendered share page so Facebook can scrape OG tags (SPA OG tags JS se add hone par often scrape nahi hotay).
-    const backendBase = API_URL.replace(/\/api\/?$/, '');
-    const targetUrl = window.location.href;
-    const sharePageUrl = `${backendBase}/share/obituary/${encodeURIComponent(slug)}?target=${encodeURIComponent(targetUrl)}`;
-    const urlToShare = encodeURIComponent(sharePageUrl);
-
+    // Share the public obituary URL (what user sees in browser), e.g. https://www.westriverfd.com/obituary/<slug>
+    const obituaryUrl = `${window.location.origin}/obituary/${encodeURIComponent(slug)}`;
+    const urlToShare = encodeURIComponent(obituaryUrl);
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${urlToShare}`, "_blank");
 };
 
