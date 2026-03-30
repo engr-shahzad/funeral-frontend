@@ -171,7 +171,10 @@ class ObituaryPage extends Component {
                 return obituaryResponse.json();
             })
             .then(obituaryData => {
-                this.setState({ obituaryData });
+                // Set obituary data + update share/SEO meta tags for Facebook prefill.
+                this.setState({ obituaryData }, () => {
+                    updateShareMetaTags(obituaryData);
+                });
                 return fetch(`${baseURL}/condolences/obituary/${obituaryData._id}`);
             })
             .then(condolencesResponse => {
@@ -442,7 +445,7 @@ class ObituaryPage extends Component {
                                 <div className="obit-sharing">
     <button 
         className="btn ob-btn-social btn-facebook" 
-        onClick={shareOnFacebook}
+        onClick={() => shareOnFacebook(obituaryData?.slug || this.props.match.params.slug)}
         style={{backgroundColor: '#1877F2', color: 'white', border: 'none', borderRadius: '50%', width: '40px', height: '40px', fontSize: '16px', cursor: 'pointer'}}
     >
         <i className="fa fa-facebook"></i>
@@ -544,7 +547,9 @@ class ObituaryPage extends Component {
                                             />
                                         </div>
                                     )}
-                                    <div className="biography-text" dangerouslySetInnerHTML={{ __html: obituaryData.biography }} />
+                                    <div className="biography-text">
+                                        {renderBiography(obituaryData.biography)}
+                                    </div>
                                 </div>
 
                                
@@ -552,9 +557,10 @@ class ObituaryPage extends Component {
                                 {/* 3. Service Section (Redesigned to match image) */}
                                 <div className="memorial-service-wrapper">
                                     {/* Burial Notice */}
-                                    <div className="burial-notice">
-                                        <p>A private burial will be held with immediate family.</p>
-                                    </div>
+                                    {/*
+                                      Removed: "A private burial will be held with immediate family."
+                                      Keep this block empty so layout doesn't show the removed notice.
+                                    */}
 
                                     {/* Memorial Actions */}
                                     <div className="memorial-actions">
@@ -1055,8 +1061,106 @@ const mapStateToProps = (state) => ({
     isLoading: state.product.isLoading
 });
 
-const shareOnFacebook = () => {
-    const urlToShare = encodeURIComponent(window.location.href);
+// Convert biography text into properly paragraph-formatted markup.
+// If biography contains HTML tags, we keep it as-is. Otherwise we interpret `\n\n` as paragraphs.
+const renderBiography = (biography) => {
+    if (!biography) return null;
+
+    const text = String(biography);
+    const looksLikeHtml = /<\/?(p|br|div|span|strong|em|b|i|u|ul|ol|li|a|img)(\s|>)/i.test(text);
+
+    if (looksLikeHtml) {
+        return <div dangerouslySetInnerHTML={{ __html: text }} />;
+    }
+
+    const normalized = text
+        .replace(/\r\n/g, '\n')
+        .replace(/\r/g, '\n')
+        .replace(/&nbsp;/g, ' ')
+        .trim();
+
+    if (!normalized) return null;
+
+    const paragraphs = normalized
+        .split(/\n{2,}/g)
+        .map(p => p.trim())
+        .filter(Boolean);
+
+    return (
+        <>
+            {paragraphs.map((p, idx) => {
+                const lines = p.split('\n');
+                return (
+                    <p key={idx}>
+                        {lines.map((line, lineIdx) => (
+                            <React.Fragment key={lineIdx}>
+                                {lineIdx > 0 && <br />}
+                                {line}
+                            </React.Fragment>
+                        ))}
+                    </p>
+                );
+            })}
+        </>
+    );
+};
+
+// Update OG/Twitter meta tags so Facebook can prefill share content from the obituary URL.
+const updateShareMetaTags = (obituaryData) => {
+    if (!obituaryData) return;
+
+    const first = obituaryData.firstName || '';
+    const middle = obituaryData.middleName ? ` ${obituaryData.middleName}` : '';
+    const last = obituaryData.lastName || '';
+    const fullName = `${first}${middle} ${last}`.trim();
+
+    const rawBio = obituaryData.biography ? String(obituaryData.biography) : '';
+    const description = rawBio
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, 240);
+
+    const ogImageCandidate = obituaryData.contentImage || obituaryData.primaryPhoto || obituaryData.photo || '';
+    const ogImage =
+        ogImageCandidate && /^https?:\/\//i.test(ogImageCandidate)
+            ? ogImageCandidate
+            : (ogImageCandidate ? `${window.location.origin}${ogImageCandidate}` : '');
+
+    const pageUrl = window.location.href;
+
+    const upsertMeta = (selector, attr, content) => {
+        let tag = document.head.querySelector(selector);
+        if (!tag) {
+            tag = document.createElement('meta');
+            if (attr) tag.setAttribute(...attr);
+            document.head.appendChild(tag);
+        }
+        tag.setAttribute('content', content);
+    };
+
+    document.title = fullName ? `${fullName} - Obituary` : 'Obituary';
+
+    upsertMeta("meta[property='og:title']", ['property', 'og:title'], fullName ? `${fullName} - Obituary` : 'Obituary');
+    upsertMeta("meta[property='og:description']", ['property', 'og:description'], description || 'Obituary');
+    upsertMeta("meta[property='og:image']", ['property', 'og:image'], ogImage || '');
+    upsertMeta("meta[property='og:url']", ['property', 'og:url'], pageUrl);
+    upsertMeta("meta[property='og:type']", ['property', 'og:type'], 'website');
+
+    upsertMeta("meta[name='twitter:card']", ['name', 'twitter:card'], 'summary_large_image');
+    upsertMeta("meta[name='twitter:title']", ['name', 'twitter:title'], fullName ? `${fullName} - Obituary` : 'Obituary');
+    upsertMeta("meta[name='twitter:description']", ['name', 'twitter:description'], description || 'Obituary');
+    upsertMeta("meta[name='twitter:image']", ['name', 'twitter:image'], ogImage || '');
+};
+
+const shareOnFacebook = (slug) => {
+    // Use server-rendered share page so Facebook can scrape OG tags (SPA OG tags JS se add hone par often scrape nahi hotay).
+    const backendBase = API_URL.replace(/\/api\/?$/, '');
+    const targetUrl = window.location.href;
+    const sharePageUrl = `${backendBase}/share/obituary/${encodeURIComponent(slug)}?target=${encodeURIComponent(targetUrl)}`;
+    const urlToShare = encodeURIComponent(sharePageUrl);
+
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${urlToShare}`, "_blank");
 };
 
