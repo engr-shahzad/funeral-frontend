@@ -1486,9 +1486,18 @@ const openAddModal = () => {
             }}
           >
             <option value="">Select Type</option>
-            {['Funeral Service','Memorial Service','Graveside Service',
-              'Celebration of Life','Private Family Service','Public Service',
-              'Religious Service','Military Service','Virtual Service','Reception'
+            {[ 'Funeral Service',
+                    'Memorial Service',
+                    'Graveside Service',
+                    'Celebration of Life',
+                    'Private Family Service',
+                    'Public Service',
+                    'Mass of christian burial',
+                    'Military Service',
+                    'Virtual Service',
+                    'Visitation',
+                    'Vigil service',
+                    'Christian Wake Service'
             ].map(t => <option key={t} value={t}>{t}</option>)}
           </select>
         </div>
