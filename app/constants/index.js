@@ -1,9 +1,11 @@
 export const API_URL = process.env.API_URL || 'http://localhost:3000/api';
 
 export const SOCKET_URL =
-  window.location.host.indexOf('localhost') >= 0
+  typeof window !== 'undefined' && window.location.host.indexOf('localhost') >= 0
     ? 'http://127.0.0.1:3000'
-    : window.location.host;
+    : typeof window !== 'undefined'
+    ? window.location.host
+    : 'http://localhost:3000';
 
 export const ROLES = {
   Admin: 'ROLE ADMIN',

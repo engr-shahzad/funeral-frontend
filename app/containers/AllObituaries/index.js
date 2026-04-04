@@ -94,10 +94,11 @@ class ImageSlider extends Component {
 class AllObituaries extends Component {
   constructor(props) {
     super(props);
+    const list = props.serverSideData ? props.serverSideData.obituaries || [] : [];
     this.state = {
-      obituaries: [],
-      filteredObituaries: [],
-      loading: true,
+      obituaries: list,
+      filteredObituaries: list,
+      loading: !props.serverSideData,
       error: null,
       searchQuery: '',
       currentPage: 1,
@@ -106,7 +107,9 @@ class AllObituaries extends Component {
   }
 
   componentDidMount() {
-    this.fetchAllObituaries();
+    if (!this.props.serverSideData) {
+      this.fetchAllObituaries();
+    }
   }
 
   fetchAllObituaries = async () => {

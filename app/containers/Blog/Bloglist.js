@@ -7,18 +7,21 @@ import './Bloglist.css';
 class BlogList extends Component {
   constructor(props) {
     super(props);
+    const sd = props.serverSideData;
     this.state = {
-      blogs: [],
-      categories: [],
-      loading: true,
+      blogs: sd ? sd.blogs || [] : [],
+      categories: sd ? sd.categories || [] : [],
+      loading: !sd,
       selectedCategory: 'All',
       searchQuery: ''
     };
   }
 
   componentDidMount() {
-    this.fetchBlogs();
-    this.fetchCategories();
+    if (!this.props.serverSideData) {
+      this.fetchBlogs();
+      this.fetchCategories();
+    }
   }
 
   fetchBlogs = async () => {

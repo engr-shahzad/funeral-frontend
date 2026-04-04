@@ -1,151 +1,230 @@
 /**
+ * ProductsShop — SSR-safe
  *
- * ProductsShop - Updated with Memorial Products Support & Category Sidebar
- *
+ * SSR notes:
+ * - window.location replaced with this.props.location (react-router)
+ * - All sessionStorage access is guarded with isBrowser check
+ * - Component renders correctly on both server and client
  */
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { TreePine, Flower, Gift, Heart, ChevronRight } from 'lucide-react';
+import {
+  TreePine, Flower, Gift, Heart,
+  Star, Leaf, ShoppingBasket, Wind,
+  Archive, Palette, Search, ChevronRight
+} from 'lucide-react';
 import actions from '../../actions';
-import "./ProductShop.css"
+import './ProductShop.css';
 
 import ProductList from '../../components/Store/ProductList';
 import NotFound from '../../components/Common/NotFound';
 import LoadingIndicator from '../../components/Common/LoadingIndicator';
 
+// ── SSR guard ──────────────────────────────────────────────────────────────────
+const isBrowser = typeof window !== 'undefined';
+
+const session = {
+  get:    (key)        => isBrowser ? sessionStorage.getItem(key)    : null,
+  set:    (key, value) => isBrowser && sessionStorage.setItem(key, value),
+  remove: (key)        => isBrowser && sessionStorage.removeItem(key)
+};
+
+// ── Helpers ────────────────────────────────────────────────────────────────────
+// Parse search string from react-router location (works on server too)
+const getSearchParam = (search, key) => {
+  if (!search) return null;
+  // URLSearchParams is available in Node 10+ and all modern browsers
+  try {
+    return new URLSearchParams(search).get(key);
+  } catch {
+    return null;
+  }
+};
+
 class ProductsShop extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      obituaryId: null,
-      filterType: null,
-      selectedCategory: 'best-sellers'
+      obituaryId:       null,
+      filterType:       null,
+      selectedCategory: 'best-sellers',
+      searchQuery:      ''
     };
   }
 
   CATEGORY_TYPE_MAP = {
-    'best-sellers':          null,
-    'memorial-trees':        'tree',
-    'designers-choice':      'flower',
-    'sympathy-plants':       'flower',
-    'vase-arrangements':     'flower',
-    'flower-baskets':        'flower',
-    'funeral-arrangements':  'flower',
-    'wreaths-sprays':        'flower',
-    'casket-sprays':         'gift',
-    'urn-wreaths':           'gift',
-    'tribute-blankets':      'gift'
+    'best-sellers':         null,
+    'memorial-trees':       'tree',
+    'designers-choice':     'flower',
+    'sympathy-plants':      'flower',
+    'vase-arrangements':    'flower',
+    'flower-baskets':       'flower',
+    'funeral-arrangements': 'flower',
+    'wreaths-sprays':       'gift',
+    'casket-sprays':        'gift',
+    'urn-wreaths':          'gift',
+    'tribute-blankets':     'gift'
   };
 
-  // Helper - always fresh obituaryId from URL
+  CATEGORIES = [
+    { id: 'best-sellers',         label: 'Best Sellers',                Icon: Star           },
+    { id: 'memorial-trees',       label: 'Memorial Trees',              Icon: TreePine       },
+    { id: 'designers-choice',     label: "Designer's Choice",           Icon: Palette        },
+    { id: 'sympathy-plants',      label: 'Sympathy Plants',             Icon: Leaf           },
+    { id: 'vase-arrangements',    label: 'Vase Arrangements',           Icon: Flower         },
+    { id: 'flower-baskets',       label: 'Flower Baskets',              Icon: ShoppingBasket },
+    { id: 'funeral-arrangements', label: 'Funeral Arrangements',        Icon: Flower         },
+    { id: 'wreaths-sprays',       label: 'Wreaths & Specialty Sprays',  Icon: Wind           },
+    { id: 'casket-sprays',        label: 'Casket Sprays',               Icon: Gift           },
+    { id: 'urn-wreaths',          label: 'Urn Wreaths',                 Icon: Archive        },
+    { id: 'tribute-blankets',     label: 'Tribute Blankets',            Icon: Heart          }
+  ];
+
+  // Use react-router location prop — safe on server and client
   getObituaryId = () => {
-    const searchParams = new URLSearchParams(window.location.search);
-    return searchParams.get('obituaryId');
+    const search = this.props.location?.search || '';
+    return getSearchParam(search, 'obituaryId');
+  }
+
+  getFilterParam = () => {
+    const search = this.props.location?.search || '';
+    return getSearchParam(search, 'filter');
   }
 
   componentDidMount() {
-    const searchParams = new URLSearchParams(window.location.search);
-    const obituaryId = searchParams.get('obituaryId');
-    const filterType = searchParams.get('filter');
+    const obituaryId = this.getObituaryId();
+    const filterType = this.getFilterParam();
 
     if (obituaryId) {
       this.setState({ obituaryId, filterType });
-      sessionStorage.setItem('memorial_obituaryId', obituaryId);
+      session.set('memorial_obituaryId', obituaryId);
       this.props.fetchMemorialProducts(obituaryId, filterType || null);
     } else {
-      const slug = this.props.match.params.slug;
+      const slug = this.props.match?.params?.slug;
       this.props.filterProducts(slug);
     }
   }
 
   componentDidUpdate(prevProps) {
-    const obituaryId = this.getObituaryId();
+    // React to URL changes (back/forward navigation)
+    if (prevProps.location?.search !== this.props.location?.search) {
+      const obituaryId = this.getObituaryId();
+      const filterType = this.getFilterParam();
 
-    if (obituaryId !== this.state.obituaryId) {
-      this.componentDidMount();
-    }
-  }
-
-  handleFilterChange = (type) => {
-    // Always read from URL - don't depend on state
-    const obituaryId = this.getObituaryId();
-
-    this.setState({ filterType: type });
-
-    if (obituaryId) {
-      this.props.fetchMemorialProducts(obituaryId, type);
+      if (obituaryId !== this.state.obituaryId) {
+        this.setState({ obituaryId, filterType });
+        if (obituaryId) {
+          session.set('memorial_obituaryId', obituaryId);
+          this.props.fetchMemorialProducts(obituaryId, filterType || null);
+        } else {
+          session.remove('memorial_obituaryId');
+          this.props.filterProducts(this.props.match?.params?.slug);
+        }
+      }
     }
   }
 
   handleCategorySelect = (category) => {
-    const type = this.CATEGORY_TYPE_MAP[category] ?? null;
-    
-    this.setState({ selectedCategory: category });
-    
-    // Always read from URL - don't depend on state
+    const type       = this.CATEGORY_TYPE_MAP[category] ?? null;
     const obituaryId = this.getObituaryId();
 
-    this.setState({ filterType: type });
+    this.setState({ selectedCategory: category, filterType: type });
 
     if (obituaryId) {
       this.props.fetchMemorialProducts(obituaryId, type);
     }
   }
 
+  handleFilterChange = (type) => {
+    const obituaryId = this.getObituaryId();
+    this.setState({ filterType: type });
+    if (obituaryId) {
+      this.props.fetchMemorialProducts(obituaryId, type);
+    }
+  }
+
+  handleSearchChange = (e) => {
+    this.setState({ searchQuery: e.target.value });
+  }
+
+  getFilteredProducts = () => {
+    const { products } = this.props;
+    const { searchQuery } = this.state;
+    if (!searchQuery.trim()) return products || [];
+    const q = searchQuery.toLowerCase();
+    return (products || []).filter(p =>
+      p.name?.toLowerCase().includes(q) ||
+      p.description?.toLowerCase().includes(q)
+    );
+  }
+
   render() {
-    const { products, isLoading, authenticated, updateWishlist } = this.props;
-    const { obituaryId, filterType, selectedCategory } = this.state;
+    const { isLoading, authenticated, updateWishlist } = this.props;
+    const { filterType, selectedCategory, searchQuery } = this.state;
 
-    const displayProducts = products && products.length > 0;
-    const isMemorialShop = !!obituaryId;
-
-    const categories = [
-      { id: 'best-sellers',         label: 'Best Sellers',                 icon: '★' },
-      { id: 'memorial-trees',       label: 'Memorial Trees',               icon: '🌳' },
-      { id: 'designers-choice',     label: "Designer's Choice",            icon: '🌺' },
-      { id: 'sympathy-plants',      label: 'Sympathy Plants',              icon: '🪴' },
-      { id: 'vase-arrangements',    label: 'Vase Arrangements',            icon: '💐' },
-      { id: 'flower-baskets',       label: 'Flower Baskets',               icon: '🧺' },
-      { id: 'funeral-arrangements', label: 'Funeral Arrangements',         icon: '⚘'  },
-      { id: 'wreaths-sprays',       label: 'Wreaths and Specialty Sprays', icon: '🌿' },
-      { id: 'casket-sprays',        label: 'Casket Sprays',                icon: '💮' },
-      { id: 'urn-wreaths',          label: 'Urn Wreaths',                  icon: '🏺' },
-      { id: 'tribute-blankets',     label: 'Tribute Blankets',             icon: '🧸' }
-    ];
+    // Derive obituaryId from URL at render time (consistent on server + client)
+    const obituaryId      = this.getObituaryId();
+    const isMemorialShop  = !!obituaryId;
+    const filteredProducts = this.getFilteredProducts();
+    const displayProducts  = filteredProducts.length > 0;
 
     return (
       <div className='products-shop-container'>
-        {/* Sidebar Categories */}
+
+        {/* ── Sidebar ───────────────────────────────────────────────── */}
         <aside className='categories-sidebar'>
-          {categories.map(category => (
+          <div className='sidebar-heading'>Categories</div>
+          {this.CATEGORIES.map(({ id, label, Icon }) => (
             <button
-              key={category.id}
-              onClick={() => this.handleCategorySelect(category.id)}
-              className={`category-item ${selectedCategory === category.id ? 'active' : ''}`}
+              key={id}
+              onClick={() => this.handleCategorySelect(id)}
+              className={`category-item${selectedCategory === id ? ' active' : ''}`}
             >
-              <span className='category-icon'>{category.icon}</span>
-              <span className='category-label'>{category.label}</span>
-              <ChevronRight className='category-arrow' size={16} />
+              <span className='category-icon-wrap'>
+                <Icon size={16} strokeWidth={1.8} />
+              </span>
+              <span className='category-label'>{label}</span>
+              <ChevronRight className='category-arrow' size={14} />
             </button>
           ))}
         </aside>
 
-        {/* Main Content */}
+        {/* ── Main Content ──────────────────────────────────────────── */}
         <main className='products-main-content'>
+
+          {/* Search bar */}
+          <div className='shop-search-bar'>
+            <Search size={17} className='shop-search-icon' />
+            <input
+              type='text'
+              className='shop-search-input'
+              placeholder='Search products by name...'
+              value={searchQuery}
+              onChange={this.handleSearchChange}
+              aria-label='Search products'
+            />
+            {searchQuery && (
+              <button
+                className='shop-search-clear'
+                onClick={() => this.setState({ searchQuery: '' })}
+                type='button'
+                aria-label='Clear search'
+              >
+                &times;
+              </button>
+            )}
+          </div>
+
           {/* Memorial Banner */}
           {isMemorialShop && (
             <div className='memorial-banner'>
               <div className='memorial-banner-content'>
                 <div className='memorial-banner-header'>
-                  <TreePine size={32} />
+                  <TreePine size={30} />
                   <div>
-                    <h2 className='memorial-banner-title'>
-                      Plant a Memorial Tree
-                    </h2>
-                    <p className='memorial-banner-subtitle'>
-                      Honor their memory with a living tribute
-                    </p>
+                    <h2 className='memorial-banner-title'>Plant a Memorial Tree</h2>
+                    <p className='memorial-banner-subtitle'>Honor their memory with a living tribute</p>
                   </div>
                 </div>
                 <p className='memorial-banner-description'>
@@ -155,98 +234,81 @@ class ProductsShop extends React.PureComponent {
             </div>
           )}
 
-          {/* Memorial Product Type Filters */}
+          {/* Memorial Filters */}
           {isMemorialShop && (
             <div className='memorial-filters'>
               <div className='memorial-filters-content'>
-                <h3 className='memorial-filters-title'>Memorial Tributes</h3>
+                <p className='memorial-filters-title'>Filter by type</p>
                 <div className='memorial-filters-buttons'>
-                  <button
-                    onClick={() => this.handleFilterChange(null)}
-                    className={`filter-btn ${!filterType ? 'active' : ''}`}
-                  >
-                    <Heart size={16} />
-                    All Tributes
+                  <button onClick={() => this.handleFilterChange(null)}     className={`filter-btn${!filterType ? ' active' : ''}`}>
+                    <Heart size={15} /> All Tributes
                   </button>
-
-                  <button
-                    onClick={() => this.handleFilterChange('tree')}
-                    className={`filter-btn filter-btn-tree ${filterType === 'tree' ? 'active' : ''}`}
-                  >
-                    <TreePine size={16} />
-                    Trees
+                  <button onClick={() => this.handleFilterChange('tree')}   className={`filter-btn filter-btn-tree${filterType === 'tree' ? ' active' : ''}`}>
+                    <TreePine size={15} /> Trees
                   </button>
-
-                  <button
-                    onClick={() => this.handleFilterChange('flower')}
-                    className={`filter-btn filter-btn-flower ${filterType === 'flower' ? 'active' : ''}`}
-                  >
-                    <Flower size={16} />
-                    Flowers
+                  <button onClick={() => this.handleFilterChange('flower')} className={`filter-btn filter-btn-flower${filterType === 'flower' ? ' active' : ''}`}>
+                    <Flower size={15} /> Flowers
                   </button>
-
-                  <button
-                    onClick={() => this.handleFilterChange('gift')}
-                    className={`filter-btn filter-btn-gift ${filterType === 'gift' ? 'active' : ''}`}
-                  >
-                    <Gift size={16} />
-                    Memorial Gifts
+                  <button onClick={() => this.handleFilterChange('gift')}   className={`filter-btn filter-btn-gift${filterType === 'gift' ? ' active' : ''}`}>
+                    <Gift size={15} /> Memorial Gifts
                   </button>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Loading State */}
+          {/* Loading */}
           {isLoading && <LoadingIndicator />}
 
-          {/* Products List */}
+          {/* Products grid */}
           {displayProducts && !isLoading && (
             <ProductList
-              products={products}
+              products={filteredProducts}
               authenticated={authenticated}
               updateWishlist={updateWishlist}
               obituaryId={obituaryId}
             />
           )}
 
-          {/* No Products Found */}
+          {/* Empty state */}
           {!isLoading && !displayProducts && (
             <div className='products-empty-state'>
-              {isMemorialShop ? (
-                <div>
-                  <TreePine className='empty-icon' size={48} />
-                  <h3 className='empty-title'>
-                    No memorial products available
-                  </h3>
-                  <p className='empty-description'>
-                    Please check back later or contact us for custom memorial options.
-                  </p>
-                </div>
+              {searchQuery ? (
+                <>
+                  <Search size={40} className='empty-icon' />
+                  <h3 className='empty-title'>No results for "{searchQuery}"</h3>
+                  <p className='empty-description'>Try a different keyword or clear the search.</p>
+                </>
+              ) : isMemorialShop ? (
+                <>
+                  <TreePine size={40} className='empty-icon' />
+                  <h3 className='empty-title'>No memorial products available</h3>
+                  <p className='empty-description'>Please check back later or contact us for custom options.</p>
+                </>
               ) : (
                 <NotFound message='No products found.' />
               )}
             </div>
           )}
 
-          {/* Product Count */}
-          {displayProducts && isMemorialShop && (
-            <div className='products-count'>
-              Showing {products.length} memorial {filterType || 'tribute'}{products.length !== 1 ? 's' : ''}
-            </div>
+          {/* Count */}
+          {displayProducts && (
+            <p className='products-count'>
+              Showing {filteredProducts.length} {isMemorialShop ? 'memorial ' : ''}
+              product{filteredProducts.length !== 1 ? 's' : ''}
+            </p>
           )}
+
         </main>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    products: state.product.storeProducts,
-    isLoading: state.product.isLoading,
-    authenticated: state.authentication.authenticated
-  };
-};
+const mapStateToProps = state => ({
+  products:      state.product.storeProducts,
+  isLoading:     state.product.isLoading,
+  authenticated: state.authentication.authenticated
+});
 
 export default connect(mapStateToProps, actions)(ProductsShop);

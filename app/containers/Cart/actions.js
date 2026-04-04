@@ -189,10 +189,9 @@ export const handleCart = () => {
   };
 };
 
-// Handle Checkout - Goes to /checkout page
+// Handle Checkout - Goes to /checkout page (guest checkout allowed)
 export const handleCheckout = () => {
   return (dispatch, getState) => {
-    const authenticated = getState().authentication.authenticated;
     const cartItems = getState().cart.cartItems;
 
     // Check if cart is empty
@@ -207,23 +206,9 @@ export const handleCheckout = () => {
       return;
     }
 
-    if (!authenticated) {
-      // If not logged in, show message and redirect to login
-      const successfulOptions = {
-        title: 'Please Login',
-        message: 'You need to login to proceed to checkout',
-        position: 'tr',
-        autoDismiss: 2
-      };
-
-      dispatch(toggleCart());
-      dispatch(push('/login'));
-      dispatch(success(successfulOptions));
-    } else {
-      // If logged in, close cart and go to checkout
-      dispatch(toggleCart());
-      dispatch(push('/checkout'));
-    }
+    // Allow guest checkout - no login required
+    dispatch(toggleCart());
+    dispatch(push('/checkout'));
   };
 };
 

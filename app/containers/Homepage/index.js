@@ -18,7 +18,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper.min.css';
 import 'swiper/components/pagination/pagination.min.css';
 
-SwiperCore.use([Autoplay, Pagination]);
+// Only register Swiper plugins in the browser — calling .use() server-side
+// causes no harm with our global stubs, but guard it for safety.
+if (typeof window !== 'undefined' && !window.__IS_SSR__) {
+  SwiperCore.use([Autoplay, Pagination]);
+}
 
 import './Home.css';
 
@@ -104,19 +108,25 @@ class TributeImageSlider extends Component {
 class Homepage extends Component {
   constructor(props) {
     super(props);
+    const { serverSideData } = props;
     this.state = {
       currentIndex: 0,
       searchQuery: '',
-      tributes: [],
-      loading: true,
+      tributes: serverSideData ? serverSideData.tributes || [] : [],
+      loading: !serverSideData,
       error: null,
-      settings: null
+      settings: serverSideData ? serverSideData.settings || null : null
     };
   }
 
   componentDidMount() {
-    this.fetchRecentTributes();
-    this.fetchHomepageSettings();
+    // Skip client fetching when SSR already provided the initial data.
+    // The client bundle will hydrate with window.__SSR_DATA__ so the
+    // data is already in state via the constructor above.
+    if (!this.props.serverSideData) {
+      this.fetchRecentTributes();
+      this.fetchHomepageSettings();
+    }
   }
 
   fetchHomepageSettings = async () => {
@@ -426,32 +436,57 @@ class Homepage extends Component {
 
         {/* Hero Banner Section */}
         <div className="hero-banner-section">
-          <Swiper autoplay={{ delay: 4000 }} loop pagination={{ clickable: true }}>
-            {slides.map((slide, index) => (
-              <SwiperSlide key={index}>
-                <div
-                  className="hero-slide-bg"
-                  style={{
-                    backgroundImage: `url(${slide.image})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    height: '750px',
-                    position: 'relative'
-                  }}
-                >
-                  <div className="hero-overlay" />
-                  <div className="hero-content">
-                    <div className="hero-text-wrapper">
-                      <h2 className="hero-title">{slide.title || 'Celebrate Life'}</h2>
-                      <Link to={slide.ctaLink || '/our-services'}>
-                        <button className="hero-cta-button">{slide.ctaText || 'OUR SERVICES'}</button>
-                      </Link>
+          {!window.__IS_SSR__ ? (
+            // Client-side: full interactive Swiper carousel
+            <Swiper autoplay={{ delay: 4000 }} loop pagination={{ clickable: true }}>
+              {slides.map((slide, index) => (
+                <SwiperSlide key={index}>
+                  <div
+                    className="hero-slide-bg"
+                    style={{
+                      backgroundImage: `url(${slide.image})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      height: '750px',
+                      position: 'relative'
+                    }}
+                  >
+                    <div className="hero-overlay" />
+                    <div className="hero-content">
+                      <div className="hero-text-wrapper">
+                        <h2 className="hero-title">{slide.title || 'Celebrate Life'}</h2>
+                        <Link to={slide.ctaLink || '/our-services'}>
+                          <button className="hero-cta-button">{slide.ctaText || 'OUR SERVICES'}</button>
+                        </Link>
+                      </div>
                     </div>
                   </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          ) : (
+            // Server-side: static first slide (no Swiper DOM needed)
+            <div
+              className="hero-slide-bg"
+              style={{
+                backgroundImage: `url(${slides[0] ? slides[0].image : ''})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                height: '750px',
+                position: 'relative'
+              }}
+            >
+              <div className="hero-overlay" />
+              <div className="hero-content">
+                <div className="hero-text-wrapper">
+                  <h2 className="hero-title">{slides[0] ? slides[0].title || 'Celebrate Life' : 'Celebrate Life'}</h2>
+                  <Link to={slides[0] ? slides[0].ctaLink || '/our-services' : '/our-services'}>
+                    <button className="hero-cta-button">{slides[0] ? slides[0].ctaText || 'OUR SERVICES' : 'OUR SERVICES'}</button>
+                  </Link>
                 </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+              </div>
+            </div>
+          )}
         </div>
         {this.renderCustomSections('afterHeroBanner')}
 

@@ -110,18 +110,14 @@ class GallerySlider extends Component {
 class ObituaryPage extends Component {
     constructor(props) {
         super(props);
+        const { serverSideData } = props;
         this.state = {
-            obituaryData: null,
-            condolences: [],
-            condolenceStats: {
-                messages: 0,
-                trees: 0,
-                flowers: 0,
-                gifts: 0
-            },
-            totalCondolences: 0,
+            obituaryData: serverSideData ? serverSideData.obituaryData || null : null,
+            condolences: serverSideData ? serverSideData.condolences || [] : [],
+            condolenceStats: serverSideData ? serverSideData.condolenceStats || { messages: 0, trees: 0, flowers: 0, gifts: 0 } : { messages: 0, trees: 0, flowers: 0, gifts: 0 },
+            totalCondolences: serverSideData ? serverSideData.totalCondolences || 0 : 0,
             newCondolence: '',
-            loading: true,
+            loading: !serverSideData,
             error: null,
             condolenceName: '',
             condolenceEmail: '',
@@ -131,16 +127,26 @@ class ObituaryPage extends Component {
     }
 
     componentDidMount() {
-        const slug = this.getSlugFromUrl();
-        if (slug) {
-            this.fetchObituaryData(slug);
+        // Skip client fetching when SSR already provided the initial data.
+        if (!this.props.serverSideData) {
+            const slug = this.getSlugFromUrl();
+            if (slug) {
+                this.fetchObituaryData(slug);
+            }
         }
     }
 
     getSlugFromUrl = () => {
-        const path = window.location.pathname;
-        const parts = path.split('/');
-        return parts[parts.length - 1];
+        // Prefer React Router match props (works server-side and client-side).
+        if (this.props.match && this.props.match.params && this.props.match.params.slug) {
+            return this.props.match.params.slug;
+        }
+        // Fallback: read from the URL (browser only).
+        if (typeof window !== 'undefined') {
+            const parts = window.location.pathname.split('/');
+            return parts[parts.length - 1];
+        }
+        return null;
     }
 
     fetchObituaryData = async (slug) => {
