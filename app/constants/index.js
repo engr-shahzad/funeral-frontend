@@ -1,4 +1,7 @@
-export const API_URL = process.env.API_URL || 'http://localhost:3000/api';
+export const API_URL =
+  typeof window !== 'undefined' && window.location.hostname === 'localhost'
+    ? 'http://localhost:3000/api'
+    : '/api';
 
 export const SOCKET_URL =
   typeof window !== 'undefined' && window.location.host.indexOf('localhost') >= 0
