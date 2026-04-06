@@ -130,7 +130,7 @@ if (false) { var throwOnDirectAccess, ReactIs; } else {
 /* unused harmony export MERCHANT_STATUS */
 /* unused harmony export REVIEW_STATUS */
 /* unused harmony export EMAIL_PROVIDER */
-var API_URL = typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:3000/api' : '/api';
+var API_URL = process.env.API_URL || 'http://localhost:3000/api';
 var SOCKET_URL = typeof window !== 'undefined' && window.location.host.indexOf('localhost') >= 0 ? 'http://127.0.0.1:3000' : typeof window !== 'undefined' ? window.location.host : 'http://localhost:3000';
 var ROLES = {
   Admin: 'ROLE ADMIN',

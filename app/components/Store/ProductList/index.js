@@ -1,35 +1,47 @@
 /**
  *
- * ProductList - Memorial Style Product Cards with Variants
+ * ProductList - Memorial Style Product Cards with "Send Love"
  *
  */
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Heart } from 'lucide-react';
 import AddToWishList from '../AddToWishList';
-import "./Productlist.css"
+import './Productlist.css';
+
+// ── Skeleton Card ──────────────────────────────────────────────────────────────
+const SkeletonCard = () => (
+  <div className='product-card skeleton-card'>
+    <div className='skeleton-image-wrapper' />
+    <div className='product-info'>
+      <div className='skeleton-line skeleton-title' />
+      <div className='skeleton-line skeleton-subtitle' />
+      <div className='skeleton-line skeleton-price' />
+      <div className='skeleton-btn' />
+    </div>
+  </div>
+);
+
 class ProductList extends React.Component {
   constructor(props) {
     super(props);
-    
-    // Initialize selected variants for each product
+
     const initialVariants = {};
-    props.products.forEach((product, index) => {
-      // Find default variant or use first variant
+    (props.products || []).forEach((product, index) => {
       const defaultVariant = product.variants?.find(v => v.isDefault) || product.variants?.[0];
       initialVariants[index] = defaultVariant;
     });
-    
+
     this.state = {
       selectedVariants: initialVariants
     };
   }
 
   componentDidUpdate(prevProps) {
-    // Update variants if products change
     if (prevProps.products !== this.props.products) {
       const initialVariants = {};
-      this.props.products.forEach((product, index) => {
+      (this.props.products || []).forEach((product, index) => {
         const defaultVariant = product.variants?.find(v => v.isDefault) || product.variants?.[0];
         initialVariants[index] = defaultVariant;
       });
@@ -40,52 +52,39 @@ class ProductList extends React.Component {
   handleVariantChange = (productIndex, variantIndex) => {
     const { products } = this.props;
     const selectedVariant = products[productIndex].variants[variantIndex];
-    
     this.setState(prevState => ({
-      selectedVariants: {
-        ...prevState.selectedVariants,
-        [productIndex]: selectedVariant
-      }
+      selectedVariants: { ...prevState.selectedVariants, [productIndex]: selectedVariant }
     }));
   }
 
   getProductPrice = (product, productIndex) => {
     const { selectedVariants } = this.state;
-    
-    // Check if product has variants
     if (product.variants && product.variants.length > 0) {
       const selectedVariant = selectedVariants[productIndex];
       return selectedVariant?.price || product.variants[0].price;
     }
-    
-    // Fallback to direct price
     return product.price;
   }
 
-  onAddToCart = (e, product, productIndex) => {
+  onSendLove = (e, product, productIndex) => {
     e.preventDefault();
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
 
-    const { handleAddToCart } = this.props;
+    const { onSendLove } = this.props;
     const { selectedVariants } = this.state;
 
-
-    if (handleAddToCart) {
+    if (onSendLove) {
       const selectedVariant = selectedVariants[productIndex];
-      
-      // Add selected variant and quantity to product
+      // Pass the fully built product to the parent — parent handles cart + navigation
       const productWithVariant = {
         ...product,
-        selectedVariant: selectedVariant,
+        selectedVariant,
         price: selectedVariant?.price || product.price,
         variant: selectedVariant?.name,
         quantity: 1
       };
-
-      handleAddToCart(productWithVariant);
-    } else {
-      console.warn('⚠️ handleAddToCart prop not provided to ProductList');
+      onSendLove(productWithVariant);
     }
   }
 
@@ -96,16 +95,25 @@ class ProductList extends React.Component {
   }
 
   render() {
-    const { products, updateWishlist, authenticated } = this.props;
+    const { products, updateWishlist, authenticated, isLoading, skeletonCount = 8 } = this.props;
     const { selectedVariants } = this.state;
 
-    // Reverse the products array to show newest first (last in DB becomes first)
-    const reversedProducts = [...products].reverse();
+    // Show skeleton cards while loading
+    if (isLoading) {
+      return (
+        <div className='products-grid'>
+          {Array.from({ length: skeletonCount }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+      );
+    }
+
+    const reversedProducts = [...(products || [])].reverse();
 
     return (
       <div className='products-grid'>
         {reversedProducts.map((product, productIndex) => {
-          // Use original index for variant selection
           const originalIndex = products.length - 1 - productIndex;
           const displayPrice = this.getProductPrice(product, originalIndex);
           const hasVariants = product.variants && product.variants.length > 0;
@@ -113,7 +121,15 @@ class ProductList extends React.Component {
 
           return (
             <div key={product._id || productIndex} className='product-card'>
-              {/* Wishlist Heart - Top Right */}
+
+              {/* Type badge (tree / flower / gift) */}
+              {product.type && (
+                <span className={`product-type-badge type-${product.type}`}>
+                  {product.type === 'tree' ? 'Memorial Tree' : product.type === 'flower' ? 'Flowers' : 'Gift'}
+                </span>
+              )}
+
+              {/* Wishlist Heart */}
               <div className='wishlist-badge'>
                 <AddToWishList
                   id={product._id}
@@ -124,39 +140,31 @@ class ProductList extends React.Component {
                 />
               </div>
 
-              {/* Product Image - Clickable */}
-              <Link
-                to={this.getProductLink(product)}
-                className='product-image-link'
-              >
+              {/* Product Image */}
+              <Link to={this.getProductLink(product)} className='product-image-link'>
                 <div className='product-image-wrapper'>
                   <img
                     className='product-image'
-                    src={
-                      product.imageUrl ||
-                      product.images?.[0]?.url ||
-                      '/images/placeholder-image.png'
-                    }
+                    src={product.imageUrl || product.images?.[0]?.url || '/images/placeholder-image.png'}
                     alt={product.name}
                   />
+                  <div className='product-image-overlay'>
+                    <span className='view-text'>View Details</span>
+                  </div>
                 </div>
               </Link>
 
               {/* Product Info */}
               <div className='product-info'>
-                <Link
-                  to={this.getProductLink(product)}
-                  className='product-name-link'
-                >
+                <Link to={this.getProductLink(product)} className='product-name-link'>
                   <h3 className='product-name'>{product.name}</h3>
                 </Link>
 
-                {/* Brand (if exists) */}
                 {product.brand && Object.keys(product.brand).length > 0 && (
-                  <p className='product-brand'>By {product.brand.name}</p>
+                  <p className='product-brand'>by {product.brand.name}</p>
                 )}
 
-                {/* Variant Selector (if variants exist) */}
+                {/* Variant Selector */}
                 {hasVariants && product.variants.length > 1 && (
                   <div className='variant-selector'>
                     <select
@@ -167,7 +175,7 @@ class ProductList extends React.Component {
                     >
                       {product.variants.map((variant, variantIndex) => (
                         <option key={variantIndex} value={variant.name}>
-                          {variant.name} - ${variant.price.toFixed(2)}
+                          {variant.name} — ${variant.price.toFixed(2)}
                         </option>
                       ))}
                     </select>
@@ -182,24 +190,23 @@ class ProductList extends React.Component {
                   </span>
                 </div>
 
-                {/* Rating (if exists) */}
+                {/* Rating */}
                 {product.totalReviews > 0 && (
                   <div className='product-rating'>
-                    <span className='rating-value'>
-                      {parseFloat(product?.averageRating).toFixed(1)}
-                    </span>
                     <span className='rating-star'>★</span>
+                    <span className='rating-value'>{parseFloat(product?.averageRating).toFixed(1)}</span>
                     <span className='rating-count'>({product.totalReviews})</span>
                   </div>
                 )}
 
-                {/* Add to Cart Button */}
+                {/* Send Love Button */}
                 <button
-                  onClick={(e) => this.onAddToCart(e, product, originalIndex)}
-                  className='add-to-cart-btn'
+                  onClick={(e) => this.onSendLove(e, product, originalIndex)}
+                  className='send-love-btn'
                   type='button'
                 >
-                  Add to Cart
+                  <Heart size={15} strokeWidth={2.5} />
+                  Send Love
                 </button>
               </div>
             </div>

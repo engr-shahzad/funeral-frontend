@@ -2,6 +2,185 @@
    PRODUCTS SHOP — Clean, aligned, no emojis
    ============================================================ */
 
+/* ── Page wrapper (holds banner + shop layout) ─────────────── */
+.products-shop-page {
+    background: #f8f9fa;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* ── Obituary Banner (shared styles, same as PDP) ───────────── */
+.obit-banner {
+    position: relative;
+    width: 100%;
+    min-height: 300px;
+    background:
+        linear-gradient(180deg, rgba(20,12,6,0.72) 0%, rgba(30,18,10,0.85) 100%),
+        url('/images/forest-background.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.obit-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(10,5,2,0.55) 100%);
+    pointer-events: none;
+}
+
+.obit-banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(15,8,4,0.30) 100%);
+}
+
+.obit-banner-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+    padding: 44px 24px 40px;
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.obit-banner-photo-ring {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    padding: 4px;
+    background: linear-gradient(145deg, #d4a87a, #f0d4a8, #b8864a);
+    box-shadow: 0 0 0 3px rgba(212,168,122,0.35), 0 8px 28px rgba(0,0,0,0.55);
+    margin-bottom: 18px;
+    flex-shrink: 0;
+}
+
+.obit-banner-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+.obit-banner-label {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,230,190,0.85);
+    margin: 0 0 7px;
+    font-family: 'Georgia', serif;
+}
+
+.obit-banner-name {
+    font-family: 'Georgia', serif;
+    font-size: 34px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 8px;
+    line-height: 1.2;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.45);
+}
+
+.obit-banner-dates {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 14px;
+    color: rgba(255,230,190,0.80);
+    margin: 0 0 16px;
+    font-family: 'Georgia', serif;
+    font-style: italic;
+}
+
+.obit-date-sep { opacity: 0.6; font-style: normal; }
+
+.obit-banner-quote {
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    color: rgba(255,240,215,0.82);
+    line-height: 1.75;
+    font-style: italic;
+    max-width: 520px;
+    margin: 0 0 16px;
+}
+
+.obit-banner-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(212,168,122,0.75);
+}
+
+.obit-banner-divider::before,
+.obit-banner-divider::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,168,122,0.6));
+}
+
+.obit-banner-divider::after {
+    background: linear-gradient(90deg, rgba(212,168,122,0.6), transparent);
+}
+
+.obit-banner-heart { color: #d4a87a; }
+
+/* Banner skeleton */
+@keyframes banner-shimmer {
+    0%   { background-position: -600px 0; }
+    100% { background-position:  600px 0; }
+}
+
+.obit-banner-skeleton {
+    width: 100%;
+    min-height: 240px;
+    background: #1e140a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 40px 24px;
+}
+
+.obit-skeleton-circle {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #2e1e10 25%, #3d2a18 50%, #2e1e10 75%);
+    background-size: 600px 100%;
+    animation: banner-shimmer 1.4s ease-in-out infinite;
+}
+
+.obit-skeleton-lines {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.obit-skeleton-line {
+    border-radius: 6px;
+    background: linear-gradient(90deg, #2e1e10 25%, #3d2a18 50%, #2e1e10 75%);
+    background-size: 600px 100%;
+    animation: banner-shimmer 1.4s ease-in-out infinite;
+    height: 13px;
+}
+
+.obit-skeleton-line.wide   { width: 260px; }
+.obit-skeleton-line.medium { width: 190px; }
+.obit-skeleton-line.narrow { width: 130px; }
+
 /* ── Layout ────────────────────────────────────────────────── */
 .products-shop-container {
     display: flex;
@@ -516,8 +695,22 @@
     .category-item            { width: 100%; }
 }
 
+/* ── Sidebar Skeleton ─────────────────────────────────────── */
+@keyframes sidebar-shimmer {
+    0%   { background-position: -400px 0; }
+    100% { background-position:  400px 0; }
+}
+
+.category-item-skeleton {
+    height: 38px;
+    margin: 3px 12px;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #f3f4f6 25%, #e9ebee 50%, #f3f4f6 75%);
+    background-size: 400px 100%;
+    animation: sidebar-shimmer 1.3s ease-in-out infinite;
+}
+
 /* ── Accessibility ────────────────────────────────────────── */
-.add-to-cart-btn:focus,
 .filter-btn:focus,
 .category-item:focus,
 .shop-search-input:focus { outline: 2px solid #2d6a4f; outline-offset: 2px; }
