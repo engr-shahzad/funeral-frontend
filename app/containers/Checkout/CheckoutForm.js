@@ -24,13 +24,25 @@ import { API_URL } from '../../constants';
 // ── SSR guard ─────────────────────────────────────────────────────────────────
 const isBrowser = typeof window !== 'undefined';
 
-// ── Lazy Stripe init ──────────────────────────────────────────────────────────
+// ── Lazy Stripe init (runtime key fetch) ──────────────────────────────────────
+// Fetches the publishable key from the backend so the bundle never needs it
+// baked in at build time — fixes card elements missing on production.
 let _stripePromise = null;
 const getStripePromise = () => {
     if (!isBrowser) return null;
     if (!_stripePromise) {
         const { loadStripe } = require('@stripe/stripe-js');
-        _stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+        _stripePromise = fetch(`${API_URL}/config/stripe`)
+            .then(res => {
+                if (!res.ok) throw new Error('config fetch failed');
+                return res.json();
+            })
+            .then(data => loadStripe(data.publishableKey))
+            .catch(() => {
+                // Fallback: use key baked at build time (works for localhost dev)
+                const baked = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY;
+                return baked ? loadStripe(baked) : null;
+            });
     }
     return _stripePromise;
 };
