@@ -130,8 +130,51 @@ if (false) { var throwOnDirectAccess, ReactIs; } else {
 /* unused harmony export MERCHANT_STATUS */
 /* unused harmony export REVIEW_STATUS */
 /* unused harmony export EMAIL_PROVIDER */
-var API_URL = process.env.API_URL || 'http://localhost:3000/api';
-var SOCKET_URL = typeof window !== 'undefined' && window.location.host.indexOf('localhost') >= 0 ? 'http://127.0.0.1:3000' : typeof window !== 'undefined' ? window.location.host : 'http://localhost:3000';
+// ─── API URL ───────────────────────────────────────────────────────────────────
+// Priority:
+//  1. Non-localhost value baked in by webpack at build time (explicit override)
+//  2. Auto-detect from window.location.origin when running in a production browser
+//  3. Localhost fallback for local dev / SSR
+var _baked = process.env.API_URL;
+
+var _isLocalhost = function _isLocalhost(host) {
+  return host === 'localhost' || host === '127.0.0.1' || host.startsWith('192.168.');
+};
+
+var API_URL = function () {
+  // If an explicit non-localhost URL was set as an env var at build time → use it
+  if (_baked) {
+    try {
+      var _URL = new URL(_baked),
+          hostname = _URL.hostname;
+
+      if (!_isLocalhost(hostname)) return _baked;
+    } catch (_) {}
+  } // In the browser on a real domain → derive API URL from current origin
+
+
+  if (typeof window !== 'undefined' && !_isLocalhost(window.location.hostname)) {
+    return "".concat(window.location.origin, "/api");
+  } // Local dev or SSR fallback
+
+
+  return 'http://localhost:3000/api';
+}(); // ─── Socket URL ────────────────────────────────────────────────────────────────
+
+var SOCKET_URL = function () {
+  if (typeof window !== 'undefined') {
+    // Production browser — use same origin (no port)
+    if (!_isLocalhost(window.location.hostname)) {
+      return window.location.origin;
+    } // Local dev — backend socket is on port 3000
+
+
+    return 'http://127.0.0.1:3000';
+  }
+
+  return 'http://localhost:3000';
+}(); // ─── App constants ─────────────────────────────────────────────────────────────
+
 var ROLES = {
   Admin: 'ROLE ADMIN',
   Member: 'ROLE MEMBER',
