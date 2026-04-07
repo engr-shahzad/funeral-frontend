@@ -138,7 +138,8 @@ class ObituaryPage extends Component {
             isMusicPlaying: false,
             isMusicMuted: false,
             // YouTube modal
-            showVideoModal: false
+            showVideoModal: false,
+            isMounted: false
         };
 
         this.handlePlantTree = this.handlePlantTree.bind(this);
@@ -147,6 +148,7 @@ class ObituaryPage extends Component {
     }
 
     componentDidMount() {
+        this.setState({ isMounted: true });
         const { slug } = this.props.match.params;
         if (slug) {
             this.fetchObituaryData(slug);
@@ -370,6 +372,7 @@ class ObituaryPage extends Component {
             loading,
             error,
             showVideoModal,
+            isMounted,
         } = this.state;
 
         if (loading) return <div className="loading-container"><div className="loading-text">Loading obituary...</div></div>;
@@ -385,8 +388,9 @@ class ObituaryPage extends Component {
         // YouTube video
         const youtubeVideoId = this.getYoutubeVideoId(obituaryData.videoUrl || obituaryData.externalVideo);
         const youtubeThumbnail = youtubeVideoId ? `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg` : null;
+        const origin = (typeof window !== 'undefined') ? window.location.origin : '';
         const youtubeEmbedUrl = youtubeVideoId
-            ? `https://www.youtube-nocookie.com/embed/${youtubeVideoId}?autoplay=1&rel=0&modestbranding=1`
+            ? `https://www.youtube-nocookie.com/embed/${youtubeVideoId}?autoplay=1&rel=0&modestbranding=1${origin ? `&origin=${origin}` : ''}`
             : null;
 
 
@@ -735,8 +739,8 @@ class ObituaryPage extends Component {
                     </div>
                 </div>
 
-                {/* Sticky Floating Video Widget — bottom right corner */}
-                {youtubeVideoId && !showVideoModal && (
+                {/* Sticky Floating Video Widget — bottom right corner (client-only) */}
+                {isMounted && youtubeVideoId && !showVideoModal && (
                     <div
                         className="yt-sticky-widget"
                         onClick={() => this.setState({ showVideoModal: true })}
@@ -757,8 +761,8 @@ class ObituaryPage extends Component {
                     </div>
                 )}
 
-                {/* YouTube Video Popup Modal */}
-                {showVideoModal && youtubeEmbedUrl && (
+                {/* YouTube Video Popup Modal (client-only) */}
+                {isMounted && showVideoModal && youtubeVideoId && (
                     <div className="yt-modal-overlay" onClick={() => this.setState({ showVideoModal: false })}>
                         <div className="yt-modal-box" onClick={(e) => e.stopPropagation()}>
                             <button
@@ -769,14 +773,23 @@ class ObituaryPage extends Component {
                             </button>
                             <div className="yt-modal-iframe-wrap">
                                 <iframe
-                                    src={youtubeEmbedUrl}
+                                    src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&rel=0`}
                                     title="Memorial Video"
                                     frameBorder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     allowFullScreen
+                                    referrerPolicy="strict-origin-when-cross-origin"
                                     className="yt-modal-iframe"
                                 />
                             </div>
+                            <a
+                                href={`https://www.youtube.com/watch?v=${youtubeVideoId}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="yt-watch-link"
+                            >
+                                ▶ Watch on YouTube
+                            </a>
                         </div>
                     </div>
                 )}
@@ -1209,6 +1222,19 @@ class ObituaryPage extends Component {
                     }
 
                     .yt-modal-close:hover { color: #ff4444; }
+
+                    .yt-watch-link {
+                        display: block;
+                        text-align: center;
+                        padding: 10px;
+                        background: #ff0000;
+                        color: #fff;
+                        font-size: 14px;
+                        font-weight: 600;
+                        text-decoration: none;
+                        letter-spacing: 0.3px;
+                    }
+                    .yt-watch-link:hover { background: #cc0000; }
 
                     .yt-modal-iframe-wrap {
                         position: relative;
