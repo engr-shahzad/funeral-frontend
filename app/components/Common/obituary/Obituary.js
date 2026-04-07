@@ -136,7 +136,9 @@ class ObituaryPage extends Component {
             condolenceEmail: '',
             // ✅ NEW: Music player state
             isMusicPlaying: false,
-            isMusicMuted: false
+            isMusicMuted: false,
+            // YouTube modal
+            showVideoModal: false
         };
 
         this.handlePlantTree = this.handlePlantTree.bind(this);
@@ -329,6 +331,12 @@ class ObituaryPage extends Component {
         }
     }
 
+    getYoutubeVideoId = (url) => {
+        if (!url) return null;
+        const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+        return match ? match[1] : null;
+    }
+
     // ✅ Get gallery images with filtering
     getGalleryImages = (obituaryData) => {
         let images = [];
@@ -361,6 +369,7 @@ class ObituaryPage extends Component {
             newCondolence,
             loading,
             error,
+            showVideoModal,
         } = this.state;
 
         if (loading) return <div className="loading-container"><div className="loading-text">Loading obituary...</div></div>;
@@ -372,6 +381,11 @@ class ObituaryPage extends Component {
         // ✅ Gallery logic with proper filtering
         const galleryImages = this.getGalleryImages(obituaryData);
         const hasMultipleImages = galleryImages.length > 1;
+
+        // YouTube video
+        const youtubeVideoId = this.getYoutubeVideoId(obituaryData.videoUrl || obituaryData.externalVideo);
+        const youtubeThumbnail = youtubeVideoId ? `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg` : null;
+        const youtubeEmbedUrl = youtubeVideoId ? `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1` : null;
 
 
         return (
@@ -492,6 +506,32 @@ class ObituaryPage extends Component {
                                     </p>
                                     <input type="email" placeholder="Your Email" className="grief-email-input" />
                                 </div>
+
+                                {/* YouTube Memorial Video Card */}
+                                {youtubeVideoId && (
+                                    <div className="yt-video-card">
+                                        <h3 className="yt-video-card-title">Memorial Video</h3>
+                                        <div
+                                            className="yt-thumbnail-wrapper"
+                                            onClick={() => this.setState({ showVideoModal: true })}
+                                        >
+                                            <img
+                                                src={youtubeThumbnail}
+                                                alt="Memorial Video"
+                                                className="yt-thumbnail-img"
+                                            />
+                                            <div className="yt-play-overlay">
+                                                <div className="yt-play-btn">
+                                                    <svg viewBox="0 0 68 48" width="52" height="37">
+                                                        <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#ff0000"/>
+                                                        <path d="M45 24L27 14v20" fill="#fff"/>
+                                                    </svg>
+                                                </div>
+                                                <span className="yt-play-label">Watch Memorial Video</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                                 {/* Memorial Stats */}
                                 {(condolenceStats.trees > 0 || condolenceStats.flowers > 0 || condolenceStats.gifts > 0) && (
                                     <div className="stats-section">
@@ -717,6 +757,30 @@ class ObituaryPage extends Component {
                         </main>
                     </div>
                 </div>
+
+                {/* YouTube Video Popup Modal */}
+                {showVideoModal && youtubeEmbedUrl && (
+                    <div className="yt-modal-overlay" onClick={() => this.setState({ showVideoModal: false })}>
+                        <div className="yt-modal-box" onClick={(e) => e.stopPropagation()}>
+                            <button
+                                className="yt-modal-close"
+                                onClick={() => this.setState({ showVideoModal: false })}
+                            >
+                                ✕
+                            </button>
+                            <div className="yt-modal-iframe-wrap">
+                                <iframe
+                                    src={youtubeEmbedUrl}
+                                    title="Memorial Video"
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                    className="yt-modal-iframe"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 <style jsx>{`
                 /* Add these styles to your ObituaryPage.css file */
@@ -1049,6 +1113,128 @@ class ObituaryPage extends Component {
                     .profile-photo-wrapper .gallery-pagination-dot.active {
                         background: white;
                         transform: scale(1.2);
+                    }
+
+                    /* ===== YouTube Video Card (Sidebar) ===== */
+                    .yt-video-card {
+                        margin-top: 20px;
+                        border-radius: 10px;
+                        overflow: hidden;
+                        border: 1px solid #e2e8f0;
+                        background: #fff;
+                    }
+
+                    .yt-video-card-title {
+                        font-size: 15px;
+                        font-weight: 700;
+                        color: #2d3748;
+                        padding: 12px 14px 8px;
+                        margin: 0;
+                        border-bottom: 1px solid #f0f0f0;
+                    }
+
+                    .yt-thumbnail-wrapper {
+                        position: relative;
+                        cursor: pointer;
+                        background: #000;
+                        overflow: hidden;
+                    }
+
+                    .yt-thumbnail-img {
+                        width: 100%;
+                        height: 170px;
+                        object-fit: cover;
+                        display: block;
+                        transition: opacity 0.3s ease;
+                    }
+
+                    .yt-thumbnail-wrapper:hover .yt-thumbnail-img {
+                        opacity: 0.65;
+                    }
+
+                    .yt-play-overlay {
+                        position: absolute;
+                        inset: 0;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 8px;
+                        background: rgba(0,0,0,0.15);
+                        transition: background 0.3s ease;
+                    }
+
+                    .yt-thumbnail-wrapper:hover .yt-play-overlay {
+                        background: rgba(0,0,0,0.35);
+                    }
+
+                    .yt-play-btn {
+                        filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+                        transition: transform 0.2s ease;
+                    }
+
+                    .yt-thumbnail-wrapper:hover .yt-play-btn {
+                        transform: scale(1.1);
+                    }
+
+                    .yt-play-label {
+                        color: #fff;
+                        font-size: 13px;
+                        font-weight: 600;
+                        text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+                        letter-spacing: 0.3px;
+                    }
+
+                    /* ===== YouTube Modal ===== */
+                    .yt-modal-overlay {
+                        position: fixed;
+                        inset: 0;
+                        background: rgba(0,0,0,0.85);
+                        z-index: 99999;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 16px;
+                    }
+
+                    .yt-modal-box {
+                        position: relative;
+                        width: 100%;
+                        max-width: 880px;
+                        background: #000;
+                        border-radius: 10px;
+                        overflow: hidden;
+                        box-shadow: 0 24px 60px rgba(0,0,0,0.7);
+                    }
+
+                    .yt-modal-close {
+                        position: absolute;
+                        top: -40px;
+                        right: 0;
+                        background: transparent;
+                        border: none;
+                        color: #fff;
+                        font-size: 24px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        padding: 4px 10px;
+                        z-index: 10;
+                        line-height: 1;
+                    }
+
+                    .yt-modal-close:hover { color: #ff4444; }
+
+                    .yt-modal-iframe-wrap {
+                        position: relative;
+                        padding-bottom: 56.25%;
+                        height: 0;
+                    }
+
+                    .yt-modal-iframe {
+                        position: absolute;
+                        top: 0; left: 0;
+                        width: 100%; height: 100%;
+                        border: none;
                     }
                 `}</style>
             </div>

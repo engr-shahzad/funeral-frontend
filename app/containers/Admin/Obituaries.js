@@ -39,7 +39,8 @@ const mapObituary = (jsonObituary) => {
     musicType: jsonObituary.musicType || null,
     services: Array.isArray(jsonObituary.services) ? jsonObituary.services : [], // ✅ FIX
     isPublished: jsonObituary.isPublished !== false,
-    embeddedVideo: jsonObituary.EMBEDDEDVIDEO || jsonObituary.embeddedVideo || ''
+    embeddedVideo: jsonObituary.EMBEDDEDVIDEO || jsonObituary.embeddedVideo || '',
+    videoUrl: jsonObituary.videoUrl || ''
   };
 };
 const ObituariesAdmin = () => {
@@ -65,7 +66,8 @@ const ObituariesAdmin = () => {
     music: '',
     musicType: null,
     services: [],
-    isPublished: true
+    isPublished: true,
+    videoUrl: ''
   });
   const [saving, setSaving] = useState(false);
 
@@ -285,7 +287,8 @@ const openAddModal = () => {
       music: obituary.music || '',
       musicType: obituary.musicType || null,
       services: Array.isArray(obituary.services) ? obituary.services : [], // ✅ FIX
-      isPublished: obituary.isPublished !== false
+      isPublished: obituary.isPublished !== false,
+      videoUrl: obituary.videoUrl || ''
     });
     setPhotoFiles([]);
     setBackgroundImageFile(null);
@@ -1442,6 +1445,20 @@ const openAddModal = () => {
                       rows={5}
                       placeholder="Write a biography..."
                     />
+                  </div>
+
+                  <div className="form-group">
+                    <label>YouTube Video URL</label>
+                    <input
+                      type="url"
+                      name="videoUrl"
+                      value={formData.videoUrl}
+                      onChange={handleInputChange}
+                      placeholder="https://www.youtube.com/watch?v=..."
+                    />
+                    <small style={{ color: '#6b7280', fontSize: '12px' }}>
+                      Paste a YouTube link — it will show as a clickable video card on the obituary page.
+                    </small>
                   </div>
 
                   <div className="form-group">

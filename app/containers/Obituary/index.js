@@ -121,7 +121,8 @@ class ObituaryPage extends Component {
             error: null,
             condolenceName: '',
             condolenceEmail: '',
-            griefEmail: ''
+            griefEmail: '',
+            showVideoModal: false
         };
         this.handlePlantTree = this.handlePlantTree.bind(this);
     }
@@ -243,6 +244,18 @@ class ObituaryPage extends Component {
         });
     }
 
+    getYoutubeVideoId = (url) => {
+        if (!url) return null;
+        const patterns = [
+            /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/
+        ];
+        for (const pattern of patterns) {
+            const match = url.match(pattern);
+            if (match) return match[1];
+        }
+        return null;
+    }
+
     // ✅ Get gallery images with filtering
     getGalleryImages = (obituaryData) => {
         let images = [];
@@ -267,7 +280,7 @@ class ObituaryPage extends Component {
     }
 
     render() {
-        const { obituaryData, condolences, condolenceStats, totalCondolences, loading, error, newCondolence, condolenceName, condolenceEmail } = this.state;
+        const { obituaryData, condolences, condolenceStats, totalCondolences, loading, error, newCondolence, condolenceName, condolenceEmail, showVideoModal } = this.state;
 
         if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-500">Loading obituary...</div>;
         if (error || !obituaryData) return <div className="min-h-screen flex items-center justify-center text-red-500">Error loading obituary.</div>;
@@ -276,7 +289,12 @@ class ObituaryPage extends Component {
         
         // Dynamic Cover Image logic
         const coverImage = obituaryData.backgroundImage || obituaryData.photo || 'https://images.unsplash.com/photo-1441260038675-7329ab4cc264?w=1200';
-        
+
+        // YouTube video
+        const youtubeVideoId = this.getYoutubeVideoId(obituaryData.videoUrl || obituaryData.externalVideo);
+        const youtubeThumbnail = youtubeVideoId ? `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg` : null;
+        const youtubeEmbedUrl = youtubeVideoId ? `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1` : null;
+
         // ✅ Gallery logic with proper filtering
         const galleryImages = this.getGalleryImages(obituaryData);
         const hasMultipleImages = galleryImages.length > 1;
@@ -331,15 +349,44 @@ class ObituaryPage extends Component {
                         <div className="bg-white rounded-lg shadow-sm p-6 mt-6 border border-gray-100">
                             <h3 className="font-serif text-lg font-bold text-gray-800 mb-2">Grief Support</h3>
                             <p className="text-sm text-gray-600 mb-4">Subscribe to our daily grief support messages.</p>
-                            <input 
-                                type="email" 
-                                placeholder="Your Email" 
+                            <input
+                                type="email"
+                                placeholder="Your Email"
                                 className="w-full border border-gray-300 rounded p-2 text-sm mb-2"
                             />
                             <button className="w-full bg-teal-600 text-white py-2 rounded text-sm font-bold hover:bg-teal-700 transition">
                                 Subscribe
                             </button>
                         </div>
+
+                        {/* YouTube Video Widget */}
+                        {youtubeVideoId && (
+                            <div className="bg-white rounded-lg shadow-sm mt-6 border border-gray-100 overflow-hidden">
+                                <div className="px-4 pt-4 pb-2">
+                                    <h3 className="font-serif text-lg font-bold text-gray-800">Memorial Video</h3>
+                                </div>
+                                <div
+                                    className="youtube-thumbnail-wrapper"
+                                    onClick={() => this.setState({ showVideoModal: true })}
+                                    title="Click to play video"
+                                >
+                                    <img
+                                        src={youtubeThumbnail}
+                                        alt="Memorial Video"
+                                        className="youtube-thumbnail-img"
+                                    />
+                                    <div className="youtube-play-overlay">
+                                        <div className="youtube-play-btn">
+                                            <svg viewBox="0 0 68 48" width="48" height="34">
+                                                <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#ff0000"/>
+                                                <path d="M45 24L27 14v20" fill="#fff"/>
+                                            </svg>
+                                        </div>
+                                        <p className="youtube-play-text">Watch Memorial Video</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* Main Content */}
@@ -508,6 +555,31 @@ class ObituaryPage extends Component {
                     </div>
                 </div>
 
+                {/* YouTube Video Modal */}
+                {showVideoModal && youtubeEmbedUrl && (
+                    <div className="youtube-modal-overlay" onClick={() => this.setState({ showVideoModal: false })}>
+                        <div className="youtube-modal-box" onClick={(e) => e.stopPropagation()}>
+                            <button
+                                className="youtube-modal-close"
+                                onClick={() => this.setState({ showVideoModal: false })}
+                                aria-label="Close video"
+                            >
+                                ✕
+                            </button>
+                            <div className="youtube-modal-iframe-wrapper">
+                                <iframe
+                                    src={youtubeEmbedUrl}
+                                    title="Memorial Video"
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                    className="youtube-modal-iframe"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 <style>{`
                     /* Custom Gallery Slider Styles */
                     .gallery-custom-slider {
@@ -615,6 +687,116 @@ class ObituaryPage extends Component {
                         width: 100%;
                         height: 100%;
                         object-fit: contain;
+                    }
+
+                    /* YouTube Video Widget */
+                    .youtube-thumbnail-wrapper {
+                        position: relative;
+                        cursor: pointer;
+                        overflow: hidden;
+                        background: #000;
+                    }
+
+                    .youtube-thumbnail-img {
+                        width: 100%;
+                        height: 180px;
+                        object-fit: cover;
+                        display: block;
+                        transition: opacity 0.3s ease;
+                    }
+
+                    .youtube-thumbnail-wrapper:hover .youtube-thumbnail-img {
+                        opacity: 0.7;
+                    }
+
+                    .youtube-play-overlay {
+                        position: absolute;
+                        inset: 0;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 8px;
+                        background: rgba(0, 0, 0, 0.2);
+                        transition: background 0.3s ease;
+                    }
+
+                    .youtube-thumbnail-wrapper:hover .youtube-play-overlay {
+                        background: rgba(0, 0, 0, 0.4);
+                    }
+
+                    .youtube-play-btn {
+                        filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+                        transition: transform 0.2s ease;
+                    }
+
+                    .youtube-thumbnail-wrapper:hover .youtube-play-btn {
+                        transform: scale(1.12);
+                    }
+
+                    .youtube-play-text {
+                        color: #fff;
+                        font-size: 13px;
+                        font-weight: 600;
+                        letter-spacing: 0.3px;
+                        text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+                        margin: 0;
+                    }
+
+                    /* YouTube Modal */
+                    .youtube-modal-overlay {
+                        position: fixed;
+                        inset: 0;
+                        background: rgba(0, 0, 0, 0.82);
+                        z-index: 9999;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 16px;
+                    }
+
+                    .youtube-modal-box {
+                        position: relative;
+                        width: 100%;
+                        max-width: 860px;
+                        background: #000;
+                        border-radius: 10px;
+                        overflow: hidden;
+                        box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+                    }
+
+                    .youtube-modal-close {
+                        position: absolute;
+                        top: -38px;
+                        right: 0;
+                        background: transparent;
+                        border: none;
+                        color: #fff;
+                        font-size: 22px;
+                        cursor: pointer;
+                        font-weight: bold;
+                        line-height: 1;
+                        z-index: 10;
+                        padding: 4px 8px;
+                    }
+
+                    .youtube-modal-close:hover {
+                        color: #ff4444;
+                    }
+
+                    .youtube-modal-iframe-wrapper {
+                        position: relative;
+                        padding-bottom: 56.25%;
+                        height: 0;
+                    }
+
+                    .youtube-modal-iframe {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        border: none;
                     }
                 `}</style>
             </div>

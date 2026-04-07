@@ -41341,6 +41341,19 @@ var Obituary_ObituaryPage = /*#__PURE__*/function (_Component2) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this3), "getYoutubeVideoId", function (url) {
+      if (!url) return null;
+      var patterns = [/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/];
+
+      for (var _i = 0, _patterns = patterns; _i < _patterns.length; _i++) {
+        var pattern = _patterns[_i];
+        var match = url.match(pattern);
+        if (match) return match[1];
+      }
+
+      return null;
+    });
+
     _defineProperty(_assertThisInitialized(_this3), "getGalleryImages", function (obituaryData) {
       var images = []; // Check photos array first
 
@@ -41388,7 +41401,8 @@ var Obituary_ObituaryPage = /*#__PURE__*/function (_Component2) {
       error: null,
       condolenceName: '',
       condolenceEmail: '',
-      griefEmail: ''
+      griefEmail: '',
+      showVideoModal: false
     };
     _this3.handlePlantTree = _this3.handlePlantTree.bind(_assertThisInitialized(_this3));
     return _this3;
@@ -41470,7 +41484,8 @@ var Obituary_ObituaryPage = /*#__PURE__*/function (_Component2) {
           error = _this$state.error,
           newCondolence = _this$state.newCondolence,
           condolenceName = _this$state.condolenceName,
-          condolenceEmail = _this$state.condolenceEmail;
+          condolenceEmail = _this$state.condolenceEmail,
+          showVideoModal = _this$state.showVideoModal;
       if (loading) return /*#__PURE__*/react_default.a.createElement("div", {
         className: "min-h-screen flex items-center justify-center text-gray-500"
       }, "Loading obituary...");
@@ -41481,7 +41496,11 @@ var Obituary_ObituaryPage = /*#__PURE__*/function (_Component2) {
         return c.isApproved;
       }); // Dynamic Cover Image logic
 
-      var coverImage = obituaryData.backgroundImage || obituaryData.photo || 'https://images.unsplash.com/photo-1441260038675-7329ab4cc264?w=1200'; // ✅ Gallery logic with proper filtering
+      var coverImage = obituaryData.backgroundImage || obituaryData.photo || 'https://images.unsplash.com/photo-1441260038675-7329ab4cc264?w=1200'; // YouTube video
+
+      var youtubeVideoId = this.getYoutubeVideoId(obituaryData.videoUrl || obituaryData.externalVideo);
+      var youtubeThumbnail = youtubeVideoId ? "https://img.youtube.com/vi/".concat(youtubeVideoId, "/hqdefault.jpg") : null;
+      var youtubeEmbedUrl = youtubeVideoId ? "https://www.youtube.com/embed/".concat(youtubeVideoId, "?autoplay=1") : null; // ✅ Gallery logic with proper filtering
 
       var galleryImages = this.getGalleryImages(obituaryData);
       var hasMultipleImages = galleryImages.length > 1;
@@ -41545,7 +41564,41 @@ var Obituary_ObituaryPage = /*#__PURE__*/function (_Component2) {
         className: "w-full border border-gray-300 rounded p-2 text-sm mb-2"
       }), /*#__PURE__*/react_default.a.createElement("button", {
         className: "w-full bg-teal-600 text-white py-2 rounded text-sm font-bold hover:bg-teal-700 transition"
-      }, "Subscribe"))), /*#__PURE__*/react_default.a.createElement("div", {
+      }, "Subscribe")), youtubeVideoId && /*#__PURE__*/react_default.a.createElement("div", {
+        className: "bg-white rounded-lg shadow-sm mt-6 border border-gray-100 overflow-hidden"
+      }, /*#__PURE__*/react_default.a.createElement("div", {
+        className: "px-4 pt-4 pb-2"
+      }, /*#__PURE__*/react_default.a.createElement("h3", {
+        className: "font-serif text-lg font-bold text-gray-800"
+      }, "Memorial Video")), /*#__PURE__*/react_default.a.createElement("div", {
+        className: "youtube-thumbnail-wrapper",
+        onClick: function onClick() {
+          return _this4.setState({
+            showVideoModal: true
+          });
+        },
+        title: "Click to play video"
+      }, /*#__PURE__*/react_default.a.createElement("img", {
+        src: youtubeThumbnail,
+        alt: "Memorial Video",
+        className: "youtube-thumbnail-img"
+      }), /*#__PURE__*/react_default.a.createElement("div", {
+        className: "youtube-play-overlay"
+      }, /*#__PURE__*/react_default.a.createElement("div", {
+        className: "youtube-play-btn"
+      }, /*#__PURE__*/react_default.a.createElement("svg", {
+        viewBox: "0 0 68 48",
+        width: "48",
+        height: "34"
+      }, /*#__PURE__*/react_default.a.createElement("path", {
+        d: "M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z",
+        fill: "#ff0000"
+      }), /*#__PURE__*/react_default.a.createElement("path", {
+        d: "M45 24L27 14v20",
+        fill: "#fff"
+      }))), /*#__PURE__*/react_default.a.createElement("p", {
+        className: "youtube-play-text"
+      }, "Watch Memorial Video"))))), /*#__PURE__*/react_default.a.createElement("div", {
         className: "lg:col-span-2"
       }, galleryImages.length > 0 && /*#__PURE__*/react_default.a.createElement("div", {
         className: "bg-white p-2 rounded-lg shadow-sm mb-8"
@@ -41683,7 +41736,36 @@ var Obituary_ObituaryPage = /*#__PURE__*/function (_Component2) {
         }, /*#__PURE__*/react_default.a.createElement(TreePine, {
           size: 16
         }), " Planted a tree in memory of ", obituaryData.firstName)));
-      }))))), /*#__PURE__*/react_default.a.createElement("style", null, "\n                    /* Custom Gallery Slider Styles */\n                    .gallery-custom-slider {\n                        position: relative;\n                        width: 100%;\n                        height: 400px;\n                        overflow: hidden;\n                        border-radius: 8px;\n                        background-color: #f9fafb;\n                    }\n\n                    .gallery-slider-container {\n                        position: relative;\n                        width: 100%;\n                        height: 100%;\n                    }\n\n                    .gallery-slider-image {\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                        width: 100%;\n                        height: 100%;\n                        object-fit: contain;\n                        opacity: 0;\n                        transition: opacity 0.5s ease-in-out;\n                        background-color: #f9fafb;\n                    }\n\n                    .gallery-slider-image.active {\n                        opacity: 1;\n                        z-index: 1;\n                    }\n\n                    .gallery-nav-btn {\n                        position: absolute;\n                        top: 50%;\n                        transform: translateY(-50%);\n                        background: rgba(0, 0, 0, 0.5);\n                        color: white;\n                        border: none;\n                        width: 40px;\n                        height: 40px;\n                        border-radius: 50%;\n                        font-size: 24px;\n                        cursor: pointer;\n                        z-index: 10;\n                        transition: background 0.3s ease;\n                        display: flex;\n                        align-items: center;\n                        justify-content: center;\n                    }\n\n                    .gallery-nav-btn:hover {\n                        background: rgba(0, 0, 0, 0.7);\n                    }\n\n                    .gallery-nav-prev {\n                        left: 10px;\n                    }\n\n                    .gallery-nav-next {\n                        right: 10px;\n                    }\n\n                    .gallery-slider-pagination {\n                        position: absolute;\n                        bottom: 15px;\n                        left: 50%;\n                        transform: translateX(-50%);\n                        display: flex;\n                        gap: 8px;\n                        z-index: 10;\n                    }\n\n                    .gallery-pagination-dot {\n                        width: 10px;\n                        height: 10px;\n                        border-radius: 50%;\n                        background: rgba(255, 255, 255, 0.6);\n                        border: none;\n                        padding: 0;\n                        cursor: pointer;\n                        transition: all 0.3s ease;\n                    }\n\n                    .gallery-pagination-dot:hover {\n                        background: rgba(255, 255, 255, 0.8);\n                    }\n\n                    .gallery-pagination-dot.active {\n                        background: white;\n                        transform: scale(1.2);\n                    }\n\n                    .gallery-single-image-wrapper {\n                        width: 100%;\n                        height: 400px;\n                        border-radius: 8px;\n                        overflow: hidden;\n                        background-color: #f9fafb;\n                    }\n\n                    .gallery-single-image-wrapper img {\n                        width: 100%;\n                        height: 100%;\n                        object-fit: contain;\n                    }\n                "));
+      }))))), showVideoModal && youtubeEmbedUrl && /*#__PURE__*/react_default.a.createElement("div", {
+        className: "youtube-modal-overlay",
+        onClick: function onClick() {
+          return _this4.setState({
+            showVideoModal: false
+          });
+        }
+      }, /*#__PURE__*/react_default.a.createElement("div", {
+        className: "youtube-modal-box",
+        onClick: function onClick(e) {
+          return e.stopPropagation();
+        }
+      }, /*#__PURE__*/react_default.a.createElement("button", {
+        className: "youtube-modal-close",
+        onClick: function onClick() {
+          return _this4.setState({
+            showVideoModal: false
+          });
+        },
+        "aria-label": "Close video"
+      }, "\u2715"), /*#__PURE__*/react_default.a.createElement("div", {
+        className: "youtube-modal-iframe-wrapper"
+      }, /*#__PURE__*/react_default.a.createElement("iframe", {
+        src: youtubeEmbedUrl,
+        title: "Memorial Video",
+        frameBorder: "0",
+        allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+        allowFullScreen: true,
+        className: "youtube-modal-iframe"
+      })))), /*#__PURE__*/react_default.a.createElement("style", null, "\n                    /* Custom Gallery Slider Styles */\n                    .gallery-custom-slider {\n                        position: relative;\n                        width: 100%;\n                        height: 400px;\n                        overflow: hidden;\n                        border-radius: 8px;\n                        background-color: #f9fafb;\n                    }\n\n                    .gallery-slider-container {\n                        position: relative;\n                        width: 100%;\n                        height: 100%;\n                    }\n\n                    .gallery-slider-image {\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                        width: 100%;\n                        height: 100%;\n                        object-fit: contain;\n                        opacity: 0;\n                        transition: opacity 0.5s ease-in-out;\n                        background-color: #f9fafb;\n                    }\n\n                    .gallery-slider-image.active {\n                        opacity: 1;\n                        z-index: 1;\n                    }\n\n                    .gallery-nav-btn {\n                        position: absolute;\n                        top: 50%;\n                        transform: translateY(-50%);\n                        background: rgba(0, 0, 0, 0.5);\n                        color: white;\n                        border: none;\n                        width: 40px;\n                        height: 40px;\n                        border-radius: 50%;\n                        font-size: 24px;\n                        cursor: pointer;\n                        z-index: 10;\n                        transition: background 0.3s ease;\n                        display: flex;\n                        align-items: center;\n                        justify-content: center;\n                    }\n\n                    .gallery-nav-btn:hover {\n                        background: rgba(0, 0, 0, 0.7);\n                    }\n\n                    .gallery-nav-prev {\n                        left: 10px;\n                    }\n\n                    .gallery-nav-next {\n                        right: 10px;\n                    }\n\n                    .gallery-slider-pagination {\n                        position: absolute;\n                        bottom: 15px;\n                        left: 50%;\n                        transform: translateX(-50%);\n                        display: flex;\n                        gap: 8px;\n                        z-index: 10;\n                    }\n\n                    .gallery-pagination-dot {\n                        width: 10px;\n                        height: 10px;\n                        border-radius: 50%;\n                        background: rgba(255, 255, 255, 0.6);\n                        border: none;\n                        padding: 0;\n                        cursor: pointer;\n                        transition: all 0.3s ease;\n                    }\n\n                    .gallery-pagination-dot:hover {\n                        background: rgba(255, 255, 255, 0.8);\n                    }\n\n                    .gallery-pagination-dot.active {\n                        background: white;\n                        transform: scale(1.2);\n                    }\n\n                    .gallery-single-image-wrapper {\n                        width: 100%;\n                        height: 400px;\n                        border-radius: 8px;\n                        overflow: hidden;\n                        background-color: #f9fafb;\n                    }\n\n                    .gallery-single-image-wrapper img {\n                        width: 100%;\n                        height: 100%;\n                        object-fit: contain;\n                    }\n\n                    /* YouTube Video Widget */\n                    .youtube-thumbnail-wrapper {\n                        position: relative;\n                        cursor: pointer;\n                        overflow: hidden;\n                        background: #000;\n                    }\n\n                    .youtube-thumbnail-img {\n                        width: 100%;\n                        height: 180px;\n                        object-fit: cover;\n                        display: block;\n                        transition: opacity 0.3s ease;\n                    }\n\n                    .youtube-thumbnail-wrapper:hover .youtube-thumbnail-img {\n                        opacity: 0.7;\n                    }\n\n                    .youtube-play-overlay {\n                        position: absolute;\n                        inset: 0;\n                        display: flex;\n                        flex-direction: column;\n                        align-items: center;\n                        justify-content: center;\n                        gap: 8px;\n                        background: rgba(0, 0, 0, 0.2);\n                        transition: background 0.3s ease;\n                    }\n\n                    .youtube-thumbnail-wrapper:hover .youtube-play-overlay {\n                        background: rgba(0, 0, 0, 0.4);\n                    }\n\n                    .youtube-play-btn {\n                        filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));\n                        transition: transform 0.2s ease;\n                    }\n\n                    .youtube-thumbnail-wrapper:hover .youtube-play-btn {\n                        transform: scale(1.12);\n                    }\n\n                    .youtube-play-text {\n                        color: #fff;\n                        font-size: 13px;\n                        font-weight: 600;\n                        letter-spacing: 0.3px;\n                        text-shadow: 0 1px 3px rgba(0,0,0,0.6);\n                        margin: 0;\n                    }\n\n                    /* YouTube Modal */\n                    .youtube-modal-overlay {\n                        position: fixed;\n                        inset: 0;\n                        background: rgba(0, 0, 0, 0.82);\n                        z-index: 9999;\n                        display: flex;\n                        align-items: center;\n                        justify-content: center;\n                        padding: 16px;\n                    }\n\n                    .youtube-modal-box {\n                        position: relative;\n                        width: 100%;\n                        max-width: 860px;\n                        background: #000;\n                        border-radius: 10px;\n                        overflow: hidden;\n                        box-shadow: 0 20px 60px rgba(0,0,0,0.7);\n                    }\n\n                    .youtube-modal-close {\n                        position: absolute;\n                        top: -38px;\n                        right: 0;\n                        background: transparent;\n                        border: none;\n                        color: #fff;\n                        font-size: 22px;\n                        cursor: pointer;\n                        font-weight: bold;\n                        line-height: 1;\n                        z-index: 10;\n                        padding: 4px 8px;\n                    }\n\n                    .youtube-modal-close:hover {\n                        color: #ff4444;\n                    }\n\n                    .youtube-modal-iframe-wrapper {\n                        position: relative;\n                        padding-bottom: 56.25%;\n                        height: 0;\n                    }\n\n                    .youtube-modal-iframe {\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                        width: 100%;\n                        height: 100%;\n                        border: none;\n                    }\n                "));
     }
   }]);
 
