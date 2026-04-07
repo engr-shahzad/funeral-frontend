@@ -385,7 +385,9 @@ class ObituaryPage extends Component {
         // YouTube video
         const youtubeVideoId = this.getYoutubeVideoId(obituaryData.videoUrl || obituaryData.externalVideo);
         const youtubeThumbnail = youtubeVideoId ? `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg` : null;
-        const youtubeEmbedUrl = youtubeVideoId ? `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1` : null;
+        const youtubeEmbedUrl = youtubeVideoId
+            ? `https://www.youtube-nocookie.com/embed/${youtubeVideoId}?autoplay=1&rel=0&modestbranding=1`
+            : null;
 
 
         return (
@@ -507,31 +509,6 @@ class ObituaryPage extends Component {
                                     <input type="email" placeholder="Your Email" className="grief-email-input" />
                                 </div>
 
-                                {/* YouTube Memorial Video Card */}
-                                {youtubeVideoId && (
-                                    <div className="yt-video-card">
-                                        <h3 className="yt-video-card-title">Memorial Video</h3>
-                                        <div
-                                            className="yt-thumbnail-wrapper"
-                                            onClick={() => this.setState({ showVideoModal: true })}
-                                        >
-                                            <img
-                                                src={youtubeThumbnail}
-                                                alt="Memorial Video"
-                                                className="yt-thumbnail-img"
-                                            />
-                                            <div className="yt-play-overlay">
-                                                <div className="yt-play-btn">
-                                                    <svg viewBox="0 0 68 48" width="52" height="37">
-                                                        <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#ff0000"/>
-                                                        <path d="M45 24L27 14v20" fill="#fff"/>
-                                                    </svg>
-                                                </div>
-                                                <span className="yt-play-label">Watch Memorial Video</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
                                 {/* Memorial Stats */}
                                 {(condolenceStats.trees > 0 || condolenceStats.flowers > 0 || condolenceStats.gifts > 0) && (
                                     <div className="stats-section">
@@ -757,6 +734,28 @@ class ObituaryPage extends Component {
                         </main>
                     </div>
                 </div>
+
+                {/* Sticky Floating Video Widget — bottom right corner */}
+                {youtubeVideoId && !showVideoModal && (
+                    <div
+                        className="yt-sticky-widget"
+                        onClick={() => this.setState({ showVideoModal: true })}
+                        title="Watch Memorial Video"
+                    >
+                        <img
+                            src={youtubeThumbnail}
+                            alt="Memorial Video"
+                            className="yt-sticky-thumb"
+                        />
+                        <div className="yt-sticky-overlay">
+                            <svg viewBox="0 0 68 48" width="38" height="27">
+                                <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#ff0000"/>
+                                <path d="M45 24L27 14v20" fill="#fff"/>
+                            </svg>
+                        </div>
+                        <div className="yt-sticky-label">Memorial Video</div>
+                    </div>
+                )}
 
                 {/* YouTube Video Popup Modal */}
                 {showVideoModal && youtubeEmbedUrl && (
@@ -1115,74 +1114,61 @@ class ObituaryPage extends Component {
                         transform: scale(1.2);
                     }
 
-                    /* ===== YouTube Video Card (Sidebar) ===== */
-                    .yt-video-card {
-                        margin-top: 20px;
-                        border-radius: 10px;
+                    /* ===== Sticky Floating Video Widget (Bottom Right) ===== */
+                    .yt-sticky-widget {
+                        position: fixed;
+                        bottom: 28px;
+                        right: 28px;
+                        width: 200px;
+                        border-radius: 12px;
                         overflow: hidden;
-                        border: 1px solid #e2e8f0;
-                        background: #fff;
-                    }
-
-                    .yt-video-card-title {
-                        font-size: 15px;
-                        font-weight: 700;
-                        color: #2d3748;
-                        padding: 12px 14px 8px;
-                        margin: 0;
-                        border-bottom: 1px solid #f0f0f0;
-                    }
-
-                    .yt-thumbnail-wrapper {
-                        position: relative;
                         cursor: pointer;
+                        z-index: 9000;
+                        box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+                        transition: transform 0.2s ease, box-shadow 0.2s ease;
                         background: #000;
-                        overflow: hidden;
                     }
 
-                    .yt-thumbnail-img {
+                    .yt-sticky-widget:hover {
+                        transform: scale(1.04);
+                        box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+                    }
+
+                    .yt-sticky-thumb {
                         width: 100%;
-                        height: 170px;
+                        height: 112px;
                         object-fit: cover;
                         display: block;
-                        transition: opacity 0.3s ease;
+                        transition: opacity 0.25s ease;
                     }
 
-                    .yt-thumbnail-wrapper:hover .yt-thumbnail-img {
-                        opacity: 0.65;
+                    .yt-sticky-widget:hover .yt-sticky-thumb {
+                        opacity: 0.6;
                     }
 
-                    .yt-play-overlay {
+                    .yt-sticky-overlay {
                         position: absolute;
-                        inset: 0;
+                        top: 0; left: 0;
+                        width: 100%; height: 112px;
                         display: flex;
-                        flex-direction: column;
                         align-items: center;
                         justify-content: center;
-                        gap: 8px;
-                        background: rgba(0,0,0,0.15);
-                        transition: background 0.3s ease;
+                        background: rgba(0,0,0,0.18);
+                        transition: background 0.25s ease;
                     }
 
-                    .yt-thumbnail-wrapper:hover .yt-play-overlay {
-                        background: rgba(0,0,0,0.35);
+                    .yt-sticky-widget:hover .yt-sticky-overlay {
+                        background: rgba(0,0,0,0.38);
                     }
 
-                    .yt-play-btn {
-                        filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
-                        transition: transform 0.2s ease;
-                    }
-
-                    .yt-thumbnail-wrapper:hover .yt-play-btn {
-                        transform: scale(1.1);
-                    }
-
-                    .yt-play-label {
+                    .yt-sticky-label {
+                        background: rgba(0,0,0,0.75);
                         color: #fff;
-                        font-size: 13px;
-                        font-weight: 600;
-                        text-shadow: 0 1px 4px rgba(0,0,0,0.7);
-                        letter-spacing: 0.3px;
+                        font-size: 12px;
+                        font-weight: 700;
+                        text-align: center;
+                        padding: 7px 10px;
+                        letter-spacing: 0.4px;
                     }
 
                     /* ===== YouTube Modal ===== */
