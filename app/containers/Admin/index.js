@@ -13,6 +13,9 @@ import OrdersAdmin from './Orders';
 import Dashboard from './Dashboard';
 import HomepageSettingsAdmin from './Homepagesettings';
 import BlogsAdmin from './Blogs';
+import PageSettingsAdmin from './PageSettings';
+import SiteConfigAdmin from './SiteConfig';
+import RedirectsAdmin from './Redirects';
 
 import './styles.scss';
 
@@ -28,7 +31,10 @@ const Admin = () => {
     { path: '/admin/obituaries', label: 'Obituaries', icon: 'icon-book-open' },
     { path: '/admin/condolences', label: 'Condolences', icon: 'icon-heart' },
     { path: '/admin/users', label: 'Users', icon: 'icon-people' },
-    { path: '/admin/orders', label: 'Orders', icon: 'icon-bag' }
+    { path: '/admin/orders', label: 'Orders', icon: 'icon-bag' },
+    { path: '/admin/page-settings', label: 'Page Settings', icon: 'icon-settings' },
+    { path: '/admin/site-config', label: 'Site Config', icon: 'icon-globe' },
+    { path: '/admin/redirects', label: 'Redirects', icon: 'icon-arrow-right-circle' }
   ];
 
   return (
@@ -79,6 +85,9 @@ const Admin = () => {
           <Route path="/admin/condolences" component={CondolencesAdmin} />
           <Route path="/admin/users" component={UsersAdmin} />
           <Route path="/admin/orders" component={OrdersAdmin} />
+          <Route path="/admin/page-settings" component={PageSettingsAdmin} />
+          <Route path="/admin/site-config" component={SiteConfigAdmin} />
+          <Route path="/admin/redirects" component={RedirectsAdmin} />
         </Switch>
       </main>
     </div>

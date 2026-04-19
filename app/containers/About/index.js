@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { Container, Row, Col } from 'reactstrap';
 import './About.scss';
 
-export default function AboutUs() {
-  const tealColor = '#4a6b6b';
+export default function AboutUs({ serverSideData }) {
+  const ssrData = serverSideData || (typeof window !== 'undefined' ? window.__SSR_DATA__ : {});
+  const richTextContent = (ssrData && ssrData.richTextContent) || '';
 
   return (
     <div className="about-us-page">
@@ -53,6 +54,12 @@ You are welcome to call us at any time of the day, any day of the week, for imme
                          </aside>
               </div>
 
+      {richTextContent ? (
+        <div
+          className="page-rich-content"
+          dangerouslySetInnerHTML={{ __html: richTextContent }}
+        />
+      ) : null}
     </div>
   );
 }

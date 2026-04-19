@@ -22177,10 +22177,6 @@ module.exports = __webpack_require__(196);
  * but require() calls run in order).
  */
  // ─── 1. Polyfill browser globals so SSR-incompatible libs don't crash ────────
-// Components should still check `typeof window === 'undefined'` themselves
-// for logic that must NOT run on the server (e.g. Swiper rendering).
-// These stubs only prevent import-time crashes in deps that reference
-// browser globals unconditionally.
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -22189,11 +22185,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 if (typeof window === 'undefined') {
-  // React 16 scheduler reads timing & async APIs directly from window.*
-  // (see: "Capture local references to native APIs" in scheduler source).
-  // Every property it accesses must be present here or it crashes.
   global.window = {
-    // ── timing / async (React scheduler) ──────────────────────────────
     Date: Date,
     performance: typeof performance !== 'undefined' ? performance : {
       now: function now() {
@@ -22210,7 +22202,6 @@ if (typeof window === 'undefined') {
     cancelAnimationFrame: function cancelAnimationFrame(id) {
       return clearTimeout(id);
     },
-    // ── routing / navigation ──────────────────────────────────────────
     location: {
       host: '',
       hostname: '',
@@ -22220,7 +22211,6 @@ if (typeof window === 'undefined') {
       hash: '',
       port: ''
     },
-    // ── misc ──────────────────────────────────────────────────────────
     __IS_SSR__: true,
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: null,
     addEventListener: function addEventListener() {},
@@ -22285,7 +22275,7 @@ if (typeof window === 'undefined') {
     addEventListener: function addEventListener() {},
     removeEventListener: function removeEventListener() {},
     readyState: 'complete'
-  }; // global.navigator is a read-only getter in Node 21+ — must use defineProperty
+  };
 
   try {
     Object.defineProperty(global, 'navigator', {
@@ -22355,8 +22345,6 @@ if (typeof window === 'undefined') {
     return clearTimeout(id);
   };
 } // ─── 2. Polyfill regeneratorRuntime (Babel async/generator transform) ────────
-// Babel compiles async functions to regenerator-runtime calls. The runtime
-// must be registered globally before any component module is loaded.
 
 
 __webpack_require__(136); // ─── 3. Load dependencies AFTER globals are set ───────────────────────────────
@@ -22399,7 +22387,7 @@ var AllObituaries = __webpack_require__(222)["default"];
 
 var BlogList = __webpack_require__(216)["default"];
 
-var FAQ = __webpack_require__(218)["default"]; // ─── 3. Helpers ───────────────────────────────────────────────────────────────
+var FAQ = __webpack_require__(218)["default"]; // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 
 function createServerStore() {
@@ -22435,28 +22423,32 @@ function renderObituaryToString(slug, serverSideData) {
       }
     }
   }))));
-} // About Us — fully static, no data needed
+} // About Us — accepts serverSideData for richTextContent
 
 
-function renderAboutToString() {
+function renderAboutToString(serverSideData) {
   var store = createServerStore();
   return renderToString(React.createElement(Provider, {
     store: store
   }, React.createElement(StaticRouter, {
     location: '/about-us',
     context: {}
-  }, React.createElement(AboutUs, null))));
-} // Our Services — fully static, no data needed
+  }, React.createElement(AboutUs, {
+    serverSideData: serverSideData || {}
+  }))));
+} // Our Services — accepts serverSideData for richTextContent
 
 
-function renderServicesToString() {
+function renderServicesToString(serverSideData) {
   var store = createServerStore();
   return renderToString(React.createElement(Provider, {
     store: store
   }, React.createElement(StaticRouter, {
     location: '/our-services',
     context: {}
-  }, React.createElement(OurServices, null))));
+  }, React.createElement(OurServices, {
+    serverSideData: serverSideData || {}
+  }))));
 } // All Obituaries listing
 
 
@@ -22483,17 +22475,19 @@ function renderBlogListToString(serverSideData) {
   }, React.createElement(BlogList, {
     serverSideData: serverSideData
   }))));
-} // FAQ — fully static
+} // FAQ — accepts serverSideData for richTextContent
 
 
-function renderFAQToString() {
+function renderFAQToString(serverSideData) {
   var store = createServerStore();
   return renderToString(React.createElement(Provider, {
     store: store
   }, React.createElement(StaticRouter, {
     location: '/faqs',
     context: {}
-  }, React.createElement(FAQ, null))));
+  }, React.createElement(FAQ, {
+    serverSideData: serverSideData || {}
+  }))));
 }
 
 module.exports = {
@@ -29198,8 +29192,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function AboutUs() {
-  var tealColor = '#4a6b6b';
+function AboutUs(_ref) {
+  var serverSideData = _ref.serverSideData;
+  var ssrData = serverSideData || (typeof window !== 'undefined' ? window.__SSR_DATA__ : {});
+  var richTextContent = ssrData && ssrData.richTextContent || '';
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "about-us-page"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -29232,7 +29228,12 @@ function AboutUs() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
     src: " https://s3.amazonaws.com/CFSV2/stockimages/987238-Funeral-FS-600x450-26.jpg",
     alt: "Peaceful scene"
-  }))));
+  }))), richTextContent ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "page-rich-content",
+    dangerouslySetInnerHTML: {
+      __html: richTextContent
+    }
+  }) : null);
 }
 
 /***/ }),
@@ -29255,7 +29256,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(33);
 
 
-function Services() {
+function Services(_ref) {
+  var serverSideData = _ref.serverSideData;
+  var ssrData = serverSideData || (typeof window !== 'undefined' ? window.__SSR_DATA__ : {});
+  var richTextContent = ssrData && ssrData.richTextContent || '';
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "why-hero",
     style: {
@@ -29382,7 +29386,12 @@ function Services() {
     src: "https://s3.amazonaws.com/CFSV2/stockimages/743880-UrnWreath.jpg",
     alt: "Cremation",
     className: "img-fluid"
-  })))));
+  })))), richTextContent ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "page-rich-content",
+    dangerouslySetInnerHTML: {
+      __html: richTextContent
+    }
+  }) : null);
 }
 
 /***/ }),
@@ -29843,12 +29852,16 @@ var faqs = [{
   question: 'Is there financial help if I need it?',
   answer: "There are a number of options available, including:\n\n\u2022 Determine if the deceased person qualifies for any entitlements. Check with the Social Security Administration, the Department of Veterans Affairs, and with your State Fund. Many people are entitled to get financial assistance with their funeral costs from these agencies if they qualify.\n\u2022 Review all insurance policies the deceased person has, including life insurance. Some life insurance policies have coverage clauses for funeral related costs.\n\u2022 Find local charities providing financial help for funeral expenses. Search for non profit organizations and for churches in your area.\n\u2022 Talk to your funeral director about cremation options - these can be much less expensive depending on your choices."
 }];
-function FAQ() {
+function FAQ(_ref) {
+  var serverSideData = _ref.serverSideData;
+
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(null),
       _useState2 = _slicedToArray(_useState, 2),
       openIndex = _useState2[0],
       setOpenIndex = _useState2[1];
 
+  var ssrData = serverSideData || (typeof window !== 'undefined' ? window.__SSR_DATA__ : {});
+  var richTextContent = ssrData && ssrData.richTextContent || '';
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "why-hero",
     style: {
@@ -29903,7 +29916,12 @@ function FAQ() {
     src: "\thttps://s3.amazonaws.com/CFSV2/stockimages/444478-general8.jpg",
     alt: "Documents",
     className: "rounded shadow"
-  }))));
+  }))), richTextContent ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "page-rich-content",
+    dangerouslySetInnerHTML: {
+      __html: richTextContent
+    }
+  }) : null);
 }
 
 /***/ }),

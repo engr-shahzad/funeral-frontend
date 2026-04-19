@@ -12,16 +12,8 @@
 'use strict';
 
 // ─── 1. Polyfill browser globals so SSR-incompatible libs don't crash ────────
-// Components should still check `typeof window === 'undefined'` themselves
-// for logic that must NOT run on the server (e.g. Swiper rendering).
-// These stubs only prevent import-time crashes in deps that reference
-// browser globals unconditionally.
 if (typeof window === 'undefined') {
-  // React 16 scheduler reads timing & async APIs directly from window.*
-  // (see: "Capture local references to native APIs" in scheduler source).
-  // Every property it accesses must be present here or it crashes.
   global.window = {
-    // ── timing / async (React scheduler) ──────────────────────────────
     Date,
     performance: typeof performance !== 'undefined' ? performance : { now: () => Date.now() },
     setTimeout,
@@ -30,7 +22,6 @@ if (typeof window === 'undefined') {
     clearInterval,
     requestAnimationFrame: cb => setTimeout(cb, 0),
     cancelAnimationFrame: id => clearTimeout(id),
-    // ── routing / navigation ──────────────────────────────────────────
     location: {
       host: '',
       hostname: '',
@@ -40,7 +31,6 @@ if (typeof window === 'undefined') {
       hash: '',
       port: ''
     },
-    // ── misc ──────────────────────────────────────────────────────────
     __IS_SSR__: true,
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: null,
     addEventListener: () => {},
@@ -71,7 +61,6 @@ if (typeof window === 'undefined') {
     removeEventListener: () => {},
     readyState: 'complete'
   };
-  // global.navigator is a read-only getter in Node 21+ — must use defineProperty
   try {
     Object.defineProperty(global, 'navigator', {
       value: { userAgent: 'node', platform: '' },
@@ -88,8 +77,6 @@ if (typeof window === 'undefined') {
 }
 
 // ─── 2. Polyfill regeneratorRuntime (Babel async/generator transform) ────────
-// Babel compiles async functions to regenerator-runtime calls. The runtime
-// must be registered globally before any component module is loaded.
 require('regenerator-runtime/runtime');
 
 // ─── 3. Load dependencies AFTER globals are set ───────────────────────────────
@@ -111,7 +98,7 @@ const AllObituaries = require('./containers/AllObituaries').default;
 const BlogList = require('./containers/Blog/Bloglist').default;
 const FAQ = require('./containers/FAQ').default;
 
-// ─── 3. Helpers ───────────────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 function createServerStore() {
   const history = createMemoryHistory();
   return createStore(
@@ -154,8 +141,8 @@ function renderObituaryToString(slug, serverSideData) {
   );
 }
 
-// About Us — fully static, no data needed
-function renderAboutToString() {
+// About Us — accepts serverSideData for richTextContent
+function renderAboutToString(serverSideData) {
   const store = createServerStore();
   return renderToString(
     React.createElement(
@@ -164,14 +151,14 @@ function renderAboutToString() {
       React.createElement(
         StaticRouter,
         { location: '/about-us', context: {} },
-        React.createElement(AboutUs, null)
+        React.createElement(AboutUs, { serverSideData: serverSideData || {} })
       )
     )
   );
 }
 
-// Our Services — fully static, no data needed
-function renderServicesToString() {
+// Our Services — accepts serverSideData for richTextContent
+function renderServicesToString(serverSideData) {
   const store = createServerStore();
   return renderToString(
     React.createElement(
@@ -180,7 +167,7 @@ function renderServicesToString() {
       React.createElement(
         StaticRouter,
         { location: '/our-services', context: {} },
-        React.createElement(OurServices, null)
+        React.createElement(OurServices, { serverSideData: serverSideData || {} })
       )
     )
   );
@@ -210,13 +197,13 @@ function renderBlogListToString(serverSideData) {
   );
 }
 
-// FAQ — fully static
-function renderFAQToString() {
+// FAQ — accepts serverSideData for richTextContent
+function renderFAQToString(serverSideData) {
   const store = createServerStore();
   return renderToString(
     React.createElement(Provider, { store },
       React.createElement(StaticRouter, { location: '/faqs', context: {} },
-        React.createElement(FAQ, null)
+        React.createElement(FAQ, { serverSideData: serverSideData || {} })
       )
     )
   );

@@ -102,8 +102,10 @@ Today, there are many different types of memorial options from which to choose. 
   }
 ];
 
-export default function FAQ() {
+export default function FAQ({ serverSideData }) {
   const [openIndex, setOpenIndex] = useState(null);
+  const ssrData = serverSideData || (typeof window !== 'undefined' ? window.__SSR_DATA__ : {});
+  const richTextContent = (ssrData && ssrData.richTextContent) || '';
 
   return (
     <div>
@@ -169,6 +171,13 @@ export default function FAQ() {
           />
         </div>
       </div>
+
+      {richTextContent ? (
+        <div
+          className="page-rich-content"
+          dangerouslySetInnerHTML={{ __html: richTextContent }}
+        />
+      ) : null}
     </div>
   );
 }

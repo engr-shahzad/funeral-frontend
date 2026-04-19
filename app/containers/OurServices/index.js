@@ -1,7 +1,10 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 
-export default function Services() {
+export default function Services({ serverSideData }) {
+  const ssrData = serverSideData || (typeof window !== 'undefined' ? window.__SSR_DATA__ : {});
+  const richTextContent = (ssrData && ssrData.richTextContent) || '';
+
   return (
     <>
      <div
@@ -103,6 +106,13 @@ export default function Services() {
           </Col>
         </Row>
       </Container>
+
+      {richTextContent ? (
+        <div
+          className="page-rich-content"
+          dangerouslySetInnerHTML={{ __html: richTextContent }}
+        />
+      ) : null}
     </>
   );
 }
