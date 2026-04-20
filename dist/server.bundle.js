@@ -82,7 +82,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 135);
+/******/ 	return __webpack_require__(__webpack_require__.s = 136);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -93,7 +93,7 @@ module.exports =
 
 
 if (true) {
-  module.exports = __webpack_require__(137);
+  module.exports = __webpack_require__(138);
 } else {}
 
 
@@ -111,7 +111,7 @@ if (true) {
 if (false) { var throwOnDirectAccess, ReactIs; } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(141)();
+  module.exports = __webpack_require__(142)();
 }
 
 
@@ -210,7 +210,7 @@ var EMAIL_PROVIDER = {
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(160);
+module.exports = __webpack_require__(161);
 
 /***/ }),
 /* 4 */
@@ -233,15 +233,15 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactRedux = __webpack_require__(32);
 
-var _actions = __webpack_require__(150);
+var _actions = __webpack_require__(151);
 
 var actions = _interopRequireWildcard(_actions);
 
-var _reducer = __webpack_require__(151);
+var _reducer = __webpack_require__(152);
 
 var _reducer2 = _interopRequireDefault(_reducer);
 
-var _reactNotificationSystem = __webpack_require__(152);
+var _reactNotificationSystem = __webpack_require__(153);
 
 var _reactNotificationSystem2 = _interopRequireDefault(_reactNotificationSystem);
 
@@ -1392,7 +1392,7 @@ var tiny_invariant_esm = __webpack_require__(27);
 var esm_extends = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./node_modules/react-router/node_modules/path-to-regexp/index.js
-var path_to_regexp = __webpack_require__(62);
+var path_to_regexp = __webpack_require__(61);
 var path_to_regexp_default = /*#__PURE__*/__webpack_require__.n(path_to_regexp);
 
 // EXTERNAL MODULE: ./node_modules/react-is/index.js
@@ -5860,7 +5860,7 @@ var useSelector =
 /*#__PURE__*/
 createSelectorHook();
 // EXTERNAL MODULE: ./node_modules/react-dom/index.js
-var react_dom = __webpack_require__(55);
+var react_dom = __webpack_require__(54);
 
 // CONCATENATED MODULE: ./node_modules/react-redux/es/utils/reactBatchedUpdates.js
 /* eslint-disable import/no-unresolved */
@@ -6144,7 +6144,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "combineReducers", function() { return combineReducers; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "compose", function() { return compose; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createStore", function() { return createStore; });
-/* harmony import */ var symbol_observable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(63);
+/* harmony import */ var symbol_observable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(62);
 
 
 /**
@@ -7014,7 +7014,7 @@ Row.defaultProps = defaultProps;
 
 
 if (true) {
-  module.exports = __webpack_require__(144);
+  module.exports = __webpack_require__(145);
 } else {}
 
 
@@ -15390,8 +15390,7 @@ function mapDispatchToProps(dispatch) {
 /***/ }),
 /* 52 */,
 /* 53 */,
-/* 54 */,
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15420,12 +15419,12 @@ if (true) {
   // DCE check should happen before ReactDOM bundle executes so that
   // DevTools can report bad minification during injection.
   checkDCE();
-  module.exports = __webpack_require__(146);
+  module.exports = __webpack_require__(147);
 } else {}
 
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15440,7 +15439,7 @@ if (true) {
 
 
 var React = __webpack_require__(0);
-var factory = __webpack_require__(153);
+var factory = __webpack_require__(154);
 
 if (typeof React === 'undefined') {
   throw Error(
@@ -15460,7 +15459,7 @@ module.exports = factory(
 
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports) {
 
 var CONSTANTS = {
@@ -15500,7 +15499,7 @@ module.exports = CONSTANTS;
 
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15577,7 +15576,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15602,7 +15601,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -15656,17 +15655,17 @@ module.exports = {
 
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 function getOriginalCounterPart(index,_a,childrenArr){var slidesToShow=_a.slidesToShow,currentSlide=_a.currentSlide;return childrenArr.length>2*slidesToShow?index+2*slidesToShow:currentSlide>=childrenArr.length?childrenArr.length+index:index}function getOriginalIndexLookupTableByClones(slidesToShow,childrenArr){if(childrenArr.length>2*slidesToShow){for(var table={},firstBeginningOfClones=childrenArr.length-2*slidesToShow,firstEndOfClones=childrenArr.length-firstBeginningOfClones,firstCount=firstBeginningOfClones,i=0;i<firstEndOfClones;i++)table[i]=firstCount,firstCount++;var secondBeginningOfClones=childrenArr.length+firstEndOfClones,secondEndOfClones=secondBeginningOfClones+childrenArr.slice(0,2*slidesToShow).length,secondCount=0;for(i=secondBeginningOfClones;i<=secondEndOfClones;i++)table[i]=secondCount,secondCount++;var originalEnd=secondBeginningOfClones,originalCounter=0;for(i=firstEndOfClones;i<originalEnd;i++)table[i]=originalCounter,originalCounter++;return table}table={};var totalSlides=3*childrenArr.length,count=0;for(i=0;i<totalSlides;i++)table[i]=count,++count===childrenArr.length&&(count=0);return table}function getClones(slidesToShow,childrenArr){return childrenArr.length<slidesToShow?childrenArr:childrenArr.length>2*slidesToShow?childrenArr.slice(childrenArr.length-2*slidesToShow,childrenArr.length).concat(childrenArr,childrenArr.slice(0,2*slidesToShow)):childrenArr.concat(childrenArr,childrenArr)}function getInitialSlideInInfiniteMode(slidesToShow,childrenArr){return childrenArr.length>2*slidesToShow?2*slidesToShow:childrenArr.length}function checkClonesPosition(_a,childrenArr,props){var isReachingTheEnd,currentSlide=_a.currentSlide,slidesToShow=_a.slidesToShow,itemWidth=_a.itemWidth,totalItems=_a.totalItems,nextSlide=0,nextPosition=0,isReachingTheStart=0===currentSlide,originalFirstSlide=childrenArr.length-(childrenArr.length-2*slidesToShow);return childrenArr.length<slidesToShow?(nextPosition=nextSlide=0,isReachingTheStart=isReachingTheEnd=!1):childrenArr.length>2*slidesToShow?((isReachingTheEnd=currentSlide>=originalFirstSlide+childrenArr.length)&&(nextPosition=-itemWidth*(nextSlide=currentSlide-childrenArr.length)),isReachingTheStart&&(nextPosition=-itemWidth*(nextSlide=originalFirstSlide+(childrenArr.length-2*slidesToShow)))):((isReachingTheEnd=currentSlide>=2*childrenArr.length)&&(nextPosition=-itemWidth*(nextSlide=currentSlide-childrenArr.length)),isReachingTheStart&&(nextPosition=props.showDots?-itemWidth*(nextSlide=childrenArr.length):-itemWidth*(nextSlide=totalItems-2*slidesToShow))),{isReachingTheEnd:isReachingTheEnd,isReachingTheStart:isReachingTheStart,nextSlide:nextSlide,nextPosition:nextPosition}}Object.defineProperty(exports,"__esModule",{value:!0}),exports.getOriginalCounterPart=getOriginalCounterPart,exports.getOriginalIndexLookupTableByClones=getOriginalIndexLookupTableByClones,exports.getClones=getClones,exports.getInitialSlideInInfiniteMode=getInitialSlideInInfiniteMode,exports.checkClonesPosition=checkClonesPosition;
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isarray = __webpack_require__(143)
+var isarray = __webpack_require__(144)
 
 /**
  * Expose `pathToRegexp`.
@@ -16095,7 +16094,7 @@ function pathToRegexp (path, keys, options) {
 
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16118,9 +16117,10 @@ if (typeof self !== 'undefined') {
 var result = Object(_ponyfill_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(root);
 /* harmony default export */ __webpack_exports__["a"] = (result);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(145)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(146)(module)))
 
 /***/ }),
+/* 63 */,
 /* 64 */,
 /* 65 */
 /***/ (function(module, exports) {
@@ -16179,7 +16179,7 @@ module.exports = function isCancel(value) {
 
 
 var utils = __webpack_require__(23);
-var normalizeHeaderName = __webpack_require__(165);
+var normalizeHeaderName = __webpack_require__(166);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -16195,10 +16195,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(166);
+    adapter = __webpack_require__(167);
   } else if (typeof process !== 'undefined' && Object.prototype.toString.call(process) === '[object process]') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(172);
+    adapter = __webpack_require__(173);
   }
   return adapter;
 }
@@ -16283,7 +16283,7 @@ module.exports = defaults;
 "use strict";
 
 
-var createError = __webpack_require__(59);
+var createError = __webpack_require__(58);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -16364,8 +16364,8 @@ module.exports = function enhanceError(error, config, code, request, response) {
 "use strict";
 
 
-var isAbsoluteURL = __webpack_require__(168);
-var combineURLs = __webpack_require__(169);
+var isAbsoluteURL = __webpack_require__(169);
+var combineURLs = __webpack_require__(170);
 
 /**
  * Creates a new URL by combining the baseURL with the requestedURL,
@@ -16405,8 +16405,8 @@ var URL = url.URL;
 var http = __webpack_require__(73);
 var https = __webpack_require__(74);
 var Writable = __webpack_require__(65).Writable;
-var assert = __webpack_require__(173);
-var debug = __webpack_require__(174);
+var assert = __webpack_require__(174);
+var debug = __webpack_require__(175);
 
 // Create handlers that pass events from native requests
 var eventHandlers = Object.create(null);
@@ -16929,7 +16929,7 @@ exports.coerce = coerce;
 exports.disable = disable;
 exports.enable = enable;
 exports.enabled = enabled;
-exports.humanize = __webpack_require__(177);
+exports.humanize = __webpack_require__(178);
 
 /**
  * Active `debug` instances.
@@ -21179,7 +21179,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:!0});var clones_1=__webpack_require__(61);exports.getOriginalCounterPart=clones_1.getOriginalCounterPart,exports.getClones=clones_1.getClones,exports.checkClonesPosition=clones_1.checkClonesPosition,exports.getInitialSlideInInfiniteMode=clones_1.getInitialSlideInInfiniteMode;var elementWidth_1=__webpack_require__(129);exports.getWidthFromDeviceType=elementWidth_1.getWidthFromDeviceType,exports.getPartialVisibilityGutter=elementWidth_1.getPartialVisibilityGutter,exports.getItemClientSideWidth=elementWidth_1.getItemClientSideWidth;var common_1=__webpack_require__(38);exports.getInitialState=common_1.getInitialState,exports.getIfSlideIsVisbile=common_1.getIfSlideIsVisbile,exports.getTransformForCenterMode=common_1.getTransformForCenterMode,exports.getTransformForPartialVsibile=common_1.getTransformForPartialVsibile,exports.isInLeftEnd=common_1.isInLeftEnd,exports.isInRightEnd=common_1.isInRightEnd,exports.notEnoughChildren=common_1.notEnoughChildren,exports.getSlidesToSlide=common_1.getSlidesToSlide;var throttle_1=__webpack_require__(198);exports.throttle=throttle_1.default;var throwError_1=__webpack_require__(199);exports.throwError=throwError_1.default;var next_1=__webpack_require__(200);exports.populateNextSlides=next_1.populateNextSlides;var previous_1=__webpack_require__(201);exports.populatePreviousSlides=previous_1.populatePreviousSlides;var mouseOrTouchMove_1=__webpack_require__(202);exports.populateSlidesOnMouseTouchMove=mouseOrTouchMove_1.populateSlidesOnMouseTouchMove;
+Object.defineProperty(exports,"__esModule",{value:!0});var clones_1=__webpack_require__(60);exports.getOriginalCounterPart=clones_1.getOriginalCounterPart,exports.getClones=clones_1.getClones,exports.checkClonesPosition=clones_1.checkClonesPosition,exports.getInitialSlideInInfiniteMode=clones_1.getInitialSlideInInfiniteMode;var elementWidth_1=__webpack_require__(129);exports.getWidthFromDeviceType=elementWidth_1.getWidthFromDeviceType,exports.getPartialVisibilityGutter=elementWidth_1.getPartialVisibilityGutter,exports.getItemClientSideWidth=elementWidth_1.getItemClientSideWidth;var common_1=__webpack_require__(38);exports.getInitialState=common_1.getInitialState,exports.getIfSlideIsVisbile=common_1.getIfSlideIsVisbile,exports.getTransformForCenterMode=common_1.getTransformForCenterMode,exports.getTransformForPartialVsibile=common_1.getTransformForPartialVsibile,exports.isInLeftEnd=common_1.isInLeftEnd,exports.isInRightEnd=common_1.isInRightEnd,exports.notEnoughChildren=common_1.notEnoughChildren,exports.getSlidesToSlide=common_1.getSlidesToSlide;var throttle_1=__webpack_require__(199);exports.throttle=throttle_1.default;var throwError_1=__webpack_require__(200);exports.throwError=throwError_1.default;var next_1=__webpack_require__(201);exports.populateNextSlides=next_1.populateNextSlides;var previous_1=__webpack_require__(202);exports.populatePreviousSlides=previous_1.populatePreviousSlides;var mouseOrTouchMove_1=__webpack_require__(203);exports.populateSlidesOnMouseTouchMove=mouseOrTouchMove_1.populateSlidesOnMouseTouchMove;
 
 /***/ }),
 /* 129 */
@@ -21494,11 +21494,11 @@ module.exports = function isEqual(a, b) {
 /* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Rules = __webpack_require__(189);
-var Lang = __webpack_require__(190);
-var Errors = __webpack_require__(193);
+var Rules = __webpack_require__(190);
+var Lang = __webpack_require__(191);
+var Errors = __webpack_require__(194);
 var Attributes = __webpack_require__(80);
-var AsyncResolvers = __webpack_require__(194);
+var AsyncResolvers = __webpack_require__(195);
 
 var Validator = function (input, rules, customMessages) {
   var lang = Validator.getDefaultLang();
@@ -22158,11 +22158,66 @@ module.exports = Validator;
 /* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(196);
+module.exports = __webpack_require__(197);
 
 
 /***/ }),
 /* 135 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var _babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(19);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(9);
+
+
+
+
+
+
+var propTypes = {
+  tag: _utils__WEBPACK_IMPORTED_MODULE_5__[/* tagPropType */ "c"],
+  fluid: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.bool, prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string]),
+  className: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string,
+  cssModule: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.object
+};
+var defaultProps = {
+  tag: 'div'
+};
+
+var Container = function Container(props) {
+  var className = props.className,
+      cssModule = props.cssModule,
+      fluid = props.fluid,
+      Tag = props.tag,
+      attributes = Object(_babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(props, ["className", "cssModule", "fluid", "tag"]);
+
+  var containerClass = 'container';
+
+  if (fluid === true) {
+    containerClass = 'container-fluid';
+  } else if (fluid) {
+    containerClass = "container-" + fluid;
+  }
+
+  var classes = Object(_utils__WEBPACK_IMPORTED_MODULE_5__[/* mapToCssModules */ "b"])(classnames__WEBPACK_IMPORTED_MODULE_4___default()(className, containerClass), cssModule);
+  return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(Tag, Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, attributes, {
+    className: classes
+  }));
+};
+
+Container.propTypes = propTypes;
+Container.defaultProps = defaultProps;
+/* harmony default export */ __webpack_exports__["a"] = (Container);
+
+/***/ }),
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22347,12 +22402,12 @@ if (typeof window === 'undefined') {
 } // ─── 2. Polyfill regeneratorRuntime (Babel async/generator transform) ────────
 
 
-__webpack_require__(136); // ─── 3. Load dependencies AFTER globals are set ───────────────────────────────
+__webpack_require__(137); // ─── 3. Load dependencies AFTER globals are set ───────────────────────────────
 
 
 var React = __webpack_require__(0);
 
-var _require = __webpack_require__(138),
+var _require = __webpack_require__(139),
     renderToString = _require.renderToString;
 
 var _require2 = __webpack_require__(7),
@@ -22365,7 +22420,7 @@ var _require4 = __webpack_require__(39),
     createStore = _require4.createStore,
     applyMiddleware = _require4.applyMiddleware;
 
-var thunk = __webpack_require__(149)["default"];
+var thunk = __webpack_require__(150)["default"];
 
 var _require5 = __webpack_require__(28),
     createMemoryHistory = _require5.createMemoryHistory;
@@ -22373,21 +22428,21 @@ var _require5 = __webpack_require__(28),
 var _require6 = __webpack_require__(26),
     routerMiddleware = _require6.routerMiddleware;
 
-var createReducer = __webpack_require__(220)["default"];
+var createReducer = __webpack_require__(221)["default"];
 
-var Homepage = __webpack_require__(219)["default"];
+var Homepage = __webpack_require__(220)["default"];
 
-var ObituaryPage = __webpack_require__(221)["default"];
+var ObituaryPage = __webpack_require__(222)["default"];
 
-var AboutUs = __webpack_require__(212)["default"];
+var AboutUs = __webpack_require__(213)["default"];
 
-var OurServices = __webpack_require__(214)["default"];
+var OurServices = __webpack_require__(215)["default"];
 
-var AllObituaries = __webpack_require__(222)["default"];
+var AllObituaries = __webpack_require__(223)["default"];
 
-var BlogList = __webpack_require__(216)["default"];
+var BlogList = __webpack_require__(217)["default"];
 
-var FAQ = __webpack_require__(218)["default"]; // ─── Helpers ──────────────────────────────────────────────────────────────────
+var FAQ = __webpack_require__(219)["default"]; // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 
 function createServerStore() {
@@ -22501,7 +22556,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -23236,7 +23291,7 @@ try {
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23268,29 +23323,29 @@ exports.useLayoutEffect=function(a,b){return Z().useLayoutEffect(a,b)};exports.u
 
 
 /***/ }),
-/* 138 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = __webpack_require__(139);
-
-
-/***/ }),
 /* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-if (true) {
-  module.exports = __webpack_require__(140);
-} else {}
+module.exports = __webpack_require__(140);
 
 
 /***/ }),
 /* 140 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+if (true) {
+  module.exports = __webpack_require__(141);
+} else {}
+
+
+/***/ }),
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23352,7 +23407,7 @@ var cb=function(a){function b(b,c){var d=a.call(this,{})||this;d.partialRenderer
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23365,7 +23420,7 @@ var cb=function(a){function b(b,c){var d=a.call(this,{})||this;d.partialRenderer
 
 
 
-var ReactPropTypesSecret = __webpack_require__(142);
+var ReactPropTypesSecret = __webpack_require__(143);
 
 function emptyFunction() {}
 function emptyFunctionWithReset() {}
@@ -23423,7 +23478,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23442,7 +23497,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports) {
 
 module.exports = Array.isArray || function (arr) {
@@ -23451,7 +23506,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23473,7 +23528,7 @@ exports.isValidElementType=function(a){return"string"===typeof a||"function"===t
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports) {
 
 module.exports = function(originalModule) {
@@ -23503,7 +23558,7 @@ module.exports = function(originalModule) {
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23519,7 +23574,7 @@ module.exports = function(originalModule) {
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(0),n=__webpack_require__(34),r=__webpack_require__(147);function u(a){for(var b="https://reactjs.org/docs/error-decoder.html?invariant="+a,c=1;c<arguments.length;c++)b+="&args[]="+encodeURIComponent(arguments[c]);return"Minified React error #"+a+"; visit "+b+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings."}if(!aa)throw Error(u(227));
+var aa=__webpack_require__(0),n=__webpack_require__(34),r=__webpack_require__(148);function u(a){for(var b="https://reactjs.org/docs/error-decoder.html?invariant="+a,c=1;c<arguments.length;c++)b+="&args[]="+encodeURIComponent(arguments[c]);return"Minified React error #"+a+"; visit "+b+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings."}if(!aa)throw Error(u(227));
 function ba(a,b,c,d,e,f,g,h,k){var l=Array.prototype.slice.call(arguments,3);try{b.apply(c,l)}catch(m){this.onError(m)}}var da=!1,ea=null,fa=!1,ha=null,ia={onError:function(a){da=!0;ea=a}};function ja(a,b,c,d,e,f,g,h,k){da=!1;ea=null;ba.apply(ia,arguments)}function ka(a,b,c,d,e,f,g,h,k){ja.apply(this,arguments);if(da){if(da){var l=ea;da=!1;ea=null}else throw Error(u(198));fa||(fa=!0,ha=l)}}var la=null,ma=null,na=null;
 function oa(a,b,c){var d=a.type||"unknown-event";a.currentTarget=na(c);ka(d,b,void 0,a);a.currentTarget=null}var pa=null,qa={};
 function ra(){if(pa)for(var a in qa){var b=qa[a],c=pa.indexOf(a);if(!(-1<c))throw Error(u(96,a));if(!sa[c]){if(!b.extractEvents)throw Error(u(97,a));sa[c]=b;c=b.eventTypes;for(var d in c){var e=void 0;var f=c[d],g=b,h=d;if(ta.hasOwnProperty(h))throw Error(u(99,h));ta[h]=f;var k=f.phasedRegistrationNames;if(k){for(e in k)k.hasOwnProperty(e)&&ua(k[e],g,h);e=!0}else f.registrationName?(ua(f.registrationName,g,h),e=!0):e=!1;if(!e)throw Error(u(98,d,a));}}}}
@@ -23802,19 +23857,19 @@ exports.unstable_renderSubtreeIntoContainer=function(a,b,c,d){if(!gk(c))throw Er
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 if (true) {
-  module.exports = __webpack_require__(148);
+  module.exports = __webpack_require__(149);
 } else {}
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23842,7 +23897,7 @@ exports.unstable_shouldYield=function(){var a=exports.unstable_now();V(a);var b=
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23869,7 +23924,7 @@ thunk.withExtraArgument = createThunkMiddleware;
 /* harmony default export */ __webpack_exports__["default"] = (thunk);
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23945,7 +24000,7 @@ function removeAll() {
 }
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23986,16 +24041,16 @@ function Notifications() {
 }
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var React = __webpack_require__(0);
-var createReactClass = __webpack_require__(56);
+var createReactClass = __webpack_require__(55);
 var PropTypes = __webpack_require__(1);
 var merge = __webpack_require__(34);
-var NotificationContainer = __webpack_require__(156);
-var Constants = __webpack_require__(57);
-var Styles = __webpack_require__(159);
+var NotificationContainer = __webpack_require__(157);
+var Constants = __webpack_require__(56);
+var Styles = __webpack_require__(160);
 
 var NotificationSystem = createReactClass({
 
@@ -24266,7 +24321,7 @@ module.exports = NotificationSystem;
 
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24282,8 +24337,8 @@ module.exports = NotificationSystem;
 
 var _assign = __webpack_require__(34);
 
-var emptyObject = __webpack_require__(154);
-var _invariant = __webpack_require__(155);
+var emptyObject = __webpack_require__(155);
+var _invariant = __webpack_require__(156);
 
 if (false) { var warning; }
 
@@ -25049,7 +25104,7 @@ module.exports = factory;
 
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25070,7 +25125,7 @@ if (false) {}
 module.exports = emptyObject;
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25123,14 +25178,14 @@ function invariant(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var React = __webpack_require__(0);
-var createReactClass = __webpack_require__(56);
+var createReactClass = __webpack_require__(55);
 var PropTypes = __webpack_require__(1);
-var NotificationItem = __webpack_require__(157);
-var Constants = __webpack_require__(57);
+var NotificationItem = __webpack_require__(158);
+var Constants = __webpack_require__(56);
 
 var NotificationContainer = createReactClass({
 
@@ -25187,15 +25242,15 @@ module.exports = NotificationContainer;
 
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var React = __webpack_require__(0);
-var createReactClass = __webpack_require__(56);
+var createReactClass = __webpack_require__(55);
 var PropTypes = __webpack_require__(1);
-var ReactDOM = __webpack_require__(55);
-var Constants = __webpack_require__(57);
-var Helpers = __webpack_require__(158);
+var ReactDOM = __webpack_require__(54);
+var Constants = __webpack_require__(56);
+var Helpers = __webpack_require__(159);
 var merge = __webpack_require__(34);
 
 /* From Modernizr */
@@ -25530,7 +25585,7 @@ module.exports = NotificationItem;
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports) {
 
 var Helpers = {
@@ -25562,7 +25617,7 @@ module.exports = Helpers;
 
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports) {
 
 // Used for calculations
@@ -25829,7 +25884,7 @@ module.exports = STYLES;
 
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25837,7 +25892,7 @@ module.exports = STYLES;
 
 var utils = __webpack_require__(23);
 var bind = __webpack_require__(67);
-var Axios = __webpack_require__(161);
+var Axios = __webpack_require__(162);
 var mergeConfig = __webpack_require__(78);
 var defaults = __webpack_require__(69);
 
@@ -25873,17 +25928,17 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(79);
-axios.CancelToken = __webpack_require__(186);
+axios.CancelToken = __webpack_require__(187);
 axios.isCancel = __webpack_require__(68);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(187);
+axios.spread = __webpack_require__(188);
 
 // Expose isAxiosError
-axios.isAxiosError = __webpack_require__(188);
+axios.isAxiosError = __webpack_require__(189);
 
 module.exports = axios;
 
@@ -25892,16 +25947,16 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(23);
-var buildURL = __webpack_require__(58);
-var InterceptorManager = __webpack_require__(162);
-var dispatchRequest = __webpack_require__(163);
+var buildURL = __webpack_require__(57);
+var InterceptorManager = __webpack_require__(163);
+var dispatchRequest = __webpack_require__(164);
 var mergeConfig = __webpack_require__(78);
 
 /**
@@ -25994,7 +26049,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26053,14 +26108,14 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(23);
-var transformData = __webpack_require__(164);
+var transformData = __webpack_require__(165);
 var isCancel = __webpack_require__(68);
 var defaults = __webpack_require__(69);
 
@@ -26139,7 +26194,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26166,7 +26221,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26185,7 +26240,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26193,12 +26248,12 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 var utils = __webpack_require__(23);
 var settle = __webpack_require__(70);
-var cookies = __webpack_require__(167);
-var buildURL = __webpack_require__(58);
+var cookies = __webpack_require__(168);
+var buildURL = __webpack_require__(57);
 var buildFullPath = __webpack_require__(72);
-var parseHeaders = __webpack_require__(170);
-var isURLSameOrigin = __webpack_require__(171);
-var createError = __webpack_require__(59);
+var parseHeaders = __webpack_require__(171);
+var isURLSameOrigin = __webpack_require__(172);
+var createError = __webpack_require__(58);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -26371,7 +26426,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26431,7 +26486,7 @@ module.exports = (
 
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26452,7 +26507,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26473,7 +26528,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26533,7 +26588,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26608,7 +26663,7 @@ module.exports = (
 
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26617,15 +26672,15 @@ module.exports = (
 var utils = __webpack_require__(23);
 var settle = __webpack_require__(70);
 var buildFullPath = __webpack_require__(72);
-var buildURL = __webpack_require__(58);
+var buildURL = __webpack_require__(57);
 var http = __webpack_require__(73);
 var https = __webpack_require__(74);
 var httpFollow = __webpack_require__(75).http;
 var httpsFollow = __webpack_require__(75).https;
 var url = __webpack_require__(76);
-var zlib = __webpack_require__(184);
-var pkg = __webpack_require__(185);
-var createError = __webpack_require__(59);
+var zlib = __webpack_require__(185);
+var pkg = __webpack_require__(186);
+var createError = __webpack_require__(58);
 var enhanceError = __webpack_require__(71);
 
 var isHttps = /https:?/;
@@ -26918,19 +26973,19 @@ module.exports = function httpAdapter(config) {
 
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports) {
 
 module.exports = require("assert");
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var debug;
 try {
   /* eslint global-require: off */
-  debug = __webpack_require__(175)("follow-redirects");
+  debug = __webpack_require__(176)("follow-redirects");
 }
 catch (error) {
   debug = function () { /* */ };
@@ -26939,7 +26994,7 @@ module.exports = debug;
 
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -26948,14 +27003,14 @@ module.exports = debug;
  */
 
 if (typeof process === 'undefined' || process.type === 'renderer') {
-  module.exports = __webpack_require__(176);
+  module.exports = __webpack_require__(177);
 } else {
-  module.exports = __webpack_require__(178);
+  module.exports = __webpack_require__(179);
 }
 
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -27156,7 +27211,7 @@ function localstorage() {
 
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports) {
 
 /**
@@ -27314,15 +27369,15 @@ function plural(ms, n, name) {
 
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
  * Module dependencies.
  */
 
-var tty = __webpack_require__(179);
-var util = __webpack_require__(180);
+var tty = __webpack_require__(180);
+var util = __webpack_require__(181);
 
 /**
  * This is the Node.js implementation of `debug()`.
@@ -27345,7 +27400,7 @@ exports.useColors = useColors;
 exports.colors = [ 6, 2, 3, 4, 5, 1 ];
 
 try {
-  var supportsColor = __webpack_require__(181);
+  var supportsColor = __webpack_require__(182);
   if (supportsColor && supportsColor.level >= 2) {
     exports.colors = [
       20, 21, 26, 27, 32, 33, 38, 39, 40, 41, 42, 43, 44, 45, 56, 57, 62, 63, 68,
@@ -27506,25 +27561,25 @@ exports.enable(load());
 
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports) {
 
 module.exports = require("tty");
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports) {
 
 module.exports = require("util");
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const os = __webpack_require__(182);
-const hasFlag = __webpack_require__(183);
+const os = __webpack_require__(183);
+const hasFlag = __webpack_require__(184);
 
 const env = process.env;
 
@@ -27656,13 +27711,13 @@ module.exports = {
 
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports) {
 
 module.exports = require("os");
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27677,19 +27732,19 @@ module.exports = (flag, argv) => {
 
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports) {
 
 module.exports = require("zlib");
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module) {
 
 module.exports = JSON.parse("{\"name\":\"axios\",\"version\":\"0.21.1\",\"description\":\"Promise based HTTP client for the browser and node.js\",\"main\":\"index.js\",\"scripts\":{\"test\":\"grunt test && bundlesize\",\"start\":\"node ./sandbox/server.js\",\"build\":\"NODE_ENV=production grunt build\",\"preversion\":\"npm test\",\"version\":\"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json\",\"postversion\":\"git push && git push --tags\",\"examples\":\"node ./examples/server.js\",\"coveralls\":\"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js\",\"fix\":\"eslint --fix lib/**/*.js\"},\"repository\":{\"type\":\"git\",\"url\":\"https://github.com/axios/axios.git\"},\"keywords\":[\"xhr\",\"http\",\"ajax\",\"promise\",\"node\"],\"author\":\"Matt Zabriskie\",\"license\":\"MIT\",\"bugs\":{\"url\":\"https://github.com/axios/axios/issues\"},\"homepage\":\"https://github.com/axios/axios\",\"devDependencies\":{\"bundlesize\":\"^0.17.0\",\"coveralls\":\"^3.0.0\",\"es6-promise\":\"^4.2.4\",\"grunt\":\"^1.0.2\",\"grunt-banner\":\"^0.6.0\",\"grunt-cli\":\"^1.2.0\",\"grunt-contrib-clean\":\"^1.1.0\",\"grunt-contrib-watch\":\"^1.0.0\",\"grunt-eslint\":\"^20.1.0\",\"grunt-karma\":\"^2.0.0\",\"grunt-mocha-test\":\"^0.13.3\",\"grunt-ts\":\"^6.0.0-beta.19\",\"grunt-webpack\":\"^1.0.18\",\"istanbul-instrumenter-loader\":\"^1.0.0\",\"jasmine-core\":\"^2.4.1\",\"karma\":\"^1.3.0\",\"karma-chrome-launcher\":\"^2.2.0\",\"karma-coverage\":\"^1.1.1\",\"karma-firefox-launcher\":\"^1.1.0\",\"karma-jasmine\":\"^1.1.1\",\"karma-jasmine-ajax\":\"^0.1.13\",\"karma-opera-launcher\":\"^1.0.0\",\"karma-safari-launcher\":\"^1.0.0\",\"karma-sauce-launcher\":\"^1.2.0\",\"karma-sinon\":\"^1.0.5\",\"karma-sourcemap-loader\":\"^0.3.7\",\"karma-webpack\":\"^1.7.0\",\"load-grunt-tasks\":\"^3.5.2\",\"minimist\":\"^1.2.0\",\"mocha\":\"^5.2.0\",\"sinon\":\"^4.5.0\",\"typescript\":\"^2.8.1\",\"url-search-params\":\"^0.10.0\",\"webpack\":\"^1.13.1\",\"webpack-dev-server\":\"^1.14.1\"},\"browser\":{\"./lib/adapters/http.js\":\"./lib/adapters/xhr.js\"},\"jsdelivr\":\"dist/axios.min.js\",\"unpkg\":\"dist/axios.min.js\",\"typings\":\"./index.d.ts\",\"dependencies\":{\"follow-redirects\":\"^1.10.0\"},\"bundlesize\":[{\"path\":\"./dist/axios.min.js\",\"threshold\":\"5kB\"}]}");
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27753,7 +27808,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27787,7 +27842,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27805,11 +27860,11 @@ module.exports = function isAxiosError(payload) {
 
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isValid = __webpack_require__(224);
-var parseISO = __webpack_require__(223);
+var isValid = __webpack_require__(225);
+var parseISO = __webpack_require__(224);
 
 function leapYear(year) {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
@@ -28528,12 +28583,12 @@ module.exports = manager;
 
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var require;var Messages = __webpack_require__(191);
+var require;var Messages = __webpack_require__(192);
 
-__webpack_require__(60);
+__webpack_require__(59);
 
 var require_method = require;
 
@@ -28578,7 +28633,7 @@ var container = {
   _load: function(lang) {
     if (!this.messages[lang]) {
       try {
-        var rawMessages = __webpack_require__(192)("./" + lang);
+        var rawMessages = __webpack_require__(193)("./" + lang);
         this._set(lang, rawMessages);
       } catch (e) {}
     }
@@ -28612,7 +28667,7 @@ module.exports = container;
 
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Attributes = __webpack_require__(80);
@@ -28770,7 +28825,7 @@ module.exports = Messages;
 
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -28796,8 +28851,8 @@ var map = {
 	"./de.js": 90,
 	"./el": 91,
 	"./el.js": 91,
-	"./en": 60,
-	"./en.js": 60,
+	"./en": 59,
+	"./en.js": 59,
 	"./es": 92,
 	"./es.js": 92,
 	"./et": 93,
@@ -28890,10 +28945,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 192;
+webpackContext.id = 193;
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, exports) {
 
 var Errors = function() {
@@ -28976,7 +29031,7 @@ module.exports = Errors;
 
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, exports) {
 
 function AsyncResolvers(onFailedOne, onResolvedAll) {
@@ -29063,100 +29118,94 @@ module.exports = AsyncResolvers;
 
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module) {
 
 module.exports = JSON.parse("{}");
-
-/***/ }),
-/* 196 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports,"__esModule",{value:!0});var Carousel_1=__webpack_require__(197);exports.default=Carousel_1.default;
 
 /***/ }),
 /* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var __extends=this&&this.__extends||function(){var extendStatics=function(d,b){return(extendStatics=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(d,b){d.__proto__=b}||function(d,b){for(var p in b)b.hasOwnProperty(p)&&(d[p]=b[p])})(d,b)};return function(d,b){function __(){this.constructor=d}extendStatics(d,b),d.prototype=null===b?Object.create(b):(__.prototype=b.prototype,new __)}}();Object.defineProperty(exports,"__esModule",{value:!0});var React=__webpack_require__(0),utils_1=__webpack_require__(128),types_1=__webpack_require__(203),Dots_1=__webpack_require__(204),Arrows_1=__webpack_require__(206),CarouselItems_1=__webpack_require__(207),common_1=__webpack_require__(38),defaultTransitionDuration=400,defaultTransition="transform 400ms ease-in-out",Carousel=function(_super){function Carousel(props){var _this=_super.call(this,props)||this;return _this.containerRef=React.createRef(),_this.listRef=React.createRef(),_this.state={itemWidth:0,slidesToShow:0,currentSlide:0,totalItems:React.Children.count(props.children),deviceType:"",domLoaded:!1,transform:0,containerWidth:0},_this.onResize=_this.onResize.bind(_this),_this.handleDown=_this.handleDown.bind(_this),_this.handleMove=_this.handleMove.bind(_this),_this.handleOut=_this.handleOut.bind(_this),_this.onKeyUp=_this.onKeyUp.bind(_this),_this.handleEnter=_this.handleEnter.bind(_this),_this.setIsInThrottle=_this.setIsInThrottle.bind(_this),_this.next=utils_1.throttle(_this.next.bind(_this),props.transitionDuration||defaultTransitionDuration,_this.setIsInThrottle),_this.previous=utils_1.throttle(_this.previous.bind(_this),props.transitionDuration||defaultTransitionDuration,_this.setIsInThrottle),_this.goToSlide=utils_1.throttle(_this.goToSlide.bind(_this),props.transitionDuration||defaultTransitionDuration,_this.setIsInThrottle),_this.onMove=!1,_this.initialX=0,_this.lastX=0,_this.isAnimationAllowed=!1,_this.direction="",_this.initialY=0,_this.isInThrottle=!1,_this.transformPlaceHolder=0,_this}return __extends(Carousel,_super),Carousel.prototype.resetTotalItems=function(){var _this=this,totalItems=React.Children.count(this.props.children),currentSlide=utils_1.notEnoughChildren(this.state)?0:Math.max(0,Math.min(this.state.currentSlide,totalItems));this.setState({totalItems:totalItems,currentSlide:currentSlide},function(){_this.setContainerAndItemWidth(_this.state.slidesToShow,!0)})},Carousel.prototype.setIsInThrottle=function(isInThrottle){void 0===isInThrottle&&(isInThrottle=!1),this.isInThrottle=isInThrottle},Carousel.prototype.setTransformDirectly=function(position,withAnimation){var additionalTransfrom=this.props.additionalTransfrom,currentTransform=common_1.getTransform(this.state,this.props,position);this.transformPlaceHolder=position,this.listRef&&this.listRef.current&&(this.setAnimationDirectly(withAnimation),this.listRef.current.style.transform="translate3d("+(currentTransform+additionalTransfrom)+"px,0,0)")},Carousel.prototype.setAnimationDirectly=function(animationAllowed){this.listRef&&this.listRef.current&&(this.listRef.current.style.transition=animationAllowed?this.props.customTransition||defaultTransition:"none")},Carousel.prototype.componentDidMount=function(){this.setState({domLoaded:!0}),this.setItemsToShow(),window.addEventListener("resize",this.onResize),this.onResize(!0),this.props.keyBoardControl&&window.addEventListener("keyup",this.onKeyUp),this.props.autoPlay&&this.props.autoPlaySpeed&&(this.autoPlay=setInterval(this.next,this.props.autoPlaySpeed))},Carousel.prototype.setClones=function(slidesToShow,itemWidth,forResizing,resetCurrentSlide){var _this=this;void 0===resetCurrentSlide&&(resetCurrentSlide=!1),this.isAnimationAllowed=!1;var childrenArr=React.Children.toArray(this.props.children),initialSlide=utils_1.getInitialSlideInInfiniteMode(slidesToShow||this.state.slidesToShow,childrenArr),clones=utils_1.getClones(this.state.slidesToShow,childrenArr),currentSlide=childrenArr.length<this.state.slidesToShow?0:this.state.currentSlide;this.setState({totalItems:clones.length,currentSlide:forResizing&&!resetCurrentSlide?currentSlide:initialSlide},function(){_this.correctItemsPosition(itemWidth||_this.state.itemWidth)})},Carousel.prototype.setItemsToShow=function(shouldCorrectItemPosition,resetCurrentSlide){var _this=this,responsive=this.props.responsive;Object.keys(responsive).forEach(function(item){var _a=responsive[item],breakpoint=_a.breakpoint,items=_a.items,max=breakpoint.max,min=breakpoint.min;window.innerWidth>=min&&window.innerWidth<=max&&(_this.setState({slidesToShow:items,deviceType:item}),_this.setContainerAndItemWidth(items,shouldCorrectItemPosition,resetCurrentSlide))})},Carousel.prototype.setContainerAndItemWidth=function(slidesToShow,shouldCorrectItemPosition,resetCurrentSlide){var _this=this;if(this.containerRef&&this.containerRef.current){var containerWidth=this.containerRef.current.offsetWidth,itemWidth_1=utils_1.getItemClientSideWidth(this.props,slidesToShow,containerWidth);this.setState({containerWidth:containerWidth,itemWidth:itemWidth_1},function(){_this.props.infinite&&_this.setClones(slidesToShow,itemWidth_1,shouldCorrectItemPosition,resetCurrentSlide)}),shouldCorrectItemPosition&&this.correctItemsPosition(itemWidth_1)}},Carousel.prototype.correctItemsPosition=function(itemWidth,isAnimationAllowed,setToDomDirectly){isAnimationAllowed&&(this.isAnimationAllowed=!0),!isAnimationAllowed&&this.isAnimationAllowed&&(this.isAnimationAllowed=!1);var nextTransform=this.state.totalItems<this.state.slidesToShow?0:-itemWidth*this.state.currentSlide;setToDomDirectly&&this.setTransformDirectly(nextTransform,!0),this.setState({transform:nextTransform})},Carousel.prototype.onResize=function(value){var shouldCorrectItemPosition;shouldCorrectItemPosition=!!this.props.infinite&&("boolean"!=typeof value||!value),this.setItemsToShow(shouldCorrectItemPosition)},Carousel.prototype.componentDidUpdate=function(_a,_b){var _this=this,keyBoardControl=_a.keyBoardControl,autoPlay=_a.autoPlay,children=_a.children,containerWidth=_b.containerWidth,domLoaded=_b.domLoaded,currentSlide=_b.currentSlide;this.containerRef&&this.containerRef.current&&this.containerRef.current.offsetWidth!==containerWidth&&setTimeout(function(){_this.setItemsToShow(!0)},this.props.transitionDuration||defaultTransitionDuration),keyBoardControl&&!this.props.keyBoardControl&&window.removeEventListener("keyup",this.onKeyUp),!keyBoardControl&&this.props.keyBoardControl&&window.addEventListener("keyup",this.onKeyUp),autoPlay&&!this.props.autoPlay&&this.autoPlay&&(clearInterval(this.autoPlay),this.autoPlay=void 0),autoPlay||!this.props.autoPlay||this.autoPlay||(this.autoPlay=setInterval(this.next,this.props.autoPlaySpeed)),children.length!==this.props.children.length?setTimeout(function(){_this.props.infinite?_this.setClones(_this.state.slidesToShow,_this.state.itemWidth,!0,!0):_this.resetTotalItems()},this.props.transitionDuration||defaultTransitionDuration):this.props.infinite&&this.state.currentSlide!==currentSlide&&this.correctClonesPosition({domLoaded:domLoaded}),this.transformPlaceHolder!==this.state.transform&&(this.transformPlaceHolder=this.state.transform)},Carousel.prototype.correctClonesPosition=function(_a){var _this=this,domLoaded=_a.domLoaded,childrenArr=React.Children.toArray(this.props.children),_b=utils_1.checkClonesPosition(this.state,childrenArr,this.props),isReachingTheEnd=_b.isReachingTheEnd,isReachingTheStart=_b.isReachingTheStart,nextSlide=_b.nextSlide,nextPosition=_b.nextPosition;this.state.domLoaded&&domLoaded&&(isReachingTheEnd||isReachingTheStart)&&(this.isAnimationAllowed=!1,setTimeout(function(){_this.setState({transform:nextPosition,currentSlide:nextSlide})},this.props.transitionDuration||defaultTransitionDuration))},Carousel.prototype.next=function(slidesHavePassed){var _this=this;void 0===slidesHavePassed&&(slidesHavePassed=0);var _a=this.props,afterChange=_a.afterChange,beforeChange=_a.beforeChange;if(!utils_1.notEnoughChildren(this.state)){var _b=utils_1.populateNextSlides(this.state,this.props,slidesHavePassed),nextSlides=_b.nextSlides,nextPosition=_b.nextPosition,previousSlide=this.state.currentSlide;void 0!==nextSlides&&void 0!==nextPosition&&("function"==typeof beforeChange&&beforeChange(nextSlides,this.getState()),this.isAnimationAllowed=!0,this.setState({transform:nextPosition,currentSlide:nextSlides},function(){"function"==typeof afterChange&&setTimeout(function(){afterChange(previousSlide,_this.getState())},_this.props.transitionDuration||defaultTransitionDuration)}))}},Carousel.prototype.previous=function(slidesHavePassed){var _this=this;void 0===slidesHavePassed&&(slidesHavePassed=0);var _a=this.props,afterChange=_a.afterChange,beforeChange=_a.beforeChange;if(!utils_1.notEnoughChildren(this.state)){var _b=utils_1.populatePreviousSlides(this.state,this.props,slidesHavePassed),nextSlides=_b.nextSlides,nextPosition=_b.nextPosition;if(void 0!==nextSlides&&void 0!==nextPosition){var previousSlide=this.state.currentSlide;"function"==typeof beforeChange&&beforeChange(nextSlides,this.getState()),this.isAnimationAllowed=!0,this.setState({transform:nextPosition,currentSlide:nextSlides},function(){"function"==typeof afterChange&&setTimeout(function(){afterChange(previousSlide,_this.getState())},_this.props.transitionDuration||defaultTransitionDuration)})}}},Carousel.prototype.componentWillUnmount=function(){window.removeEventListener("resize",this.onResize),this.props.keyBoardControl&&window.removeEventListener("keyup",this.onKeyUp),this.props.autoPlay&&this.autoPlay&&(clearInterval(this.autoPlay),this.autoPlay=void 0)},Carousel.prototype.resetMoveStatus=function(){this.onMove=!1,this.initialX=0,this.lastX=0,this.direction="",this.initialY=0},Carousel.prototype.handleDown=function(e){if(!(!types_1.isMouseMoveEvent(e)&&!this.props.swipeable||types_1.isMouseMoveEvent(e)&&!this.props.draggable||this.isInThrottle)){var _a=types_1.isMouseMoveEvent(e)?e:e.touches[0],clientX=_a.clientX,clientY=_a.clientY;this.onMove=!0,this.initialX=clientX,this.initialY=clientY,this.lastX=clientX,this.isAnimationAllowed=!1}},Carousel.prototype.handleMove=function(e){if(!(!types_1.isMouseMoveEvent(e)&&!this.props.swipeable||types_1.isMouseMoveEvent(e)&&!this.props.draggable||utils_1.notEnoughChildren(this.state))){var _a=types_1.isMouseMoveEvent(e)?e:e.touches[0],clientX=_a.clientX,clientY=_a.clientY,diffX=this.initialX-clientX,diffY=this.initialY-clientY;if(!types_1.isMouseMoveEvent(e)&&this.autoPlay&&this.props.autoPlay&&(clearInterval(this.autoPlay),this.autoPlay=void 0),this.onMove){if(!(Math.abs(diffX)>Math.abs(diffY)))return;var _b=utils_1.populateSlidesOnMouseTouchMove(this.state,this.props,this.initialX,this.lastX,clientX,this.transformPlaceHolder),direction=_b.direction,nextPosition=_b.nextPosition,canContinue=_b.canContinue;direction&&(this.direction=direction,canContinue&&void 0!==nextPosition&&this.setTransformDirectly(nextPosition)),this.lastX=clientX}}},Carousel.prototype.handleOut=function(e){this.props.autoPlay&&!this.autoPlay&&(this.autoPlay=setInterval(this.next,this.props.autoPlaySpeed));var shouldDisableOnMobile="touchend"===e.type&&!this.props.swipeable,shouldDisableOnDesktop=("mouseleave"===e.type||"mouseup"===e.type)&&!this.props.draggable;if(!shouldDisableOnMobile&&!shouldDisableOnDesktop&&this.onMove){if(this.setAnimationDirectly(!0),"right"===this.direction)if(this.initialX-this.lastX>=this.props.minimumTouchDrag){var slidesHavePassed=Math.round((this.initialX-this.lastX)/this.state.itemWidth);this.next(slidesHavePassed)}else this.correctItemsPosition(this.state.itemWidth,!0,!0);if("left"===this.direction)if(this.lastX-this.initialX>this.props.minimumTouchDrag){slidesHavePassed=Math.round((this.lastX-this.initialX)/this.state.itemWidth);this.previous(slidesHavePassed)}else this.correctItemsPosition(this.state.itemWidth,!0,!0);this.resetMoveStatus()}},Carousel.prototype.onKeyUp=function(e){switch(e.keyCode){case 37:return this.previous();case 39:return this.next()}},Carousel.prototype.handleEnter=function(){this.autoPlay&&this.props.autoPlay&&(clearInterval(this.autoPlay),this.autoPlay=void 0)},Carousel.prototype.goToSlide=function(slide,skipCallbacks){var _this=this;if(!this.isInThrottle){var itemWidth=this.state.itemWidth,_a=this.props,afterChange=_a.afterChange,beforeChange=_a.beforeChange,previousSlide=this.state.currentSlide;"function"!=typeof beforeChange||skipCallbacks&&("object"!=typeof skipCallbacks||skipCallbacks.skipBeforeChange)||beforeChange(slide,this.getState()),this.isAnimationAllowed=!0,this.setState({currentSlide:slide,transform:-itemWidth*slide},function(){_this.props.infinite&&_this.correctClonesPosition({domLoaded:!0}),"function"!=typeof afterChange||skipCallbacks&&("object"!=typeof skipCallbacks||skipCallbacks.skipAfterChange)||setTimeout(function(){afterChange(previousSlide,_this.getState())},_this.props.transitionDuration||defaultTransitionDuration)})}},Carousel.prototype.getState=function(){return this.state},Carousel.prototype.renderLeftArrow=function(){var _this=this,customLeftArrow=this.props.customLeftArrow;return React.createElement(Arrows_1.LeftArrow,{customLeftArrow:customLeftArrow,getState:function(){return _this.getState()},previous:this.previous})},Carousel.prototype.renderRightArrow=function(){var _this=this,customRightArrow=this.props.customRightArrow;return React.createElement(Arrows_1.RightArrow,{customRightArrow:customRightArrow,getState:function(){return _this.getState()},next:this.next})},Carousel.prototype.renderButtonGroups=function(){var _this=this,customButtonGroup=this.props.customButtonGroup;return customButtonGroup?React.cloneElement(customButtonGroup,{previous:function(){return _this.previous()},next:function(){return _this.next()},goToSlide:function(slideIndex,skipCallbacks){return _this.goToSlide(slideIndex,skipCallbacks)},carouselState:this.getState()}):null},Carousel.prototype.renderDotsList=function(){var _this=this;return React.createElement(Dots_1.default,{state:this.state,props:this.props,goToSlide:this.goToSlide,getState:function(){return _this.getState()}})},Carousel.prototype.renderCarouselItems=function(){var clones=[];if(this.props.infinite){var childrenArr=React.Children.toArray(this.props.children);clones=utils_1.getClones(this.state.slidesToShow,childrenArr)}return React.createElement(CarouselItems_1.default,{clones:clones,goToSlide:this.goToSlide,state:this.state,notEnoughChildren:utils_1.notEnoughChildren(this.state),props:this.props})},Carousel.prototype.render=function(){var _a=this.props,deviceType=_a.deviceType,arrows=_a.arrows,removeArrowOnDeviceType=_a.removeArrowOnDeviceType,infinite=_a.infinite,containerClass=_a.containerClass,sliderClass=_a.sliderClass,customTransition=_a.customTransition,additionalTransfrom=_a.additionalTransfrom,renderDotsOutside=_a.renderDotsOutside,renderButtonGroupOutside=_a.renderButtonGroupOutside,className=_a.className; false&&false;var _b=utils_1.getInitialState(this.state,this.props),shouldRenderOnSSR=_b.shouldRenderOnSSR,shouldRenderAtAll=_b.shouldRenderAtAll,isLeftEndReach=utils_1.isInLeftEnd(this.state),isRightEndReach=utils_1.isInRightEnd(this.state),shouldShowArrows=arrows&&!(removeArrowOnDeviceType&&(deviceType&&-1<removeArrowOnDeviceType.indexOf(deviceType)||this.state.deviceType&&-1<removeArrowOnDeviceType.indexOf(this.state.deviceType)))&&!utils_1.notEnoughChildren(this.state)&&shouldRenderAtAll,disableLeftArrow=!infinite&&isLeftEndReach,disableRightArrow=!infinite&&isRightEndReach,currentTransform=common_1.getTransform(this.state,this.props);return React.createElement(React.Fragment,null,React.createElement("div",{className:"react-multi-carousel-list "+containerClass+" "+className,ref:this.containerRef},React.createElement("ul",{ref:this.listRef,className:"react-multi-carousel-track "+sliderClass,style:{transition:this.isAnimationAllowed?customTransition||defaultTransition:"none",overflow:shouldRenderOnSSR?"hidden":"unset",transform:"translate3d("+(currentTransform+additionalTransfrom)+"px,0,0)"},onMouseMove:this.handleMove,onMouseDown:this.handleDown,onMouseUp:this.handleOut,onMouseEnter:this.handleEnter,onMouseLeave:this.handleOut,onTouchStart:this.handleDown,onTouchMove:this.handleMove,onTouchEnd:this.handleOut},this.renderCarouselItems()),shouldShowArrows&&!disableLeftArrow&&this.renderLeftArrow(),shouldShowArrows&&!disableRightArrow&&this.renderRightArrow(),shouldRenderAtAll&&!renderButtonGroupOutside&&this.renderButtonGroups(),shouldRenderAtAll&&!renderDotsOutside&&this.renderDotsList()),shouldRenderAtAll&&renderDotsOutside&&this.renderDotsList(),shouldRenderAtAll&&renderButtonGroupOutside&&this.renderButtonGroups())},Carousel.defaultProps={slidesToSlide:1,infinite:!1,draggable:!0,swipeable:!0,arrows:!0,containerClass:"",sliderClass:"",itemClass:"",keyBoardControl:!0,autoPlaySpeed:3e3,showDots:!1,renderDotsOutside:!1,renderButtonGroupOutside:!1,minimumTouchDrag:80,className:"",dotListClass:"",focusOnSelect:!1,centerMode:!1,additionalTransfrom:0},Carousel}(React.Component);exports.default=Carousel;
+Object.defineProperty(exports,"__esModule",{value:!0});var Carousel_1=__webpack_require__(198);exports.default=Carousel_1.default;
 
 /***/ }),
 /* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:!0});var throttle=function(func,limit,setIsInThrottle){var inThrottle;return function(){var args=arguments;inThrottle||(func.apply(this,args),inThrottle=!0,"function"==typeof setIsInThrottle&&setIsInThrottle(!0),setTimeout(function(){inThrottle=!1,"function"==typeof setIsInThrottle&&setIsInThrottle(!1)},limit))}};exports.default=throttle;
+var __extends=this&&this.__extends||function(){var extendStatics=function(d,b){return(extendStatics=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(d,b){d.__proto__=b}||function(d,b){for(var p in b)b.hasOwnProperty(p)&&(d[p]=b[p])})(d,b)};return function(d,b){function __(){this.constructor=d}extendStatics(d,b),d.prototype=null===b?Object.create(b):(__.prototype=b.prototype,new __)}}();Object.defineProperty(exports,"__esModule",{value:!0});var React=__webpack_require__(0),utils_1=__webpack_require__(128),types_1=__webpack_require__(204),Dots_1=__webpack_require__(205),Arrows_1=__webpack_require__(207),CarouselItems_1=__webpack_require__(208),common_1=__webpack_require__(38),defaultTransitionDuration=400,defaultTransition="transform 400ms ease-in-out",Carousel=function(_super){function Carousel(props){var _this=_super.call(this,props)||this;return _this.containerRef=React.createRef(),_this.listRef=React.createRef(),_this.state={itemWidth:0,slidesToShow:0,currentSlide:0,totalItems:React.Children.count(props.children),deviceType:"",domLoaded:!1,transform:0,containerWidth:0},_this.onResize=_this.onResize.bind(_this),_this.handleDown=_this.handleDown.bind(_this),_this.handleMove=_this.handleMove.bind(_this),_this.handleOut=_this.handleOut.bind(_this),_this.onKeyUp=_this.onKeyUp.bind(_this),_this.handleEnter=_this.handleEnter.bind(_this),_this.setIsInThrottle=_this.setIsInThrottle.bind(_this),_this.next=utils_1.throttle(_this.next.bind(_this),props.transitionDuration||defaultTransitionDuration,_this.setIsInThrottle),_this.previous=utils_1.throttle(_this.previous.bind(_this),props.transitionDuration||defaultTransitionDuration,_this.setIsInThrottle),_this.goToSlide=utils_1.throttle(_this.goToSlide.bind(_this),props.transitionDuration||defaultTransitionDuration,_this.setIsInThrottle),_this.onMove=!1,_this.initialX=0,_this.lastX=0,_this.isAnimationAllowed=!1,_this.direction="",_this.initialY=0,_this.isInThrottle=!1,_this.transformPlaceHolder=0,_this}return __extends(Carousel,_super),Carousel.prototype.resetTotalItems=function(){var _this=this,totalItems=React.Children.count(this.props.children),currentSlide=utils_1.notEnoughChildren(this.state)?0:Math.max(0,Math.min(this.state.currentSlide,totalItems));this.setState({totalItems:totalItems,currentSlide:currentSlide},function(){_this.setContainerAndItemWidth(_this.state.slidesToShow,!0)})},Carousel.prototype.setIsInThrottle=function(isInThrottle){void 0===isInThrottle&&(isInThrottle=!1),this.isInThrottle=isInThrottle},Carousel.prototype.setTransformDirectly=function(position,withAnimation){var additionalTransfrom=this.props.additionalTransfrom,currentTransform=common_1.getTransform(this.state,this.props,position);this.transformPlaceHolder=position,this.listRef&&this.listRef.current&&(this.setAnimationDirectly(withAnimation),this.listRef.current.style.transform="translate3d("+(currentTransform+additionalTransfrom)+"px,0,0)")},Carousel.prototype.setAnimationDirectly=function(animationAllowed){this.listRef&&this.listRef.current&&(this.listRef.current.style.transition=animationAllowed?this.props.customTransition||defaultTransition:"none")},Carousel.prototype.componentDidMount=function(){this.setState({domLoaded:!0}),this.setItemsToShow(),window.addEventListener("resize",this.onResize),this.onResize(!0),this.props.keyBoardControl&&window.addEventListener("keyup",this.onKeyUp),this.props.autoPlay&&this.props.autoPlaySpeed&&(this.autoPlay=setInterval(this.next,this.props.autoPlaySpeed))},Carousel.prototype.setClones=function(slidesToShow,itemWidth,forResizing,resetCurrentSlide){var _this=this;void 0===resetCurrentSlide&&(resetCurrentSlide=!1),this.isAnimationAllowed=!1;var childrenArr=React.Children.toArray(this.props.children),initialSlide=utils_1.getInitialSlideInInfiniteMode(slidesToShow||this.state.slidesToShow,childrenArr),clones=utils_1.getClones(this.state.slidesToShow,childrenArr),currentSlide=childrenArr.length<this.state.slidesToShow?0:this.state.currentSlide;this.setState({totalItems:clones.length,currentSlide:forResizing&&!resetCurrentSlide?currentSlide:initialSlide},function(){_this.correctItemsPosition(itemWidth||_this.state.itemWidth)})},Carousel.prototype.setItemsToShow=function(shouldCorrectItemPosition,resetCurrentSlide){var _this=this,responsive=this.props.responsive;Object.keys(responsive).forEach(function(item){var _a=responsive[item],breakpoint=_a.breakpoint,items=_a.items,max=breakpoint.max,min=breakpoint.min;window.innerWidth>=min&&window.innerWidth<=max&&(_this.setState({slidesToShow:items,deviceType:item}),_this.setContainerAndItemWidth(items,shouldCorrectItemPosition,resetCurrentSlide))})},Carousel.prototype.setContainerAndItemWidth=function(slidesToShow,shouldCorrectItemPosition,resetCurrentSlide){var _this=this;if(this.containerRef&&this.containerRef.current){var containerWidth=this.containerRef.current.offsetWidth,itemWidth_1=utils_1.getItemClientSideWidth(this.props,slidesToShow,containerWidth);this.setState({containerWidth:containerWidth,itemWidth:itemWidth_1},function(){_this.props.infinite&&_this.setClones(slidesToShow,itemWidth_1,shouldCorrectItemPosition,resetCurrentSlide)}),shouldCorrectItemPosition&&this.correctItemsPosition(itemWidth_1)}},Carousel.prototype.correctItemsPosition=function(itemWidth,isAnimationAllowed,setToDomDirectly){isAnimationAllowed&&(this.isAnimationAllowed=!0),!isAnimationAllowed&&this.isAnimationAllowed&&(this.isAnimationAllowed=!1);var nextTransform=this.state.totalItems<this.state.slidesToShow?0:-itemWidth*this.state.currentSlide;setToDomDirectly&&this.setTransformDirectly(nextTransform,!0),this.setState({transform:nextTransform})},Carousel.prototype.onResize=function(value){var shouldCorrectItemPosition;shouldCorrectItemPosition=!!this.props.infinite&&("boolean"!=typeof value||!value),this.setItemsToShow(shouldCorrectItemPosition)},Carousel.prototype.componentDidUpdate=function(_a,_b){var _this=this,keyBoardControl=_a.keyBoardControl,autoPlay=_a.autoPlay,children=_a.children,containerWidth=_b.containerWidth,domLoaded=_b.domLoaded,currentSlide=_b.currentSlide;this.containerRef&&this.containerRef.current&&this.containerRef.current.offsetWidth!==containerWidth&&setTimeout(function(){_this.setItemsToShow(!0)},this.props.transitionDuration||defaultTransitionDuration),keyBoardControl&&!this.props.keyBoardControl&&window.removeEventListener("keyup",this.onKeyUp),!keyBoardControl&&this.props.keyBoardControl&&window.addEventListener("keyup",this.onKeyUp),autoPlay&&!this.props.autoPlay&&this.autoPlay&&(clearInterval(this.autoPlay),this.autoPlay=void 0),autoPlay||!this.props.autoPlay||this.autoPlay||(this.autoPlay=setInterval(this.next,this.props.autoPlaySpeed)),children.length!==this.props.children.length?setTimeout(function(){_this.props.infinite?_this.setClones(_this.state.slidesToShow,_this.state.itemWidth,!0,!0):_this.resetTotalItems()},this.props.transitionDuration||defaultTransitionDuration):this.props.infinite&&this.state.currentSlide!==currentSlide&&this.correctClonesPosition({domLoaded:domLoaded}),this.transformPlaceHolder!==this.state.transform&&(this.transformPlaceHolder=this.state.transform)},Carousel.prototype.correctClonesPosition=function(_a){var _this=this,domLoaded=_a.domLoaded,childrenArr=React.Children.toArray(this.props.children),_b=utils_1.checkClonesPosition(this.state,childrenArr,this.props),isReachingTheEnd=_b.isReachingTheEnd,isReachingTheStart=_b.isReachingTheStart,nextSlide=_b.nextSlide,nextPosition=_b.nextPosition;this.state.domLoaded&&domLoaded&&(isReachingTheEnd||isReachingTheStart)&&(this.isAnimationAllowed=!1,setTimeout(function(){_this.setState({transform:nextPosition,currentSlide:nextSlide})},this.props.transitionDuration||defaultTransitionDuration))},Carousel.prototype.next=function(slidesHavePassed){var _this=this;void 0===slidesHavePassed&&(slidesHavePassed=0);var _a=this.props,afterChange=_a.afterChange,beforeChange=_a.beforeChange;if(!utils_1.notEnoughChildren(this.state)){var _b=utils_1.populateNextSlides(this.state,this.props,slidesHavePassed),nextSlides=_b.nextSlides,nextPosition=_b.nextPosition,previousSlide=this.state.currentSlide;void 0!==nextSlides&&void 0!==nextPosition&&("function"==typeof beforeChange&&beforeChange(nextSlides,this.getState()),this.isAnimationAllowed=!0,this.setState({transform:nextPosition,currentSlide:nextSlides},function(){"function"==typeof afterChange&&setTimeout(function(){afterChange(previousSlide,_this.getState())},_this.props.transitionDuration||defaultTransitionDuration)}))}},Carousel.prototype.previous=function(slidesHavePassed){var _this=this;void 0===slidesHavePassed&&(slidesHavePassed=0);var _a=this.props,afterChange=_a.afterChange,beforeChange=_a.beforeChange;if(!utils_1.notEnoughChildren(this.state)){var _b=utils_1.populatePreviousSlides(this.state,this.props,slidesHavePassed),nextSlides=_b.nextSlides,nextPosition=_b.nextPosition;if(void 0!==nextSlides&&void 0!==nextPosition){var previousSlide=this.state.currentSlide;"function"==typeof beforeChange&&beforeChange(nextSlides,this.getState()),this.isAnimationAllowed=!0,this.setState({transform:nextPosition,currentSlide:nextSlides},function(){"function"==typeof afterChange&&setTimeout(function(){afterChange(previousSlide,_this.getState())},_this.props.transitionDuration||defaultTransitionDuration)})}}},Carousel.prototype.componentWillUnmount=function(){window.removeEventListener("resize",this.onResize),this.props.keyBoardControl&&window.removeEventListener("keyup",this.onKeyUp),this.props.autoPlay&&this.autoPlay&&(clearInterval(this.autoPlay),this.autoPlay=void 0)},Carousel.prototype.resetMoveStatus=function(){this.onMove=!1,this.initialX=0,this.lastX=0,this.direction="",this.initialY=0},Carousel.prototype.handleDown=function(e){if(!(!types_1.isMouseMoveEvent(e)&&!this.props.swipeable||types_1.isMouseMoveEvent(e)&&!this.props.draggable||this.isInThrottle)){var _a=types_1.isMouseMoveEvent(e)?e:e.touches[0],clientX=_a.clientX,clientY=_a.clientY;this.onMove=!0,this.initialX=clientX,this.initialY=clientY,this.lastX=clientX,this.isAnimationAllowed=!1}},Carousel.prototype.handleMove=function(e){if(!(!types_1.isMouseMoveEvent(e)&&!this.props.swipeable||types_1.isMouseMoveEvent(e)&&!this.props.draggable||utils_1.notEnoughChildren(this.state))){var _a=types_1.isMouseMoveEvent(e)?e:e.touches[0],clientX=_a.clientX,clientY=_a.clientY,diffX=this.initialX-clientX,diffY=this.initialY-clientY;if(!types_1.isMouseMoveEvent(e)&&this.autoPlay&&this.props.autoPlay&&(clearInterval(this.autoPlay),this.autoPlay=void 0),this.onMove){if(!(Math.abs(diffX)>Math.abs(diffY)))return;var _b=utils_1.populateSlidesOnMouseTouchMove(this.state,this.props,this.initialX,this.lastX,clientX,this.transformPlaceHolder),direction=_b.direction,nextPosition=_b.nextPosition,canContinue=_b.canContinue;direction&&(this.direction=direction,canContinue&&void 0!==nextPosition&&this.setTransformDirectly(nextPosition)),this.lastX=clientX}}},Carousel.prototype.handleOut=function(e){this.props.autoPlay&&!this.autoPlay&&(this.autoPlay=setInterval(this.next,this.props.autoPlaySpeed));var shouldDisableOnMobile="touchend"===e.type&&!this.props.swipeable,shouldDisableOnDesktop=("mouseleave"===e.type||"mouseup"===e.type)&&!this.props.draggable;if(!shouldDisableOnMobile&&!shouldDisableOnDesktop&&this.onMove){if(this.setAnimationDirectly(!0),"right"===this.direction)if(this.initialX-this.lastX>=this.props.minimumTouchDrag){var slidesHavePassed=Math.round((this.initialX-this.lastX)/this.state.itemWidth);this.next(slidesHavePassed)}else this.correctItemsPosition(this.state.itemWidth,!0,!0);if("left"===this.direction)if(this.lastX-this.initialX>this.props.minimumTouchDrag){slidesHavePassed=Math.round((this.lastX-this.initialX)/this.state.itemWidth);this.previous(slidesHavePassed)}else this.correctItemsPosition(this.state.itemWidth,!0,!0);this.resetMoveStatus()}},Carousel.prototype.onKeyUp=function(e){switch(e.keyCode){case 37:return this.previous();case 39:return this.next()}},Carousel.prototype.handleEnter=function(){this.autoPlay&&this.props.autoPlay&&(clearInterval(this.autoPlay),this.autoPlay=void 0)},Carousel.prototype.goToSlide=function(slide,skipCallbacks){var _this=this;if(!this.isInThrottle){var itemWidth=this.state.itemWidth,_a=this.props,afterChange=_a.afterChange,beforeChange=_a.beforeChange,previousSlide=this.state.currentSlide;"function"!=typeof beforeChange||skipCallbacks&&("object"!=typeof skipCallbacks||skipCallbacks.skipBeforeChange)||beforeChange(slide,this.getState()),this.isAnimationAllowed=!0,this.setState({currentSlide:slide,transform:-itemWidth*slide},function(){_this.props.infinite&&_this.correctClonesPosition({domLoaded:!0}),"function"!=typeof afterChange||skipCallbacks&&("object"!=typeof skipCallbacks||skipCallbacks.skipAfterChange)||setTimeout(function(){afterChange(previousSlide,_this.getState())},_this.props.transitionDuration||defaultTransitionDuration)})}},Carousel.prototype.getState=function(){return this.state},Carousel.prototype.renderLeftArrow=function(){var _this=this,customLeftArrow=this.props.customLeftArrow;return React.createElement(Arrows_1.LeftArrow,{customLeftArrow:customLeftArrow,getState:function(){return _this.getState()},previous:this.previous})},Carousel.prototype.renderRightArrow=function(){var _this=this,customRightArrow=this.props.customRightArrow;return React.createElement(Arrows_1.RightArrow,{customRightArrow:customRightArrow,getState:function(){return _this.getState()},next:this.next})},Carousel.prototype.renderButtonGroups=function(){var _this=this,customButtonGroup=this.props.customButtonGroup;return customButtonGroup?React.cloneElement(customButtonGroup,{previous:function(){return _this.previous()},next:function(){return _this.next()},goToSlide:function(slideIndex,skipCallbacks){return _this.goToSlide(slideIndex,skipCallbacks)},carouselState:this.getState()}):null},Carousel.prototype.renderDotsList=function(){var _this=this;return React.createElement(Dots_1.default,{state:this.state,props:this.props,goToSlide:this.goToSlide,getState:function(){return _this.getState()}})},Carousel.prototype.renderCarouselItems=function(){var clones=[];if(this.props.infinite){var childrenArr=React.Children.toArray(this.props.children);clones=utils_1.getClones(this.state.slidesToShow,childrenArr)}return React.createElement(CarouselItems_1.default,{clones:clones,goToSlide:this.goToSlide,state:this.state,notEnoughChildren:utils_1.notEnoughChildren(this.state),props:this.props})},Carousel.prototype.render=function(){var _a=this.props,deviceType=_a.deviceType,arrows=_a.arrows,removeArrowOnDeviceType=_a.removeArrowOnDeviceType,infinite=_a.infinite,containerClass=_a.containerClass,sliderClass=_a.sliderClass,customTransition=_a.customTransition,additionalTransfrom=_a.additionalTransfrom,renderDotsOutside=_a.renderDotsOutside,renderButtonGroupOutside=_a.renderButtonGroupOutside,className=_a.className; false&&false;var _b=utils_1.getInitialState(this.state,this.props),shouldRenderOnSSR=_b.shouldRenderOnSSR,shouldRenderAtAll=_b.shouldRenderAtAll,isLeftEndReach=utils_1.isInLeftEnd(this.state),isRightEndReach=utils_1.isInRightEnd(this.state),shouldShowArrows=arrows&&!(removeArrowOnDeviceType&&(deviceType&&-1<removeArrowOnDeviceType.indexOf(deviceType)||this.state.deviceType&&-1<removeArrowOnDeviceType.indexOf(this.state.deviceType)))&&!utils_1.notEnoughChildren(this.state)&&shouldRenderAtAll,disableLeftArrow=!infinite&&isLeftEndReach,disableRightArrow=!infinite&&isRightEndReach,currentTransform=common_1.getTransform(this.state,this.props);return React.createElement(React.Fragment,null,React.createElement("div",{className:"react-multi-carousel-list "+containerClass+" "+className,ref:this.containerRef},React.createElement("ul",{ref:this.listRef,className:"react-multi-carousel-track "+sliderClass,style:{transition:this.isAnimationAllowed?customTransition||defaultTransition:"none",overflow:shouldRenderOnSSR?"hidden":"unset",transform:"translate3d("+(currentTransform+additionalTransfrom)+"px,0,0)"},onMouseMove:this.handleMove,onMouseDown:this.handleDown,onMouseUp:this.handleOut,onMouseEnter:this.handleEnter,onMouseLeave:this.handleOut,onTouchStart:this.handleDown,onTouchMove:this.handleMove,onTouchEnd:this.handleOut},this.renderCarouselItems()),shouldShowArrows&&!disableLeftArrow&&this.renderLeftArrow(),shouldShowArrows&&!disableRightArrow&&this.renderRightArrow(),shouldRenderAtAll&&!renderButtonGroupOutside&&this.renderButtonGroups(),shouldRenderAtAll&&!renderDotsOutside&&this.renderDotsList()),shouldRenderAtAll&&renderDotsOutside&&this.renderDotsList(),shouldRenderAtAll&&renderButtonGroupOutside&&this.renderButtonGroups())},Carousel.defaultProps={slidesToSlide:1,infinite:!1,draggable:!0,swipeable:!0,arrows:!0,containerClass:"",sliderClass:"",itemClass:"",keyBoardControl:!0,autoPlaySpeed:3e3,showDots:!1,renderDotsOutside:!1,renderButtonGroupOutside:!1,minimumTouchDrag:80,className:"",dotListClass:"",focusOnSelect:!1,centerMode:!1,additionalTransfrom:0},Carousel}(React.Component);exports.default=Carousel;
 
 /***/ }),
 /* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-function throwError(state,props){var partialVisbile=props.partialVisbile,partialVisible=props.partialVisible,centerMode=props.centerMode,ssr=props.ssr,responsive=props.responsive;if((partialVisbile||partialVisible)&&centerMode)throw new Error("center mode can not be used at the same time with partialVisible");if(!responsive)throw ssr?new Error("ssr mode need to be used in conjunction with responsive prop"):new Error("Responsive prop is needed for deciding the amount of items to show on the screen");if(responsive&&"object"!=typeof responsive)throw new Error("responsive prop must be an object")}Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=throwError;
+Object.defineProperty(exports,"__esModule",{value:!0});var throttle=function(func,limit,setIsInThrottle){var inThrottle;return function(){var args=arguments;inThrottle||(func.apply(this,args),inThrottle=!0,"function"==typeof setIsInThrottle&&setIsInThrottle(!0),setTimeout(function(){inThrottle=!1,"function"==typeof setIsInThrottle&&setIsInThrottle(!1)},limit))}};exports.default=throttle;
 
 /***/ }),
 /* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:!0});var common_1=__webpack_require__(38);function populateNextSlides(state,props,slidesHavePassed){void 0===slidesHavePassed&&(slidesHavePassed=0);var nextSlides,nextPosition,slidesToShow=state.slidesToShow,currentSlide=state.currentSlide,itemWidth=state.itemWidth,totalItems=state.totalItems,slidesToSlide=common_1.getSlidesToSlide(state,props),nextMaximumSlides=currentSlide+1+slidesHavePassed+slidesToShow+(0<slidesHavePassed?0:slidesToSlide);return nextPosition=nextMaximumSlides<=totalItems?-itemWidth*(nextSlides=currentSlide+slidesHavePassed+(0<slidesHavePassed?0:slidesToSlide)):totalItems<nextMaximumSlides&&currentSlide!==totalItems-slidesToShow?-itemWidth*(nextSlides=totalItems-slidesToShow):nextSlides=void 0,{nextSlides:nextSlides,nextPosition:nextPosition}}exports.populateNextSlides=populateNextSlides;
+function throwError(state,props){var partialVisbile=props.partialVisbile,partialVisible=props.partialVisible,centerMode=props.centerMode,ssr=props.ssr,responsive=props.responsive;if((partialVisbile||partialVisible)&&centerMode)throw new Error("center mode can not be used at the same time with partialVisible");if(!responsive)throw ssr?new Error("ssr mode need to be used in conjunction with responsive prop"):new Error("Responsive prop is needed for deciding the amount of items to show on the screen");if(responsive&&"object"!=typeof responsive)throw new Error("responsive prop must be an object")}Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=throwError;
 
 /***/ }),
 /* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:!0});var React=__webpack_require__(0),common_1=__webpack_require__(38),common_2=__webpack_require__(38);function populatePreviousSlides(state,props,slidesHavePassed){void 0===slidesHavePassed&&(slidesHavePassed=0);var nextSlides,nextPosition,currentSlide=state.currentSlide,itemWidth=state.itemWidth,slidesToShow=state.slidesToShow,children=props.children,showDots=props.showDots,infinite=props.infinite,slidesToSlide=common_1.getSlidesToSlide(state,props),nextMaximumSlides=currentSlide-slidesHavePassed-(0<slidesHavePassed?0:slidesToSlide),additionalSlides=(React.Children.toArray(children).length-slidesToShow)%slidesToSlide;return nextPosition=0<=nextMaximumSlides?(nextSlides=nextMaximumSlides,showDots&&!infinite&&0<additionalSlides&&common_2.isInRightEnd(state)&&(nextSlides=currentSlide-additionalSlides),-itemWidth*nextSlides):nextSlides=nextMaximumSlides<0&&0!==currentSlide?0:void 0,{nextSlides:nextSlides,nextPosition:nextPosition}}exports.populatePreviousSlides=populatePreviousSlides;
+Object.defineProperty(exports,"__esModule",{value:!0});var common_1=__webpack_require__(38);function populateNextSlides(state,props,slidesHavePassed){void 0===slidesHavePassed&&(slidesHavePassed=0);var nextSlides,nextPosition,slidesToShow=state.slidesToShow,currentSlide=state.currentSlide,itemWidth=state.itemWidth,totalItems=state.totalItems,slidesToSlide=common_1.getSlidesToSlide(state,props),nextMaximumSlides=currentSlide+1+slidesHavePassed+slidesToShow+(0<slidesHavePassed?0:slidesToSlide);return nextPosition=nextMaximumSlides<=totalItems?-itemWidth*(nextSlides=currentSlide+slidesHavePassed+(0<slidesHavePassed?0:slidesToSlide)):totalItems<nextMaximumSlides&&currentSlide!==totalItems-slidesToShow?-itemWidth*(nextSlides=totalItems-slidesToShow):nextSlides=void 0,{nextSlides:nextSlides,nextPosition:nextPosition}}exports.populateNextSlides=populateNextSlides;
 
 /***/ }),
 /* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-function populateSlidesOnMouseTouchMove(state,props,initialX,lastX,clientX,transformPlaceHolder){var direction,nextPosition,itemWidth=state.itemWidth,slidesToShow=state.slidesToShow,totalItems=state.totalItems,currentSlide=state.currentSlide,infinite=props.infinite,canContinue=!1,slidesHavePassedRight=Math.round((initialX-lastX)/itemWidth),slidesHavePassedLeft=Math.round((lastX-initialX)/itemWidth),isMovingLeft=initialX<clientX;if(clientX<initialX&&!!(slidesHavePassedRight<=slidesToShow)){direction="right";var translateXLimit=Math.abs(-itemWidth*(totalItems-slidesToShow)),nextTranslate=transformPlaceHolder-(lastX-clientX),isLastSlide=currentSlide===totalItems-slidesToShow;(Math.abs(nextTranslate)<=translateXLimit||isLastSlide&&infinite)&&(nextPosition=nextTranslate,canContinue=!0)}isMovingLeft&&slidesHavePassedLeft<=slidesToShow&&(direction="left",((nextTranslate=transformPlaceHolder+(clientX-lastX))<=0||0===currentSlide&&infinite)&&(canContinue=!0,nextPosition=nextTranslate));return{direction:direction,nextPosition:nextPosition,canContinue:canContinue}}Object.defineProperty(exports,"__esModule",{value:!0}),exports.populateSlidesOnMouseTouchMove=populateSlidesOnMouseTouchMove;
+Object.defineProperty(exports,"__esModule",{value:!0});var React=__webpack_require__(0),common_1=__webpack_require__(38),common_2=__webpack_require__(38);function populatePreviousSlides(state,props,slidesHavePassed){void 0===slidesHavePassed&&(slidesHavePassed=0);var nextSlides,nextPosition,currentSlide=state.currentSlide,itemWidth=state.itemWidth,slidesToShow=state.slidesToShow,children=props.children,showDots=props.showDots,infinite=props.infinite,slidesToSlide=common_1.getSlidesToSlide(state,props),nextMaximumSlides=currentSlide-slidesHavePassed-(0<slidesHavePassed?0:slidesToSlide),additionalSlides=(React.Children.toArray(children).length-slidesToShow)%slidesToSlide;return nextPosition=0<=nextMaximumSlides?(nextSlides=nextMaximumSlides,showDots&&!infinite&&0<additionalSlides&&common_2.isInRightEnd(state)&&(nextSlides=currentSlide-additionalSlides),-itemWidth*nextSlides):nextSlides=nextMaximumSlides<0&&0!==currentSlide?0:void 0,{nextSlides:nextSlides,nextPosition:nextPosition}}exports.populatePreviousSlides=populatePreviousSlides;
 
 /***/ }),
 /* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var __extends=this&&this.__extends||function(){var extendStatics=function(d,b){return(extendStatics=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(d,b){d.__proto__=b}||function(d,b){for(var p in b)b.hasOwnProperty(p)&&(d[p]=b[p])})(d,b)};return function(d,b){function __(){this.constructor=d}extendStatics(d,b),d.prototype=null===b?Object.create(b):(__.prototype=b.prototype,new __)}}();Object.defineProperty(exports,"__esModule",{value:!0});var React=__webpack_require__(0);function isMouseMoveEvent(e){return"clientY"in e}exports.isMouseMoveEvent=isMouseMoveEvent;var Carousel=function(_super){function Carousel(){return null!==_super&&_super.apply(this,arguments)||this}return __extends(Carousel,_super),Carousel}(React.Component);exports.default=Carousel;
+function populateSlidesOnMouseTouchMove(state,props,initialX,lastX,clientX,transformPlaceHolder){var direction,nextPosition,itemWidth=state.itemWidth,slidesToShow=state.slidesToShow,totalItems=state.totalItems,currentSlide=state.currentSlide,infinite=props.infinite,canContinue=!1,slidesHavePassedRight=Math.round((initialX-lastX)/itemWidth),slidesHavePassedLeft=Math.round((lastX-initialX)/itemWidth),isMovingLeft=initialX<clientX;if(clientX<initialX&&!!(slidesHavePassedRight<=slidesToShow)){direction="right";var translateXLimit=Math.abs(-itemWidth*(totalItems-slidesToShow)),nextTranslate=transformPlaceHolder-(lastX-clientX),isLastSlide=currentSlide===totalItems-slidesToShow;(Math.abs(nextTranslate)<=translateXLimit||isLastSlide&&infinite)&&(nextPosition=nextTranslate,canContinue=!0)}isMovingLeft&&slidesHavePassedLeft<=slidesToShow&&(direction="left",((nextTranslate=transformPlaceHolder+(clientX-lastX))<=0||0===currentSlide&&infinite)&&(canContinue=!0,nextPosition=nextTranslate));return{direction:direction,nextPosition:nextPosition,canContinue:canContinue}}Object.defineProperty(exports,"__esModule",{value:!0}),exports.populateSlidesOnMouseTouchMove=populateSlidesOnMouseTouchMove;
 
 /***/ }),
 /* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:!0});var React=__webpack_require__(0),clones_1=__webpack_require__(61),dots_1=__webpack_require__(205),common_1=__webpack_require__(38),Dots=function(_a){var props=_a.props,state=_a.state,goToSlide=_a.goToSlide,getState=_a.getState,showDots=props.showDots,customDot=props.customDot,dotListClass=props.dotListClass,infinite=props.infinite,children=props.children;if(!showDots||common_1.notEnoughChildren(state))return null;var numberOfDotsToShow,currentSlide=state.currentSlide,slidesToShow=state.slidesToShow,slidesToSlide=common_1.getSlidesToSlide(state,props),childrenArr=React.Children.toArray(children);numberOfDotsToShow=infinite?Math.ceil(childrenArr.length/slidesToSlide):Math.ceil((childrenArr.length-slidesToShow)/slidesToSlide)+1;var nextSlidesTable=dots_1.getLookupTableForNextSlides(numberOfDotsToShow,state,props,childrenArr),lookupTable=clones_1.getOriginalIndexLookupTableByClones(slidesToShow,childrenArr),currentSlides=lookupTable[currentSlide];return React.createElement("ul",{className:"react-multi-carousel-dot-list "+dotListClass},Array(numberOfDotsToShow).fill(0).map(function(_,index){var isActive,nextSlide;if(infinite){nextSlide=nextSlidesTable[index];var cloneIndex=lookupTable[nextSlide];isActive=currentSlides===cloneIndex||cloneIndex<=currentSlides&&currentSlides<cloneIndex+slidesToSlide}else{var maximumNextSlide=childrenArr.length-slidesToShow,possibileNextSlides=index*slidesToSlide;isActive=(nextSlide=maximumNextSlide<possibileNextSlides?maximumNextSlide:possibileNextSlides)===currentSlide||nextSlide<currentSlide&&currentSlide<nextSlide+slidesToSlide&&currentSlide<childrenArr.length-slidesToShow}return customDot?React.cloneElement(customDot,{index:index,active:isActive,key:index,onClick:function(){return goToSlide(nextSlide)},carouselState:getState()}):React.createElement("li",{"data-index":index,key:index,className:"react-multi-carousel-dot "+(isActive?"react-multi-carousel-dot--active":"")},React.createElement("button",{"aria-label":"Go to slide "+(index+1),onClick:function(){return goToSlide(nextSlide)}}))}))};exports.default=Dots;
+var __extends=this&&this.__extends||function(){var extendStatics=function(d,b){return(extendStatics=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(d,b){d.__proto__=b}||function(d,b){for(var p in b)b.hasOwnProperty(p)&&(d[p]=b[p])})(d,b)};return function(d,b){function __(){this.constructor=d}extendStatics(d,b),d.prototype=null===b?Object.create(b):(__.prototype=b.prototype,new __)}}();Object.defineProperty(exports,"__esModule",{value:!0});var React=__webpack_require__(0);function isMouseMoveEvent(e){return"clientY"in e}exports.isMouseMoveEvent=isMouseMoveEvent;var Carousel=function(_super){function Carousel(){return null!==_super&&_super.apply(this,arguments)||this}return __extends(Carousel,_super),Carousel}(React.Component);exports.default=Carousel;
 
 /***/ }),
 /* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:!0});var clones_1=__webpack_require__(61),common_1=__webpack_require__(38);function getLookupTableForNextSlides(numberOfDotsToShow,state,props,childrenArr){var table={},slidesToSlide=common_1.getSlidesToSlide(state,props);return Array(numberOfDotsToShow).fill(0).forEach(function(_,i){var nextSlide=clones_1.getOriginalCounterPart(i,state,childrenArr);if(0===i)table[0]=nextSlide;else{var now=table[i-1]+slidesToSlide;table[i]=now}}),table}exports.getLookupTableForNextSlides=getLookupTableForNextSlides;
+Object.defineProperty(exports,"__esModule",{value:!0});var React=__webpack_require__(0),clones_1=__webpack_require__(60),dots_1=__webpack_require__(206),common_1=__webpack_require__(38),Dots=function(_a){var props=_a.props,state=_a.state,goToSlide=_a.goToSlide,getState=_a.getState,showDots=props.showDots,customDot=props.customDot,dotListClass=props.dotListClass,infinite=props.infinite,children=props.children;if(!showDots||common_1.notEnoughChildren(state))return null;var numberOfDotsToShow,currentSlide=state.currentSlide,slidesToShow=state.slidesToShow,slidesToSlide=common_1.getSlidesToSlide(state,props),childrenArr=React.Children.toArray(children);numberOfDotsToShow=infinite?Math.ceil(childrenArr.length/slidesToSlide):Math.ceil((childrenArr.length-slidesToShow)/slidesToSlide)+1;var nextSlidesTable=dots_1.getLookupTableForNextSlides(numberOfDotsToShow,state,props,childrenArr),lookupTable=clones_1.getOriginalIndexLookupTableByClones(slidesToShow,childrenArr),currentSlides=lookupTable[currentSlide];return React.createElement("ul",{className:"react-multi-carousel-dot-list "+dotListClass},Array(numberOfDotsToShow).fill(0).map(function(_,index){var isActive,nextSlide;if(infinite){nextSlide=nextSlidesTable[index];var cloneIndex=lookupTable[nextSlide];isActive=currentSlides===cloneIndex||cloneIndex<=currentSlides&&currentSlides<cloneIndex+slidesToSlide}else{var maximumNextSlide=childrenArr.length-slidesToShow,possibileNextSlides=index*slidesToSlide;isActive=(nextSlide=maximumNextSlide<possibileNextSlides?maximumNextSlide:possibileNextSlides)===currentSlide||nextSlide<currentSlide&&currentSlide<nextSlide+slidesToSlide&&currentSlide<childrenArr.length-slidesToShow}return customDot?React.cloneElement(customDot,{index:index,active:isActive,key:index,onClick:function(){return goToSlide(nextSlide)},carouselState:getState()}):React.createElement("li",{"data-index":index,key:index,className:"react-multi-carousel-dot "+(isActive?"react-multi-carousel-dot--active":"")},React.createElement("button",{"aria-label":"Go to slide "+(index+1),onClick:function(){return goToSlide(nextSlide)}}))}))};exports.default=Dots;
 
 /***/ }),
 /* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:!0});var React=__webpack_require__(0),LeftArrow=function(_a){var customLeftArrow=_a.customLeftArrow,getState=_a.getState,previous=_a.previous;return customLeftArrow?React.cloneElement(customLeftArrow,{onClick:function(){return previous()},carouselState:getState()}):React.createElement("button",{"aria-label":"Go to previous slide",className:"react-multiple-carousel__arrow react-multiple-carousel__arrow--left",onClick:function(){return previous()}})};exports.LeftArrow=LeftArrow;var RightArrow=function(_a){var customRightArrow=_a.customRightArrow,next=_a.next,getState=_a.getState;return customRightArrow?React.cloneElement(customRightArrow,{onClick:function(){return next()},carouselState:getState()}):React.createElement("button",{"aria-label":"Go to next slide",className:"react-multiple-carousel__arrow react-multiple-carousel__arrow--right",onClick:function(){return next()}})};exports.RightArrow=RightArrow;
+Object.defineProperty(exports,"__esModule",{value:!0});var clones_1=__webpack_require__(60),common_1=__webpack_require__(38);function getLookupTableForNextSlides(numberOfDotsToShow,state,props,childrenArr){var table={},slidesToSlide=common_1.getSlidesToSlide(state,props);return Array(numberOfDotsToShow).fill(0).forEach(function(_,i){var nextSlide=clones_1.getOriginalCounterPart(i,state,childrenArr);if(0===i)table[0]=nextSlide;else{var now=table[i-1]+slidesToSlide;table[i]=now}}),table}exports.getLookupTableForNextSlides=getLookupTableForNextSlides;
 
 /***/ }),
 /* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:!0});var React=__webpack_require__(0),utils_1=__webpack_require__(128),CarouselItems=function(_a){var props=_a.props,state=_a.state,goToSlide=_a.goToSlide,clones=_a.clones,notEnoughChildren=_a.notEnoughChildren,itemWidth=state.itemWidth,children=props.children,infinite=props.infinite,itemClass=props.itemClass,partialVisbile=props.partialVisbile,partialVisible=props.partialVisible,_b=utils_1.getInitialState(state,props),flexBisis=_b.flexBisis,shouldRenderOnSSR=_b.shouldRenderOnSSR,domFullyLoaded=_b.domFullyLoaded,partialVisibilityGutter=_b.partialVisibilityGutter;return _b.shouldRenderAtAll?(partialVisbile&&console.warn('WARNING: Please correct props name: "partialVisible" as old typo will be removed in future versions!'),React.createElement(React.Fragment,null,(infinite?clones:React.Children.toArray(children)).map(function(child,index){return React.createElement("li",{key:index,"data-index":index,onClick:function(){props.focusOnSelect&&goToSlide(index)},"aria-hidden":utils_1.getIfSlideIsVisbile(index,state)?"false":"true",style:{flex:shouldRenderOnSSR?"1 0 "+flexBisis+"%":"auto",position:"relative",width:domFullyLoaded?((partialVisbile||partialVisible)&&partialVisibilityGutter&&!notEnoughChildren?itemWidth-partialVisibilityGutter:itemWidth)+"px":"auto"},className:"react-multi-carousel-item "+(utils_1.getIfSlideIsVisbile(index,state)?"react-multi-carousel-item--active":"")+" "+itemClass},child)}))):null};exports.default=CarouselItems;
+Object.defineProperty(exports,"__esModule",{value:!0});var React=__webpack_require__(0),LeftArrow=function(_a){var customLeftArrow=_a.customLeftArrow,getState=_a.getState,previous=_a.previous;return customLeftArrow?React.cloneElement(customLeftArrow,{onClick:function(){return previous()},carouselState:getState()}):React.createElement("button",{"aria-label":"Go to previous slide",className:"react-multiple-carousel__arrow react-multiple-carousel__arrow--left",onClick:function(){return previous()}})};exports.LeftArrow=LeftArrow;var RightArrow=function(_a){var customRightArrow=_a.customRightArrow,next=_a.next,getState=_a.getState;return customRightArrow?React.cloneElement(customRightArrow,{onClick:function(){return next()},carouselState:getState()}):React.createElement("button",{"aria-label":"Go to next slide",className:"react-multiple-carousel__arrow react-multiple-carousel__arrow--right",onClick:function(){return next()}})};exports.RightArrow=RightArrow;
 
 /***/ }),
 /* 208 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-
+"use strict";
+Object.defineProperty(exports,"__esModule",{value:!0});var React=__webpack_require__(0),utils_1=__webpack_require__(128),CarouselItems=function(_a){var props=_a.props,state=_a.state,goToSlide=_a.goToSlide,clones=_a.clones,notEnoughChildren=_a.notEnoughChildren,itemWidth=state.itemWidth,children=props.children,infinite=props.infinite,itemClass=props.itemClass,partialVisbile=props.partialVisbile,partialVisible=props.partialVisible,_b=utils_1.getInitialState(state,props),flexBisis=_b.flexBisis,shouldRenderOnSSR=_b.shouldRenderOnSSR,domFullyLoaded=_b.domFullyLoaded,partialVisibilityGutter=_b.partialVisibilityGutter;return _b.shouldRenderAtAll?(partialVisbile&&console.warn('WARNING: Please correct props name: "partialVisible" as old typo will be removed in future versions!'),React.createElement(React.Fragment,null,(infinite?clones:React.Children.toArray(children)).map(function(child,index){return React.createElement("li",{key:index,"data-index":index,onClick:function(){props.focusOnSelect&&goToSlide(index)},"aria-hidden":utils_1.getIfSlideIsVisbile(index,state)?"false":"true",style:{flex:shouldRenderOnSSR?"1 0 "+flexBisis+"%":"auto",position:"relative",width:domFullyLoaded?((partialVisbile||partialVisible)&&partialVisibilityGutter&&!notEnoughChildren?itemWidth-partialVisibilityGutter:itemWidth)+"px":"auto"},className:"react-multi-carousel-item "+(utils_1.getIfSlideIsVisbile(index,state)?"react-multi-carousel-item--active":"")+" "+itemClass},child)}))):null};exports.default=CarouselItems;
 
 /***/ }),
 /* 209 */
@@ -29178,6 +29227,12 @@ Object.defineProperty(exports,"__esModule",{value:!0});var React=__webpack_requi
 
 /***/ }),
 /* 212 */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+/* 213 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29186,8 +29241,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
-/* harmony import */ var _About_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(213);
+/* harmony import */ var _About_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(214);
 /* harmony import */ var _About_scss__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_About_scss__WEBPACK_IMPORTED_MODULE_2__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
 
@@ -29195,7 +29267,8 @@ __webpack_require__.r(__webpack_exports__);
 function AboutUs(_ref) {
   var serverSideData = _ref.serverSideData;
   var ssrData = serverSideData || (typeof window !== 'undefined' ? window.__SSR_DATA__ : {});
-  var richTextContent = ssrData && ssrData.richTextContent || '';
+  var richText = ssrData && ssrData.richTextContent || '';
+  var sections = ssrData && ssrData.sections || [];
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "about-us-page"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -29223,27 +29296,126 @@ function AboutUs(_ref) {
     className: "why-content"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "why-main"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "The caring and experienced professionals at West River Funeral Directors LLC are here to support you through this difficult time. We offer a range of personalized services to suit your family\u2019s wishes and requirements. You can count on us to help you plan a personal, lasting tribute to your loved one. And we\u2019ll carefully guide you through the many decisions that must be made during this challenging time."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "You are welcome to call us at any time of the day, any day of the week, for immediate assistance. Or, visit our funeral home in person at your convenience. We also provide a wealth of information here on our web site so you can learn more from the privacy of your own home.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("aside", {
+  }, richText ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    dangerouslySetInnerHTML: {
+      __html: richText
+    }
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "The caring and experienced professionals at West River Funeral Directors LLC are here to support you through this difficult time. We offer a range of personalized services to suit your family's wishes and requirements. You can count on us to help you plan a personal, lasting tribute to your loved one. And we'll carefully guide you through the many decisions that must be made during this challenging time."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "You are welcome to call us at any time of the day, any day of the week, for immediate assistance. Or, visit our funeral home in person at your convenience. We also provide a wealth of information here on our web site so you can learn more from the privacy of your own home."))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("aside", {
     className: "sidebar"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-    src: " https://s3.amazonaws.com/CFSV2/stockimages/987238-Funeral-FS-600x450-26.jpg",
+    src: "https://s3.amazonaws.com/CFSV2/stockimages/987238-Funeral-FS-600x450-26.jpg",
     alt: "Peaceful scene"
-  }))), richTextContent ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "page-rich-content",
-    dangerouslySetInnerHTML: {
-      __html: richTextContent
+  }))), sections.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(PageSectionsRenderer, {
+    sections: sections
+  }));
+} // Inline renderer so we don't need an extra import in the SSR bundle
+
+function PageSectionsRenderer(_ref2) {
+  var sections = _ref2.sections;
+
+  var sorted = _toConsumableArray(sections).filter(function (s) {
+    return s.enabled;
+  }).sort(function (a, b) {
+    return (a.order || 0) - (b.order || 0);
+  });
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, sorted.map(function (s, i) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(PageSection, {
+      key: i,
+      section: s
+    });
+  }));
+}
+
+function PageSection(_ref3) {
+  var s = _ref3.section;
+  var padding = s.paddingSize === 'large' ? '100px 0' : s.paddingSize === 'small' ? '20px 0' : '60px 0';
+  var style = {
+    background: s.layout === 'imageBg' && s.backgroundImage ? "linear-gradient(rgba(0,0,0,".concat(s.overlayOpacity || 0, "),rgba(0,0,0,").concat(s.overlayOpacity || 0, ")), url(").concat(s.backgroundImage, ") center/cover") : s.backgroundColor || '#fff',
+    color: s.layout === 'imageBg' ? '#fff' : s.textColor || '#333',
+    padding: padding,
+    marginTop: s.marginTop ? "".concat(s.marginTop, "px") : undefined,
+    marginBottom: s.marginBottom ? "".concat(s.marginBottom, "px") : undefined,
+    textAlign: s.contentAlignment || 'left'
+  };
+  var Heading = s.headingSize || 'h2';
+  var content = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, s.label && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+    style: {
+      fontSize: '13px',
+      fontWeight: 700,
+      letterSpacing: 2,
+      textTransform: 'uppercase',
+      opacity: 0.7
     }
-  }) : null);
+  }, s.label), s.heading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Heading, {
+    style: {
+      marginBottom: '16px'
+    }
+  }, s.heading), s.text && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    dangerouslySetInnerHTML: {
+      __html: s.text
+    }
+  }), s.ctaText && s.ctaLink && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    href: s.ctaLink,
+    style: {
+      display: 'inline-block',
+      marginTop: '16px',
+      padding: '10px 24px',
+      background: '#00a097',
+      color: '#fff',
+      borderRadius: '4px',
+      textDecoration: 'none'
+    }
+  }, s.ctaText));
+
+  if (s.layout === 'imageLeft' || s.layout === 'imageRight') {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: _objectSpread(_objectSpread({}, style), {}, {
+        padding: undefined
+      })
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        padding: padding,
+        gap: '32px',
+        alignItems: 'center',
+        flexDirection: s.layout === 'imageLeft' ? 'row' : 'row-reverse'
+      }
+    }, s.image && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+      src: s.image,
+      alt: "",
+      style: {
+        width: '40%',
+        minWidth: '200px',
+        borderRadius: '4px'
+      }
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: {
+        flex: 1
+      }
+    }, content)));
+  }
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    style: style
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    style: {
+      maxWidth: '1200px',
+      margin: '0 auto',
+      padding: '0 20px'
+    }
+  }, content));
 }
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, exports) {
 
 
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29251,15 +29423,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Services; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(225);
+/* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(135);
 /* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(43);
 /* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(33);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 function Services(_ref) {
   var serverSideData = _ref.serverSideData;
   var ssrData = serverSideData || (typeof window !== 'undefined' ? window.__SSR_DATA__ : {});
-  var richTextContent = ssrData && ssrData.richTextContent || '';
+  var richText = ssrData && ssrData.richTextContent || '';
+  var sections = ssrData && ssrData.sections || [];
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "why-hero",
     style: {
@@ -29278,7 +29457,13 @@ function Services(_ref) {
       color: '#00a097',
       fontSize: '1.2em'
     }
-  }, "Our Services"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"], {
+  }, "Our Services"))), richText ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"], {
+    className: "py-5"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    dangerouslySetInnerHTML: {
+      __html: richText
+    }
+  })) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"], {
     className: "py-5"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"], {
     className: "mb-5"
@@ -29308,11 +29493,11 @@ function Services(_ref) {
       fontSize: '18px',
       fontWeight: '300'
     }
-  }, "A funeral service is a special time for family and friends to comfort one another, begin to find healing and celebrate a life well lived. Whether you choose burial or cremation, you can hold a funeral service to honor your loved one. We are happy to provide a traditional funeral or something completely unique. Many cultures and religions have special funeral traditions and we will do our best to accommodate your requests. This is a moment for you and your family and we are honored to help you in any way that we can.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"], {
+  }, "A funeral service is a special time for family and friends to comfort one another, begin to find healing and celebrate a life well lived. Whether you choose burial or cremation, you can hold a funeral service to honor your loved one. We are happy to provide a traditional funeral or something completely unique.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"], {
     md: "4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
     src: "https://s3.amazonaws.com/CFSV2/stockimages/190258-general10.jpg",
-    alt: "Memorial Service",
+    alt: "Funeral Service",
     className: "img-fluid"
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"], {
     className: "align-items-center py-4"
@@ -29332,11 +29517,11 @@ function Services(_ref) {
       fontSize: '18px',
       fontWeight: '300'
     }
-  }, "Just like a funeral service, a memorial service is a time to remember your loved one. This can be held shortly after death or weeks later, with or without an urn present. What\u2019s important is that it creates a time and a place for family and friends to gather together and support one another, share memories and pay their respects. We can hold a memorial service at our funeral home, the final resting place or at your home.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"], {
+  }, "Just like a funeral service, a memorial service is a time to remember your loved one. This can be held shortly after death or weeks later, with or without an urn present. We can hold a memorial service at our funeral home, the final resting place or at your home.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"], {
     md: "4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
     src: "https://s3.amazonaws.com/CFSV2/stockimages/398048-general6.jpg",
-    alt: "Burial",
+    alt: "Memorial Service",
     className: "img-fluid"
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"], {
     className: "align-items-center py-4"
@@ -29356,11 +29541,11 @@ function Services(_ref) {
       fontSize: '18px',
       fontWeight: '300'
     }
-  }, "A casket burial is a traditional service and there are many options you can choose from. We can provide an immediate burial without a public service; a visitation, viewing or wake with a closed or open casket; a funeral service at our funeral home, church or private home and a graveside service at a cemetery. You can choose whether you\u2019d like a public or private service or a combination. It is entirely up to you how you wish to pay your respects.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"], {
+  }, "A casket burial is a traditional service and there are many options you can choose from. We can provide an immediate burial without a public service; a visitation, viewing or wake; a funeral service at our funeral home, church or private home and a graveside service at a cemetery.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"], {
     md: "4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
     src: "https://s3.amazonaws.com/CFSV2/stockimages/493250-CasketSprayHalfPurple.jpg",
-    alt: "Cremation",
+    alt: "Burial",
     className: "img-fluid"
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"], {
     className: "align-items-center py-4"
@@ -29380,28 +29565,111 @@ function Services(_ref) {
       fontSize: '18px',
       fontWeight: '300'
     }
-  }, "Cremation has become a popular option for many people because it can be more flexible as to where and when you hold a service. You can have a traditional funeral service before a cremation or a memorial service at any time with or without the urn present. You can keep the urn, scatter the ashes or have the urn buried in a grave or columbarium where we can hold a service. Whether you choose burial or cremation, we\u2019re here to offer you a meaningful ceremony.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"], {
+  }, "Cremation has become a popular option for many people because it can be more flexible as to where and when you hold a service. Whether you choose burial or cremation, we're here to offer you a meaningful ceremony.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"], {
     md: "4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
     src: "https://s3.amazonaws.com/CFSV2/stockimages/743880-UrnWreath.jpg",
     alt: "Cremation",
     className: "img-fluid"
-  })))), richTextContent ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "page-rich-content",
-    dangerouslySetInnerHTML: {
-      __html: richTextContent
+  })))), sections.length > 0 && sections.filter(function (s) {
+    return s.enabled;
+  }).map(function (s, i) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(PageSection, {
+      key: i,
+      section: s
+    });
+  }));
+}
+
+function PageSection(_ref2) {
+  var s = _ref2.section;
+  var padding = s.paddingSize === 'large' ? '100px 0' : s.paddingSize === 'small' ? '20px 0' : '60px 0';
+  var style = {
+    background: s.layout === 'imageBg' && s.backgroundImage ? "linear-gradient(rgba(0,0,0,".concat(s.overlayOpacity || 0, "),rgba(0,0,0,").concat(s.overlayOpacity || 0, ")), url(").concat(s.backgroundImage, ") center/cover") : s.backgroundColor || '#fff',
+    color: s.layout === 'imageBg' ? '#fff' : s.textColor || '#333',
+    padding: padding,
+    marginTop: s.marginTop ? "".concat(s.marginTop, "px") : undefined,
+    marginBottom: s.marginBottom ? "".concat(s.marginBottom, "px") : undefined,
+    textAlign: s.contentAlignment || 'left'
+  };
+  var Heading = s.headingSize || 'h2';
+  var content = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, s.label && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+    style: {
+      fontSize: '13px',
+      fontWeight: 700,
+      letterSpacing: 2,
+      textTransform: 'uppercase',
+      opacity: 0.7
     }
-  }) : null);
+  }, s.label), s.heading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Heading, {
+    style: {
+      marginBottom: '16px'
+    }
+  }, s.heading), s.text && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    dangerouslySetInnerHTML: {
+      __html: s.text
+    }
+  }), s.ctaText && s.ctaLink && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    href: s.ctaLink,
+    style: {
+      display: 'inline-block',
+      marginTop: '16px',
+      padding: '10px 24px',
+      background: '#00a097',
+      color: '#fff',
+      borderRadius: '4px',
+      textDecoration: 'none'
+    }
+  }, s.ctaText));
+
+  if (s.layout === 'imageLeft' || s.layout === 'imageRight') {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: _objectSpread(_objectSpread({}, style), {}, {
+        padding: undefined
+      })
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        padding: padding,
+        gap: '32px',
+        alignItems: 'center',
+        flexDirection: s.layout === 'imageLeft' ? 'row' : 'row-reverse'
+      }
+    }, s.image && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+      src: s.image,
+      alt: "",
+      style: {
+        width: '40%',
+        minWidth: '200px',
+        borderRadius: '4px'
+      }
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: {
+        flex: 1
+      }
+    }, content)));
+  }
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    style: style
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    style: {
+      maxWidth: '1200px',
+      margin: '0 auto',
+      padding: '0 20px'
+    }
+  }, content));
 }
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, exports) {
 
 
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29411,7 +29679,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
 /* harmony import */ var react_helmet__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(50);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(2);
-/* harmony import */ var _Bloglist_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(217);
+/* harmony import */ var _Bloglist_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(218);
 /* harmony import */ var _Bloglist_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_Bloglist_css__WEBPACK_IMPORTED_MODULE_4__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -29774,13 +30042,13 @@ var BlogList = /*#__PURE__*/function (_Component) {
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__[/* withRouter */ "o"])(BlogList));
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, exports) {
 
 
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29789,6 +30057,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -29802,8 +30076,9 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
+ // Hardcoded fallback — used only when DB has no faqItems
 
-var faqs = [{
+var DEFAULT_FAQS = [{
   question: 'Why have a Funeral?',
   answer: "Funerals fill an important role for those mourning the loss of a loved one. By providing surviving family and friends with an atmosphere of care and support in which to share thoughts and feelings about death, funerals are the first step in the healing process. It is the traditional way to recognize the finality of death. Funerals are recognized rituals for the living to show their respect for the dead and to help survivors begin the grieving process.\n\nYou can have a full funeral service even for those choosing cremation. Planning a personalized ceremony or service will help begin the healing process. Overcoming the pain is never easy, but a meaningful funeral or tribute will help."
 }, {
@@ -29811,13 +30086,13 @@ var faqs = [{
   answer: "\u2022 Pick up the deceased and transport the body to the funeral home (anytime day or night)\n\u2022 Notify proper authorities, family and/or relatives\n\u2022 Arrange and prepare death certificates\n\u2022 Provide certified copies of death certificates for insurance and benefit processing\n\u2022 Work with the insurance agent, Social Security or Veterans Administration to ensure that necessary paperwork is filed for receipt of benefits\n\u2022 Prepare and submit obituary to the newspapers of your choice\n\u2022 Bathe and embalm the deceased body, if necessary\n\u2022 Prepare the body for viewing including dressing and cosmetizing\n\u2022 Assist the family with funeral arrangements and purchase of casket, urn, burial vault and cemetery plot\n\u2022 Schedule the opening and closing of the grave with cemetery personnel, if a burial is to be performed\n\u2022 Coordinate with clergy if a funeral or memorial service is to be held\n\u2022 Arrange a police escort and transportation to the funeral and/or cemetery for the family\n\u2022 Order funeral sprays and other flower arrangements as the family wishes\n\u2022 Provide Aftercare, or grief assistance, to the bereaved"
 }, {
   question: 'What do I do when a death occurs?',
-  answer: "The funeral home will help coordinate arrangements with the cemetery.\n\n\u2022 Bring the following information to complete the State vital statistic requirements: Birth Date, Birthplace, Father's Name, Mother's Name, Social Security Number, Veteran's Discharge or Claim Number, Education, Marital Status.\n\u2022 Contact your clergy. Decide on time and place of funeral or memorial service. This can be done at the funeral home.\n\u2022 The funeral home will assist you in determining the number of copies of the death certificates you will be needing and can order them for you.\n\u2022 Make a list of immediate family, close friends and employer or business colleagues. Notify each by phone.\n\u2022 Decide on appropriate memorial to which gifts may be made (church, hospice, library, charity or school).\n\u2022 Gather obituary information you want to include such as age, place of birth, cause of death, occupation, college degrees, memberships held, military service, outstanding work, list of survivors in immediate family. Include time and place of services. The funeral home will normally write article and submit to newspapers (newspaper will accept picture and they will be returned intact).\n\u2022 Arrange for members of family or close friends to take turns answering door or phone, keeping careful record of calls. If Social Security checks are automatic deposit, notify the bank of the death."
+  answer: "The funeral home will help coordinate arrangements with the cemetery.\n\n\u2022 Bring the following information: Birth Date, Birthplace, Father's Name, Mother's Name, Social Security Number, Veteran's Discharge Number, Education, Marital Status.\n\u2022 Contact your clergy. Decide on time and place of funeral or memorial service.\n\u2022 Gather obituary information and notify immediate family and close friends."
 }, {
   question: 'When I call, will someone come right away?',
-  answer: "If you request immediate assistance, yes. If the family wishes to spend a short time with the deceased to say good-bye, that\u2019s perfectly acceptable. Your funeral director will come when your time is right."
+  answer: "If you request immediate assistance, yes. If the family wishes to spend a short time with the deceased to say good-bye, that's perfectly acceptable. Your funeral director will come when your time is right."
 }, {
   question: 'Should I choose Burial or Cremation?',
-  answer: "Burial in a casket is the most common method of disposing of remains in the United States, although entombment also occurs. Cremation is increasingly selected because it can be less expensive and allows for the memorial service to be held at a more convenient time in the future when relatives and friends can come together.\n\nA funeral service followed by cremation need not be any different from a funeral service followed by a burial. Usually, cremated remains are placed in urn before being committed to a final resting place. The urn may be buried, placed in an indoor or outdoor mausoleum or columbarium, or interred in a special urn garden that many cemeteries provide for cremated remains. The remains may also be scattered, according to state law."
+  answer: "Burial in a casket is the most common method of disposing of remains in the United States, although entombment also occurs. Cremation is increasingly selected because it can be less expensive and allows for the memorial service to be held at a more convenient time in the future when relatives and friends can come together."
 }, {
   question: 'Why have a public viewing?',
   answer: "Viewing is a part of many cultural and ethnic traditions. Many grief specialists believe that viewing aids the grief process by helping the bereaved recognize the reality of death. Viewing is encouraged for children, as long as the process is explained and the activity is voluntary."
@@ -29825,32 +30100,11 @@ var faqs = [{
   question: 'What is the purpose of embalming?',
   answer: "Embalming sanitizes and preserves the body. Embalming makes it possible to lengthen the time between death and the final disposition, allowing family members time to arrange and participate in the type of service most comforting to them."
 }, {
-  question: 'Does a dead body have to be embalmed, according to law?',
-  answer: "The Federal Trade Commission says, \"Except in certain special cases, embalming is not required by law. Embalming may be necessary, however, if you select certain funeral arrangements, such as a funeral with viewing. If you do not want embalming, you usually have the right to choose an arrangement that does not require you to pay for it, such as direct cremation or immediate burial.\""
-}, {
   question: 'Why are funerals so expensive?',
-  answer: "When compared to other major life events like births and weddings, funerals are not expensive. A wedding costs at least three times as much; but because it is a happy event, wedding costs are rarely criticized. A funeral home is a 24-hour, labor-intensive business, with extensive facilities (viewing rooms, chapels, limousines, hearses, etc.), these expenses must be factored into the cost of a funeral.\n\nAdditionally, the cost of a funeral includes not only merchandise, like caskets, but the services of a funeral director in making arrangements; filing appropriate forms; dealing with doctors, ministers, florists, newspapers and others; and seeing to all the necessary details. Funeral directors look upon their profession as a service, but it is also a business. Like any business, funeral homes must make a profit to exist."
-}, {
-  question: 'Do I have to make different funeral arrangements if I choose cremation?',
-  answer: "It really depends entirely on how you wish to commemorate a life. One of the advantages of cremation is that it provides you with increased flexibility when you make your funeral and cemetery arrangements. You might, for example, choose to have a funeral service before the cremation; a memorial service at the time of cremation or after the cremation with the urn present; or a committal service at the final disposition of cremated remains. Funeral or memorial services can be held in a place of worship, a funeral home or in a crematory chapel."
-}, {
-  question: 'What can be done with the cremated remains?',
-  answer: "With cremation, your options are numerous. The cremains can be interred in a cemetery plot, i.e., earth burial, retained by a family member, usually in an urn, scattered on private property, or at a place that was significant to the deceased. (It would always be advisable to check for local regulations regarding scattering in a public place-your funeral director can help you with this.)\n\nToday, there are many different types of memorial options from which to choose. Memorialization is a time-honored tradition that has been practiced for centuries. A memorial serves as a tribute to a life lived and provides a focal point for remembrance, as well as a record for future generations. The type of memorial you choose is a personal decision."
-}, {
-  question: 'What is memorialization for a cremation?',
-  answer: "You might choose ground burial of the urn. If so, you may usually choose either a bronze memorial or monument. Cremation niches in columbariums are also available at many cemeteries. They offer the beauty of a mausoleum setting with the benefits of above ground placement of remains. Many cemeteries also offer scattering gardens. This area of a cemetery offers the peacefulness of a serene garden where family and friends can come and reflect."
-}, {
-  question: 'Can we scatter the cremated remains?',
-  answer: "If you wish to have your ashes scattered somewhere, it is important to discuss your wishes to be scattered ahead of time with the person or persons who will actually have to do the cremation ashes scattering ceremony, as they might want to let your funeral professional assist in the scattering ceremony. Funeral directors can also be very helpful in creating a meaningful and personal ash scattering ceremony that they will customize to fit your families specific desires. The services can be as formal or informal as you like. Scattering services can also be public or private. Again, it is advisable to check for local regulations regarding scattering in a public place-your funeral director can help you with this."
-}, {
-  question: 'If I am cremated, can I be buried with my spouse even if he or she was in a casket?',
-  answer: "Yes \u2014 Depending upon the cemetery's policy, you may be able to save a grave space by having the cremains buried on top of the casketed remains of your spouse, or utilize the space provided next to him/her. Many cemeteries allow for multiple cremated remains to be interred in a single grave space."
-}, {
-  question: 'What do I need to know about income tax when I lose a spouse?',
-  answer: "Uncertainty about income tax issues can add to the stress experienced from the death of a spouse. You should meet with your family attorney and/or tax advisor as soon as possible to review your particular tax and estate circumstances. Bring a detailed list of your questions to the meeting. If you do not have an attorney or tax advisor, call the IRS toll-free at 800-829-1040 for answers to specific tax questions."
+  answer: "When compared to other major life events like births and weddings, funerals are not expensive. A funeral home is a 24-hour, labor-intensive business with extensive facilities (viewing rooms, chapels, limousines, hearses, etc.). The cost of a funeral includes not only merchandise but the services of a funeral director in making arrangements, filing appropriate forms, and seeing to all the necessary details."
 }, {
   question: 'Is there financial help if I need it?',
-  answer: "There are a number of options available, including:\n\n\u2022 Determine if the deceased person qualifies for any entitlements. Check with the Social Security Administration, the Department of Veterans Affairs, and with your State Fund. Many people are entitled to get financial assistance with their funeral costs from these agencies if they qualify.\n\u2022 Review all insurance policies the deceased person has, including life insurance. Some life insurance policies have coverage clauses for funeral related costs.\n\u2022 Find local charities providing financial help for funeral expenses. Search for non profit organizations and for churches in your area.\n\u2022 Talk to your funeral director about cremation options - these can be much less expensive depending on your choices."
+  answer: "There are a number of options available:\n\n\u2022 Determine if the deceased qualifies for any entitlements from Social Security Administration, Department of Veterans Affairs, or State Fund.\n\u2022 Review all insurance policies including life insurance.\n\u2022 Find local charities providing financial help for funeral expenses.\n\u2022 Talk to your funeral director about cremation options \u2014 these can be much less expensive depending on your choices."
 }];
 function FAQ(_ref) {
   var serverSideData = _ref.serverSideData;
@@ -29860,8 +30114,10 @@ function FAQ(_ref) {
       openIndex = _useState2[0],
       setOpenIndex = _useState2[1];
 
-  var ssrData = serverSideData || (typeof window !== 'undefined' ? window.__SSR_DATA__ : {});
-  var richTextContent = ssrData && ssrData.richTextContent || '';
+  var ssrData = serverSideData || (typeof window !== 'undefined' ? window.__SSR_DATA__ : {}); // Use DB faqItems when available, fall back to hardcoded defaults
+
+  var faqItems = ssrData && ssrData.faqItems && ssrData.faqItems.length > 0 ? ssrData.faqItems : DEFAULT_FAQS;
+  var sections = ssrData && ssrData.sections || [];
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "why-hero",
     style: {
@@ -29894,7 +30150,7 @@ function FAQ(_ref) {
       fontSize: '18px',
       fontWeight: '300'
     }
-  }, "Click on the questions below to reveal each respective answer."), faqs.map(function (item, index) {
+  }, "Click on the questions below to reveal each respective answer."), faqItems.map(function (item, index) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       key: index,
       className: "border rounded overflow-hidden"
@@ -29908,24 +30164,110 @@ function FAQ(_ref) {
         return setOpenIndex(openIndex === index ? null : index);
       }
     }, item.question, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, openIndex === index ? '-' : '+'))), openIndex === index && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "px-4 py-4 bg-white text-gray-700 font-oswald leading-relaxed"
+      className: "px-4 py-4 bg-white text-gray-700 font-oswald leading-relaxed",
+      style: {
+        whiteSpace: 'pre-wrap'
+      }
     }, item.answer));
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "hidden lg:block"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-    src: "\thttps://s3.amazonaws.com/CFSV2/stockimages/444478-general8.jpg",
+    src: "https://s3.amazonaws.com/CFSV2/stockimages/444478-general8.jpg",
     alt: "Documents",
     className: "rounded shadow"
-  }))), richTextContent ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "page-rich-content",
-    dangerouslySetInnerHTML: {
-      __html: richTextContent
+  }))), sections.length > 0 && sections.filter(function (s) {
+    return s.enabled;
+  }).map(function (s, i) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(PageSection, {
+      key: i,
+      section: s
+    });
+  }));
+}
+
+function PageSection(_ref2) {
+  var s = _ref2.section;
+  var padding = s.paddingSize === 'large' ? '100px 0' : s.paddingSize === 'small' ? '20px 0' : '60px 0';
+  var style = {
+    background: s.layout === 'imageBg' && s.backgroundImage ? "linear-gradient(rgba(0,0,0,".concat(s.overlayOpacity || 0, "),rgba(0,0,0,").concat(s.overlayOpacity || 0, ")), url(").concat(s.backgroundImage, ") center/cover") : s.backgroundColor || '#fff',
+    color: s.layout === 'imageBg' ? '#fff' : s.textColor || '#333',
+    padding: padding,
+    marginTop: s.marginTop ? "".concat(s.marginTop, "px") : undefined,
+    marginBottom: s.marginBottom ? "".concat(s.marginBottom, "px") : undefined,
+    textAlign: s.contentAlignment || 'left'
+  };
+  var Heading = s.headingSize || 'h2';
+  var content = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, s.label && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+    style: {
+      fontSize: '13px',
+      fontWeight: 700,
+      letterSpacing: 2,
+      textTransform: 'uppercase',
+      opacity: 0.7
     }
-  }) : null);
+  }, s.label), s.heading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Heading, {
+    style: {
+      marginBottom: '16px'
+    }
+  }, s.heading), s.text && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    dangerouslySetInnerHTML: {
+      __html: s.text
+    }
+  }), s.ctaText && s.ctaLink && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    href: s.ctaLink,
+    style: {
+      display: 'inline-block',
+      marginTop: '16px',
+      padding: '10px 24px',
+      background: '#00a097',
+      color: '#fff',
+      borderRadius: '4px',
+      textDecoration: 'none'
+    }
+  }, s.ctaText));
+
+  if (s.layout === 'imageLeft' || s.layout === 'imageRight') {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: _objectSpread(_objectSpread({}, style), {}, {
+        padding: undefined
+      })
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        padding: padding,
+        gap: '32px',
+        alignItems: 'center',
+        flexDirection: s.layout === 'imageLeft' ? 'row' : 'row-reverse'
+      }
+    }, s.image && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+      src: s.image,
+      alt: "",
+      style: {
+        width: '40%',
+        minWidth: '200px',
+        borderRadius: '4px'
+      }
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: {
+        flex: 1
+      }
+    }, content)));
+  }
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    style: style
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    style: {
+      maxWidth: '1200px',
+      margin: '0 auto',
+      padding: '0 20px'
+    }
+  }, content));
 }
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29943,7 +30285,7 @@ var es = __webpack_require__(32);
 var Helmet = __webpack_require__(50);
 
 // EXTERNAL MODULE: ./node_modules/reactstrap/es/Container.js
-var Container = __webpack_require__(225);
+var Container = __webpack_require__(135);
 
 // EXTERNAL MODULE: ./node_modules/reactstrap/es/Col.js
 var Col = __webpack_require__(33);
@@ -30003,14 +30345,14 @@ var actions = __webpack_require__(51);
 var constants = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./app/containers/Homepage/banners.json
-var banners = __webpack_require__(195);
+var banners = __webpack_require__(196);
 
 // EXTERNAL MODULE: ./node_modules/react-multi-carousel/index.js
 var react_multi_carousel = __webpack_require__(134);
 var react_multi_carousel_default = /*#__PURE__*/__webpack_require__.n(react_multi_carousel);
 
 // EXTERNAL MODULE: ./node_modules/react-multi-carousel/lib/styles.css
-var styles = __webpack_require__(208);
+var styles = __webpack_require__(209);
 
 // CONCATENATED MODULE: ./app/components/Common/CarouselSlider/index.js
 /**
@@ -30093,7 +30435,7 @@ var responsiveOneItemCarousel = {
   }
 };
 // EXTERNAL MODULE: ./app/containers/ImmediateNeedPopup/ImmediateNeedPopup.css
-var ImmediateNeedPopup = __webpack_require__(209);
+var ImmediateNeedPopup = __webpack_require__(210);
 
 // CONCATENATED MODULE: ./app/containers/ImmediateNeedPopup/index.js
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -37827,10 +38169,10 @@ var SwiperSlide = /*#__PURE__*/Object(react["forwardRef"])(function (_temp, exte
 SwiperSlide.displayName = 'SwiperSlide';
 
 // EXTERNAL MODULE: ./node_modules/swiper/swiper.min.css
-var swiper_min = __webpack_require__(210);
+var swiper_min = __webpack_require__(211);
 
 // EXTERNAL MODULE: ./app/containers/Homepage/Home.css
-var Home = __webpack_require__(211);
+var Home = __webpack_require__(212);
 
 // CONCATENATED MODULE: ./app/containers/Homepage/index.js
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -38949,7 +39291,7 @@ var mapStateToProps = function mapStateToProps(state) {
 /* harmony default export */ var containers_Homepage = __webpack_exports__["default"] = (Object(es["connect"])(mapStateToProps, actions["a" /* default */])(Homepage_Homepage));
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40861,7 +41203,7 @@ var reducers_createReducer = function createReducer(history) {
 /* harmony default export */ var reducers = __webpack_exports__["default"] = (reducers_createReducer);
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41800,7 +42142,7 @@ var mapStateToProps = function mapStateToProps(state) {
 /* harmony default export */ var Obituary = __webpack_exports__["default"] = (Object(es["connect"])(mapStateToProps, actions["a" /* default */])(Obituary_ObituaryPage));
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41812,7 +42154,7 @@ var react = __webpack_require__(0);
 var react_default = /*#__PURE__*/__webpack_require__.n(react);
 
 // EXTERNAL MODULE: ./node_modules/reactstrap/es/Container.js
-var Container = __webpack_require__(225);
+var Container = __webpack_require__(135);
 
 // EXTERNAL MODULE: ./node_modules/reactstrap/es/Row.js
 var Row = __webpack_require__(43);
@@ -42030,7 +42372,7 @@ var chevron_right = __webpack_require__(230);
 var constants = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./app/containers/AllObituaries/Allobituaries.css
-var Allobituaries = __webpack_require__(215);
+var Allobituaries = __webpack_require__(216);
 
 // CONCATENATED MODULE: ./app/containers/AllObituaries/index.js
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -42558,7 +42900,7 @@ var AllObituaries_AllObituaries = /*#__PURE__*/function (_Component2) {
 /* harmony default export */ var containers_AllObituaries = __webpack_exports__["default"] = (AllObituaries_AllObituaries);
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42896,7 +43238,7 @@ function validateTimezone(_hours, minutes) {
 }
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43028,61 +43370,6 @@ function isValid(dirtyDate) {
   var date = toDate(dirtyDate);
   return !isNaN(date);
 }
-
-/***/ }),
-/* 225 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
-/* harmony import */ var _babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(19);
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(9);
-
-
-
-
-
-
-var propTypes = {
-  tag: _utils__WEBPACK_IMPORTED_MODULE_5__[/* tagPropType */ "c"],
-  fluid: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.bool, prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string]),
-  className: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string,
-  cssModule: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.object
-};
-var defaultProps = {
-  tag: 'div'
-};
-
-var Container = function Container(props) {
-  var className = props.className,
-      cssModule = props.cssModule,
-      fluid = props.fluid,
-      Tag = props.tag,
-      attributes = Object(_babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(props, ["className", "cssModule", "fluid", "tag"]);
-
-  var containerClass = 'container';
-
-  if (fluid === true) {
-    containerClass = 'container-fluid';
-  } else if (fluid) {
-    containerClass = "container-" + fluid;
-  }
-
-  var classes = Object(_utils__WEBPACK_IMPORTED_MODULE_5__[/* mapToCssModules */ "b"])(classnames__WEBPACK_IMPORTED_MODULE_4___default()(className, containerClass), cssModule);
-  return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(Tag, Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])({}, attributes, {
-    className: classes
-  }));
-};
-
-Container.propTypes = propTypes;
-Container.defaultProps = defaultProps;
-/* harmony default export */ __webpack_exports__["a"] = (Container);
 
 /***/ }),
 /* 226 */,
