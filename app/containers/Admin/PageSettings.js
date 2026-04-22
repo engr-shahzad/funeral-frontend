@@ -6,7 +6,7 @@
  * The "FAQ Items" tab is shown only for /faqs and drives the accordion.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { API_URL } from '../../constants';
 
@@ -54,6 +54,7 @@ export default function PageSettingsAdmin() {
   const [message, setMessage]           = useState({ type: '', text: '' });
   const [activeTab, setActiveTab]       = useState('content');
   const [preview, setPreview]           = useState(false);
+  const richTextRef = useRef(null);
 
   useEffect(() => { fetchPages(); }, []);
 
@@ -93,12 +94,16 @@ export default function PageSettingsAdmin() {
   const handleSave = async () => {
     try {
       setSaving(true);
+      // Capture latest contentEditable content from DOM (in case user didn't blur first)
+      const latestRichText = richTextRef.current
+        ? richTextRef.current.innerHTML
+        : formData.richTextContent;
       const selectedLabel = PAGES.find(p => p.path === selectedPath)?.label || selectedPath;
       await axios.post(`${API_URL}/page-settings`, {
         path:            selectedPath,
         label:           selectedLabel,
         customHeadHtml:  formData.customHeadHtml,
-        richTextContent: formData.richTextContent,
+        richTextContent: latestRichText,
         sections:        formData.sections,
         faqItems:        formData.faqItems
       });
@@ -287,6 +292,8 @@ export default function PageSettingsAdmin() {
                 ? <div style={{ minHeight: 300, padding: 16, border: '1px solid #dee2e6', borderRadius: 4, background: '#fafafa' }} dangerouslySetInnerHTML={{ __html: formData.richTextContent }} />
                 : (
                   <div
+                    key={loading ? 'loading' : selectedPath}
+                    ref={richTextRef}
                     className="rich-text-body"
                     contentEditable
                     suppressContentEditableWarning
@@ -553,6 +560,7 @@ function SectionEditor({ section: s, index, total, onChange, onRemove, onMove })
             </select>
           </div>
           <div
+            key={`${index}-text`}
             className="rich-text-body"
             contentEditable suppressContentEditableWarning
             dangerouslySetInnerHTML={{ __html: s.text }}
