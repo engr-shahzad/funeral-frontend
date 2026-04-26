@@ -1505,6 +1505,7 @@ const openAddModal = () => {
             <option value="">Select Type</option>
             {[ 'Funeral Service',
                     'Memorial Service',
+                      'Entombment',
                     'Graveside Service',
                     'Celebration of Life',
                     'Private Family Service',
